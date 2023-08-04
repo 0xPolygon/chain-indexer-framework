@@ -29,7 +29,7 @@ export function consume(
     delete config.coderConfig;
     delete config.encoding;
 
-    if (!encoding || encoding === 'protobuf') {
+    if (!encoding || encoding === "protobuf") {
         if (!coderConfig || !topic) {
             throw new Error("Please provide coder config or topic");
         }

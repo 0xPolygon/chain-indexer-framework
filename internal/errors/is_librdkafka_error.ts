@@ -1,4 +1,3 @@
-import { LibrdKafkaError } from "node-rdkafka";
 
 /**
  * Checks if given error is a LibrdKafkaError. Small helper we might will remove later on.

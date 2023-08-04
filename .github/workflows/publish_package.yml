@@ -1,0 +1,50 @@
+ame: Release Chainflow Package
+run-name: ${{ github.actor }} just pushed to ChainFlow
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  Deployment:
+    name: Publish ChainFlow
+    runs-on: ubuntu-latest
+    env: 
+      working-directory: ./
+    contents: read
+    packages: write
+    steps:
+      - name: CHECK-OUT GIT REPOSITORY
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@maticnetwork'
+
+      - name: Ensure access
+        run: npm whoami --registry https://npm.pkg.github.com/
+        env: 
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Config git user
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          
+      - name: Bootstrap lerna
+        run: yarn bootstrap
+
+      - name: Bump versions and publish packages
+        run: |
+          yarn version:ci
+          yarn publish:ci
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          

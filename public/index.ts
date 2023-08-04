@@ -17,8 +17,8 @@ export * from "./enums/bridgetype.js";
 export * from "./enums/tokentype.js";
 
 // Errors
-export * from "./errors/api_error.js"
-export * from "./errors/base_error.js"
+export * from "./errors/api_error.js";
+export * from "./errors/base_error.js";
 export * from "./errors/block_producer_error.js";
 export * from "./errors/coder_error.js";
 export * from "./errors/create_error_object.js";
@@ -53,4 +53,4 @@ export * from "./logger/logger.js";
 export * from "./mongo/database.js";
 
 // rpc
-export * from "./rpc/json_rpc_client.js"
+export * from "./rpc/json_rpc_client.js";

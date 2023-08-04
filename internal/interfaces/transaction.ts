@@ -1,5 +1,4 @@
 import Long from "long";
-import { StringLiteralLike } from "typescript";
 import { ITransactionReceipt } from "./transaction_receipt.js";
 
 export interface ITransaction {

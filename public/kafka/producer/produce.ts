@@ -24,11 +24,11 @@ export function produce(
     delete config.coder;
     delete config.coderConfig;
 
-    if (!encoding || encoding === 'protobuf') {
+    if (!encoding || encoding === "protobuf") {
         if (!coderConfig) {
             throw new Error("Please provide coder config");
         }
-        coder = new Coder(coderConfig.fileName, coderConfig.packageName, coderConfig.messageType)
+        coder = new Coder(coderConfig.fileName, coderConfig.packageName, coderConfig.messageType);
     }
 
     if (!coder) {

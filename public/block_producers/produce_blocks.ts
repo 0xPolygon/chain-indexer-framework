@@ -26,5 +26,5 @@ export function produceBlocks(
 ): BlockProducer {
     const producer = getProducer(config);
     producer.start();
-    return producer
+    return producer;
 }

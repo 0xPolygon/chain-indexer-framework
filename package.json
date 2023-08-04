@@ -1,7 +1,7 @@
 {
-  "name": "open-api-common",
+  "name": "@maticnetwork/chainflow",
   "version": "1.0.0",
-  "description": "",
+  "description": "blockchain data indexer",
   "type": "module",
   "exports": {
     ".": "./dist/public/index.js",
@@ -24,13 +24,31 @@
   "scripts": {
     "tests": "jest --coverage",
     "tests:integration": "echo 'Hello integration tests'",
+    "bootstrap": "npx lerna bootstrap",
+    "prepublish": "yarn build",
     "build": "tsc && tsc-alias",
-    "lint": "eslint \"./internal/**/*.ts\" \"./public/**/*.ts\"",
-    "lint:fix": "eslint --fix \"./internal/**/*.ts\" \"./public/**/*.ts\"",
-    "lint-tests:fix": "eslint --fix \"./tests/**/*.ts\""
+    "lint": "npx eslint \"./internal/**/*.ts\" \"./public/**/*.ts\"",
+    "lint:fix": "npx eslint --fix \"./internal/**/*.ts\" \"./public/**/*.ts\"",
+    "lint-tests:fix": "npx eslint --fix \"./tests/**/*.ts\"",
+    "publish:ci": "lerna publish from-package --yes",
+    "version:ci": "lerna version --yes --no-private --conventional-commits --create-release github --message 'chore(release): publish'"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "nitinmittal23",
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "@maticnetwork:registry": "https://npm.pkg.github.com/maticnetwork"
+  },
+  "files": [
+    "./dist/**"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maticnetwork/chainflow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maticnetwork/chainflow/issues"
+  },
+  "homepage": "https://github.com/maticnetwork/chainflow#readme",
   "dependencies": {
     "axios": "^1.3.6",
     "ethereum-bloom-filters": "^1.0.10",
@@ -50,6 +68,7 @@
     "winston-transport-sentry-node": "^2.7.0"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^6.2.1",
     "@babel/preset-env": "^7.19.1",
     "@babel/preset-typescript": "^7.18.6",
     "@types/jest": "^29.0.3",

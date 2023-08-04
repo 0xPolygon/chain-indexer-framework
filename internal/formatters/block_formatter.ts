@@ -1,5 +1,4 @@
 import { ITransactionReceipt } from "../interfaces/transaction_receipt.js";
-import { TransactionReceipt } from "web3-core";
 import { ITransaction } from "../interfaces/transaction.js";
 import { BlockTransactionObject } from "web3-eth";
 import { formatters } from "web3-core-helpers";
