@@ -25,7 +25,7 @@ export class Coder implements ICoder {
         private fileName: string, 
         private packageName: string, 
         private messageType: string, 
-        private fileDirectory: string = "open-api-common/schemas"
+        private fileDirectory: string = "@maticnetwork/chainflow/schemas"
     ) { }
 
     /**

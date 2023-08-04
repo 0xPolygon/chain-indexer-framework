@@ -138,7 +138,7 @@ describe("Protobuf Coder", () => {
     describe("custom loadType: schemaPath", () => {
         test("Must accept custom schemaPath", async () => {
 
-            const customCoder = new Coder("test", "testpackage", "Test", "open-api-common/schemas")
+            const customCoder = new Coder("test", "testpackage", "Test", "@maticnetwork/chainflow/schemas")
 
             protobufType.decode.mockReturnValueOnce(
                 mockMessageObject as unknown as Message
