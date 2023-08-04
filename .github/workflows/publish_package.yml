@@ -1,4 +1,4 @@
-ame: Release Chainflow Package
+name: Release Chainflow Package
 run-name: ${{ github.actor }} just pushed to ChainFlow
 
 on:

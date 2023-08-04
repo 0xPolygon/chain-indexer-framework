@@ -13,10 +13,10 @@ jobs:
     steps:
       - name: CHECK-OUT GIT REPOSITORY
         uses: actions/checkout@v3
-      - name: Use Node.js (v14)
+      - name: Use Node.js (v18)
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '18'
       - name: Check ubuntu version
         run: lsb_release -a
       - name: Install dependencies
