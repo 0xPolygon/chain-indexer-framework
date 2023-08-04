@@ -1,0 +1,22 @@
+package assetspackage;
+syntax = "proto3";
+import public "bridge_assets.proto";
+
+message Mappings {
+    message Metadata {
+        string name = 1;
+        string symbol = 2;
+        uint32 decimal = 3;
+    }
+
+    message MappingEvent {
+        string transactionHash = 1;
+        TokenInfo tokenInfo = 2;
+        uint32 wrappedTokenNetwork = 3;
+        Metadata metadata = 4;
+    }
+
+    uint64 blockNumber = 1;
+    uint64 timestamp = 2;
+    repeated MappingEvent data = 3;
+}

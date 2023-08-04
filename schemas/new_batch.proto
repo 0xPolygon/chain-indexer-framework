@@ -1,0 +1,9 @@
+package batchpackage;
+syntax = "proto3";
+
+message Batch {
+    required uint64 number = 1;
+    required string globalExitRoot = 2;
+    required string mainnetExitRoot = 3;
+    required string rollupExitRoot = 4;
+}

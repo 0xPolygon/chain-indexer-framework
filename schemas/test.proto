@@ -1,0 +1,9 @@
+package testpackage;
+syntax = "proto3";
+
+
+
+message Test {
+    required uint64 number = 1;
+    required string string = 2;
+}

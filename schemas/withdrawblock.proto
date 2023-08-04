@@ -1,0 +1,25 @@
+package withdrawblockpackage;
+syntax = "proto3";
+
+message WithdrawBlock {
+    message WithdrawEvent {
+        required string tokenType = 1;
+        required string bridgeType = 2;
+        required string transactionHash = 3;
+        required string withdrawReceiver = 4;
+        uint64 burnTransactionIndex = 5;
+        uint64 burnTransactionBlockNumber = 6;
+        string transactionType = 7;
+        repeated string amounts = 8;
+        repeated uint64 tokenIds = 9;
+        required bool isDecoded = 10;
+        required string rootToken = 11;
+        string rootTunnel = 12;
+        string exitId = 13;
+
+    }
+
+    required uint64 blockNumber = 1;
+    required uint64 timestamp = 2;
+    repeated WithdrawEvent data = 3;
+}

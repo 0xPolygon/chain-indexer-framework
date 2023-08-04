@@ -1,0 +1,20 @@
+package l1stateblockpackage;
+syntax = "proto3";
+
+message ExitRoots {
+    string mainnet = 1;
+    string rollUp = 2;
+}
+
+message L1StateBlock {
+    message L1State {
+        uint64 batchNumber = 1;
+        string aggregator = 2;
+        bool isTrusted = 3;
+        ExitRoots exitRoots = 4;
+    }
+
+    uint64 blockNumber = 1;
+    uint64 timestamp = 2;
+    repeated L1State data = 3;
+}

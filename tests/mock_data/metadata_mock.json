@@ -1,0 +1,28 @@
+{
+    "orig_broker_id": 1,
+    "orig_broker_name": "localhost:9092/1",
+    "topics": [
+        {
+            "name": "chainId-137",
+            "partitions": [
+                {
+                    "id": 0,
+                    "leader": 1,
+                    "replicas": [
+                        1
+                    ],
+                    "isrs": [
+                        1
+                    ]
+                }
+            ]
+        }
+    ],
+    "brokers": [
+        {
+            "id": 1,
+            "host": "localhost",
+            "port": 9092
+        }
+    ]
+}

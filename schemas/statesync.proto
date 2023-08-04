@@ -1,0 +1,15 @@
+package statesyncpackage;
+syntax = "proto3";
+
+message StateSync {
+    message DepositEvent {
+        required uint64 stateId = 1;
+        string contractAddress = 2;
+        string data = 3;
+        uint64 timestamp = 4;
+    }
+
+    required uint64 blockNumber = 1;
+    required uint64 timestamp = 2;
+    repeated DepositEvent data = 3;
+}

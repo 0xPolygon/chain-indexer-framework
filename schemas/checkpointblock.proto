@@ -1,0 +1,21 @@
+package checkpointblockpackage;
+syntax = "proto3";
+
+message CheckpointBlock {
+    message CheckpointEvent {
+        required string transactionHash = 1;
+        required string proposer = 2;
+        required uint64 start = 3;
+        required uint64 end = 4;
+        required uint64 checkpointNumber = 5;
+        required uint64 transactionIndex = 6;
+        required string root = 7;
+        required uint64 headerBlockId = 8;
+        required string reward = 9;
+        required string input = 10;
+    }
+
+    required uint64 blockNumber = 1;
+    required uint64 timestamp = 2;
+    repeated CheckpointEvent data = 3;
+}

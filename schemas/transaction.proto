@@ -1,0 +1,42 @@
+package blockpackage;
+syntax = "proto3";
+
+import public "eventlog.proto";
+
+message TransactionReceipt {
+    required string transactionHash = 1;
+    required uint64 transactionIndex = 2;
+    string from = 3;
+    string to = 4;
+    required uint64 blockNumber = 5;
+    required string blockHash = 6;
+    string contractAddress = 7;
+    required uint64 gasUsed = 8;
+    required uint64 cumulativeGasUsed = 9;
+    repeated EventLog logs = 10;
+    required string logsBloom = 11;
+    string effectiveGasPrice = 12;
+    bool status = 13;
+}
+
+message Transaction {
+    required string hash = 1;
+    required uint64 nonce = 2;
+    string blockHash = 3;
+    uint64 blockNumber = 4;
+    uint64 transactionIndex = 5;
+    required string from = 6;
+    string to = 7;
+    required string value = 8;
+    required string gasPrice = 9;
+    required uint64 gas = 10;
+    required string input = 11;
+    string maxFeePerGas = 12;
+    string maxPriorityFeePerGas = 13;
+    string chainId = 14;
+    string v = 15;
+    string r = 16;
+    string s = 17;
+    uint32 type = 18;
+    required TransactionReceipt receipt = 19;
+}

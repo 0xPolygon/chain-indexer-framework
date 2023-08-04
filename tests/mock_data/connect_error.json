@@ -1,0 +1,8 @@
+{
+    "message": "Local: Broker transport failure",
+    "code": -195,
+    "errno": -195,
+    "origin": "kafka", 
+    "isFatal": true, 
+    "stack": "mock stack string"
+}

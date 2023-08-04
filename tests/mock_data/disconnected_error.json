@@ -1,0 +1,8 @@
+{
+    "message": "KafkaConsumer is disconnected",
+    "origin": "kafka",
+    "code": -172,
+    "errno": -172,
+    "isFatal": true,
+    "stack": "demo"
+}

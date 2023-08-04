@@ -1,0 +1,14 @@
+package blockpackage;
+syntax = "proto3";
+
+message EventLog {
+    required string address = 1;
+    required string data = 2;
+    required uint64 logIndex = 3;
+    repeated string topics = 4;
+    required string transactionHash = 5;
+    required uint64 transactionIndex = 6;
+    required uint64 blockNumber = 7;
+    required string blockHash = 8;
+    bool removed = 9;
+}

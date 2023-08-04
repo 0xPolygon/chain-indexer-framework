@@ -1,0 +1,44 @@
+package assetspackage;
+syntax = "proto3";
+
+message Networks {
+    uint32 origin = 1;
+    uint32 destination = 2;
+}
+
+message RollupMetaData {
+    string bridgeContractAddress = 1;
+    string globalExitRootManager = 2;
+    Networks networks = 3;
+}
+
+message TokenInfo {
+    string tokenType = 1;
+    uint32 originTokenNetwork = 2;
+    string originTokenAddress = 3;
+    string wrappedTokenAddress = 4;
+}
+
+message ExitRoots {
+    string mainnet = 1;
+    string rollUp = 2;
+}
+
+message BridgeAssets {
+    message BridgeEvent {
+        RollupMetaData rollupMetaData = 1;
+        string transactionHash = 2;
+        TokenInfo tokenInfo = 3;
+        string receiver = 4;
+        string amount = 5;
+        string metadata = 6;
+        uint64 depositCount = 7;
+        ExitRoots exitRoots = 8;
+        string depositor = 9;
+        uint32 leafType = 10;
+    }
+
+    uint64 blockNumber = 1;
+    uint64 timestamp = 2;
+    repeated BridgeEvent data = 3;
+}

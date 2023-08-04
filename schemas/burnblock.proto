@@ -1,0 +1,20 @@
+package burnblockpackage;
+syntax = "proto3";
+
+message BurnBlock {
+    message BurnEvent {
+        required string tokenType = 1;
+        required uint64 transactionIndex = 2;
+        required string transactionHash = 3;
+        required string withdrawInitiator = 4;
+        required string childToken = 5;
+        repeated string amounts = 6;
+        repeated uint64 tokenIds = 7;
+        string bridgeType = 8;
+
+    }
+
+    required uint64 blockNumber = 1;
+    required uint64 timestamp = 2;
+    repeated BurnEvent data = 3;
+}

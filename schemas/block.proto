@@ -1,0 +1,27 @@
+package blockpackage;
+syntax = "proto3";
+
+import "transaction.proto";
+
+
+message Block {
+    required uint64 number = 1;
+    required string hash = 2;
+    required string logsBloom = 3;
+    required string parentHash = 4;
+    required string receiptsRoot = 5;
+    required string stateRoot = 6;
+    required string transactionsRoot = 7;
+    required uint64 timestamp = 8;
+    required uint64 nonce = 9;
+    required uint64 gasLimit = 10;
+    required uint64 gasUsed = 11;
+    string baseFeePerGas = 12;
+    string difficulty = 13;
+    string totalDifficulty = 14;
+    string extraData = 15;
+    string sha3Uncles = 16;
+    string miner = 17;
+    string size = 18;
+    repeated Transaction transactions = 19;
+}

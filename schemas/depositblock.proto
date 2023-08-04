@@ -1,0 +1,20 @@
+package depositblockpackage;
+syntax = "proto3";
+
+message DepositBlock {
+    message DepositEvent {
+        required string tokenType = 1;
+        required string bridgeType = 2;
+        required string transactionHash = 3;
+        required string depositor = 4;
+        required string depositReceiver = 5;
+        required string rootToken = 6;
+        repeated string amounts = 7;
+        repeated uint64 tokenIds = 8;
+        string rootTunnelAddress = 9;
+    }
+
+    required uint64 blockNumber = 1;
+    required uint64 timestamp = 2;
+    repeated DepositEvent data = 3;
+}

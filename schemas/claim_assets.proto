@@ -1,0 +1,18 @@
+package assetspackage;
+syntax = "proto3";
+import public "bridge_assets.proto";
+
+message ClaimAssets {
+    message ClaimEvent {
+        RollupMetaData rollupMetaData = 1;
+        string transactionHash = 2;
+        TokenInfo tokenInfo = 3;
+        string receiver = 4;
+        string amount = 5;
+        uint32 index = 6;
+    }
+
+    uint64 blockNumber = 1;
+    uint64 timestamp = 2;
+    repeated ClaimEvent data = 3;
+}

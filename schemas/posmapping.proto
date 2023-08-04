@@ -1,0 +1,18 @@
+package posmappingpackage;
+syntax = "proto3";
+
+message Mappings {
+    message MappingEvent {
+        string transactionHash = 1;
+        string rootToken = 2;
+        string childToken = 3;
+        string tokenType = 4;
+        string bridgeType = 5;
+        string tokenTypeHash = 6;
+        string rootTunnel = 7;
+    }
+
+    uint64 blockNumber = 1;
+    uint64 timestamp = 2;
+    repeated MappingEvent data = 3;
+}
