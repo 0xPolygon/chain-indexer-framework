@@ -30,14 +30,6 @@ The end goal of review is to suggest useful improvements to the author. Reviews 
 
 Read more in [Review Guidelines](./REVIEW.md).
 
-### Releases
-
-1.  All releases should be proposed in a PR and subject to community review for a minimum of one week.
-1.  During release review, the code is frozen unless new changes are proposed, approved and merged.
-1.  A release PR must be approved at least by two known contributors of the chainflow project.
-
-Read more in [Release Guidelines](./RELEASE.md).
-
 ### Emergencies
 
 Emergency releases are allowed to shorten waiting periods depending on the severity of the issue.

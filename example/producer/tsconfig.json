@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "NodeNext",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "esnext",
+        "moduleResolution": "nodenext",
+        "sourceMap": true,
+        "outDir": "dist", 
+        "declaration": true, 
+        "alwaysStrict": true, 
+        "strict": true
+    }
+}
