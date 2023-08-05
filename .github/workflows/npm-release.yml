@@ -1,18 +1,15 @@
-name: Release Chainflow Package
+name: Release Chainflow NPM Package
 run-name: ${{ github.actor }} just pushed to ChainFlow
 
 on:
-  push:
-    branches: [main]
-
+  release:
+    types: [created]
 jobs:
-  Deployment:
+  build:
     name: Publish ChainFlow
     runs-on: ubuntu-latest
     env: 
       working-directory: ./
-    contents: read
-    packages: write
     steps:
       - name: CHECK-OUT GIT REPOSITORY
         uses: actions/checkout@v3
@@ -20,13 +17,13 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Use Node.js
-        uses: actions/setup-node@v3
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v3
         with:
-          node-version: '14'
-          registry-url: 'https://npm.pkg.github.com'
+          node-version: "18.x"
+          registry-url: https://registry.npmjs.org/
           scope: '@maticnetwork'
-
+      
       - name: Ensure access
         run: npm whoami --registry https://npm.pkg.github.com/
         env: 
@@ -36,15 +33,8 @@ jobs:
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          
-      - name: Bootstrap lerna
-        run: yarn bootstrap
 
-      - name: Bump versions and publish packages
-        run: |
-          yarn version:ci
-          yarn publish:ci
+      - run: npm publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
