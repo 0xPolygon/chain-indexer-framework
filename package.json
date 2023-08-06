@@ -5,7 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./dist/public/index.js",
-    "./schemas/*": "./schemas/*",
+    "./schemas/*": "./dist/schemas/*",
     "./kafka/producer/*": "./dist/public/kafka/producer/*.js",
     "./kafka/consumer/*": "./dist/public/kafka/consumer/*.js",
     "./coder/*": "./dist/public/coder/*.js",
@@ -25,8 +25,9 @@
     "tests": "jest --coverage",
     "tests:integration": "echo 'Hello integration tests'",
     "prepublish": "yarn build && yarn tests",
-    "build": "tsc && tsc-alias",
+    "build": "tsc && tsc-alias && npm run copy-proto",
     "build:link": "npm run build && npm link",
+    "copy-proto": "cp -R ./schemas/ ./dist/schemas",
     "lint": "npx eslint \"./internal/**/*.ts\" \"./public/**/*.ts\"",
     "lint:fix": "npx eslint --fix \"./internal/**/*.ts\" \"./public/**/*.ts\""
   },

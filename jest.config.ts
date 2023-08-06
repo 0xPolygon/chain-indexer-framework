@@ -13,7 +13,10 @@ const jestConfig: JestConfigWithTsJest = {
             "lines": 80,
             "statements": 80
         },
-    }
+    },
+    roots: [
+        "./tests/",
+    ],
 }
 
 export default jestConfig

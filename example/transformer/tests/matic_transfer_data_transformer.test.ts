@@ -46,7 +46,7 @@ describe("MaticTransferDataTransformer", () => {
             )
         });
 
-        test("If a transaction has burns. mapper.map must be called with transaction details", async () => {
+        test("mapper.map must be called with transaction details", async () => {
             //@ts-ignore
             await extendedTransformer.transform(ethereumFullBlock);
 
@@ -55,7 +55,7 @@ describe("MaticTransferDataTransformer", () => {
             );
         });
 
-        test("must return transformed block with burn events.", async () => {
+        test("must return transformed block with matic transfer events.", async () => {
             mockedMaticTransferMapperObject.map.mockReturnValueOnce([{
                 transactionHash: "mock"
             }] as IMaticTransferTx[])

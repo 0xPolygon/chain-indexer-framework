@@ -1,0 +1,18 @@
+package matictransferpackage;
+syntax = "proto3";
+
+message MaticTransferBlock {
+    message MaticTransferEvent {
+        required uint64 transactionIndex = 1;
+        required string transactionHash = 2;
+        required string transactionInitiator = 3;
+        required string tokenAddress = 4;
+        required string amount = 5;
+        required string senderAddress = 6;
+        required string receiverAddress = 7;
+    }
+
+    required uint64 blockNumber = 1;
+    required uint64 timestamp = 2;
+    repeated MaticTransferEvent data = 3;
+}

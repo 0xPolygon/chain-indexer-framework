@@ -35,7 +35,7 @@ describe("MaticTransferMapper", () => {
             );
         });
 
-        test("If pos erc20 transfer burn, map should return the tx in an array.", () => {
+        test("If matic transfer, map should return the tx in an array.", () => {
             //@ts-ignore
             mockedBloomFilterClass.isTopicInBloom.mockReturnValueOnce(true);
 
