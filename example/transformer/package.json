@@ -3,14 +3,14 @@
     "version": "1.0.0",
     "description": "",
     "exports": "./dist/",
-    "main": "index.js",
+    "main": "src/index.js",
     "type": "module",
     "scripts": {
         "tests": "jest --coverage",
         "tests:integration": "echo 'Hello integration tests'",
         "lint": "eslint src/**/*.ts",
         "lint:fix": "eslint --fix ./src/**/*.ts",
-        "build": "tsc && tsc-alias",
+        "build": "tsc",
         "start": "node --experimental-import-meta-resolve --trace-warnings dist/index.js",
         "link:lib": "npm link @maticnetwork/chainflow",
         "link:lib:build": "npm run link:lib && npm run build"
@@ -33,7 +33,6 @@
         "rollup": "^2.77.0",
         "ts-jest": "^29.0.3",
         "ts-node": "^10.9.1",
-        "tsc-alias": "^1.8.7",
         "tsup": "^6.2.3",
         "typescript": "^4.8.2"
     }

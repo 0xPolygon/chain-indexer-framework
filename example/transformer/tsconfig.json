@@ -7,16 +7,10 @@
         "moduleResolution": "nodenext",
         "resolveJsonModule": true,
         "sourceMap": true,
-        "outDir": "dist", 
-        "declaration": true, 
-        "alwaysStrict": true, 
+        "outDir": "dist",
+        "declaration": true,
+        "alwaysStrict": true,
         "strict": true,
-        "baseUrl": "./",
-        "paths": {
-            "@schemas/*": [
-                "src/schemas/*"
-            ]
-        },
     },
     "include": [
         "./src/**/*"

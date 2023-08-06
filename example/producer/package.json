@@ -9,7 +9,7 @@
     "tests:integration": "echo 'Hello integration tests'",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts",
-    "build": "tsup",
+    "build": "tsc",
     "start": "node --experimental-import-meta-resolve --trace-warnings dist/index.js",
     "link:lib": "npm link @maticnetwork/chainflow",
     "link:lib:build": "npm run link:lib && npm run build"
