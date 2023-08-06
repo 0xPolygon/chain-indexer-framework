@@ -13,10 +13,7 @@ const jestConfig: JestConfigWithTsJest = {
             "lines": 80,
             "statements": 80
         },
-    },
-    coveragePathIgnorePatterns: [
-        "<rootDir>/internal/block_producers/produced_blocks_model"
-    ]
+    }
 }
 
 export default jestConfig

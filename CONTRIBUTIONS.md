@@ -33,3 +33,7 @@ Read more in [Review Guidelines](./REVIEW.md).
 ### Emergencies
 
 Emergency releases are allowed to shorten waiting periods depending on the severity of the issue.
+
+### License
+
+The scripts and documentation in this project are released under the [Licence](./LICENSE)

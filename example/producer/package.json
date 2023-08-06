@@ -15,7 +15,7 @@
     "link:lib:build": "npm run link:lib && npm run build"
   },
   "author": "nitinmittal23",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "dependencies": {
     "dotenv": "^16.0.1",
     "@maticnetwork/chainflow": "^1.0.0"
