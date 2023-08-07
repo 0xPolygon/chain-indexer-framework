@@ -18,20 +18,28 @@ With ChainFlow, you can unlock the true potential of EVM blockchains by seamless
 
 ## Installation
 
-You can install the package using [NPM](https://www.npmjs.com/package/web3)
+You can install the package using [NPM](https://www.npmjs.com/package/web3) or using [Yarn](https://yarnpkg.com/package/web3)
+
+### Using NPM
 
 ```bash
 npm install @maticnetwork/chainflow
 ```
 
+### Yarn
+
+```bash
+yarn add @maticnetwork/chainflow
+```
+
 ## Usage
 
 ```js
-// In Node.js
+// Import the chainflow module
 const chainflow = require('@maticnetwork/chainflow');
 ```
 
-You will learm more about usage as we go through the doc below.
+You will learn more about usage as we go through the doc below.
 
 ## Architecture
 
@@ -62,18 +70,19 @@ Please note that both the Producer classes and Consumer classes utilize internal
 
 1. **Synchronous and Asynchronous** Producer classes play crucial roles in publishing events or data to Kafka topics. The choice between these two classes depends on specific requirements and trade-offs.
     
-    The Synchronous Producer class is recommended when the utmost importance is placed on data integrity and the tolerance for potential delays is higher than the risk of data loss. This class ensures that even if the service encounters downtime or disruptions, it will resume publishing from the exact point it left off. By maintaining a synchronous nature, it guarantees the completion of each message before moving on to the next, prioritizing data integrity and consistency.
+    The **Synchronous Producer** class is recommended when the utmost importance is placed on data integrity and the tolerance for potential delays is higher than the risk of data loss. This class ensures that even if the service encounters downtime or disruptions, it will resume publishing from the exact point it left off. By maintaining a synchronous nature, it guarantees the completion of each message before moving on to the next, prioritizing data integrity and consistency.
 
     ```typescript
+    // Import the required modules
     import { SynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/synchronous_producer";
-    // learn more about coder in additional topics below
     import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
 
+    // Initialize the Kafka producer
     const producer = new SynchronousProducer(
         new Coder(
-            "matic_transfer", // fileName
+            "matic_transfer",       // fileName
             "matictransferpackage", // packageName
-            "MaticTransferBlock", // messageType
+            "MaticTransferBlock",   // messageType
         ),
         {
             "topic": "<PRODUCER_TOPIC>",
@@ -81,16 +90,21 @@ Please note that both the Producer classes and Consumer classes utilize internal
             "security.protocol": "plaintext",
             "message.max.bytes": 26214400
         }
-    )
+    );
 
+    // Starting the Producer
     producer.start();
+
+    // Send an event to the Kafka topic
     producer.produceEvent("<key: string>", "<message: object>");
 
     // or use functional implementation
 
+    // Import the required modules
     import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
     import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
 
+    // Initialize and start the Kafka producer
     const producer = produce(
         {
             "topic": "<PRODUCER_TOPIC>",
@@ -106,21 +120,24 @@ Please note that both the Producer classes and Consumer classes utilize internal
         }
     )
 
+    // Send an event to the Kafka topic
     producer.produceEvent("<key: string>", "<message: object>");
 
     ```
 
-    On the other hand, the Asynchronous Producer class is designed for scenarios where maximizing throughput and minimizing latency are paramount. This class prioritizes speed and efficiency by allowing rapid publication of data. However, it should be noted that using the asynchronous approach carries a higher risk of data loss. If the service experiences an interruption, the previous batch will be considered published, even if it wasn't fully transmitted.
+    On the other hand, the **Asynchronous Producer** class is designed for scenarios where maximizing throughput and minimizing latency are paramount. This class prioritizes speed and efficiency by allowing rapid publication of data. However, it should be noted that using the asynchronous approach carries a higher risk of data loss. If the service experiences an interruption, the previous batch will be considered published, even if it wasn't fully transmitted.
 
     ```typescript
+    // Import the required modules
     import { AsynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/asynchronous_producer";
     import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
 
+    // Initialize the asynchronous Kafka producer
     const producer = new AsynchronousProducer(
         new Coder(
-            "matic_transfer", // fileName
+            "matic_transfer",       // fileName
             "matictransferpackage", // packageName
-            "MaticTransferBlock", // messageType
+            "MaticTransferBlock",   // messageType
         ),
         {
             "topic": "<PRODUCER_TOPIC>",
@@ -128,38 +145,44 @@ Please note that both the Producer classes and Consumer classes utilize internal
             "security.protocol": "plaintext",
             "message.max.bytes": 26214400
         }
-    )
+    );
 
+    // Start the producer
     producer.start();
+
+    // Send an event to the Kafka topic
     producer.produceEvent("<key: string>", "<message: object>");
     ```
 
 2. **Synchronous and Asynchronous** Consumer classes play vital roles in the consumption of events or data from Kafka topics. Similar to their producer counterparts, the choice between these classes depends on specific requirements and priorities.
     
-    The Synchronous Consumer class is the preferred option when ensuring data integrity and avoiding any loss is of paramount importance, even if it means sacrificing speed. With this class, each event is consumed in a synchronous manner, guaranteeing that no data is missed or left unprocessed. By prioritizing reliability, it provides a slower but more dependable consumption process.
+    The **Synchronous Consumer** class is the preferred option when ensuring data integrity and avoiding any loss is of paramount importance, even if it means sacrificing speed. With this class, each event is consumed in a synchronous manner, guaranteeing that no data is missed or left unprocessed. By prioritizing reliability, it provides a slower but more dependable consumption process.
 
     ```typescript
+    // Import the required modules
     import { SynchronousConsumer } from "@maticnetwork/chainflow/kafka/consumer/synchronous_consumer";
     import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
 
+    // Initialize the synchronous Kafka consumer
     const consumer = new SynchronousConsumer(
         '<CONSUMER_TOPIC>',
         {
             ['<CONSUMER_TOPIC>']: new Coder(
-                "block", // fileName
-                "blockpackage", // packageName
-                "Block", // messageType
+                "block",           // fileName
+                "blockpackage",    // packageName
+                "Block",           // messageType
             )
         },
         {
-            "bootstrap.servers": '<KAFKA_CONNECTION_URL>'
-            "group.id": '<GROUP_ID>'
+            "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
+            "group.id": '<GROUP_ID>',
             "security.protocol": "plaintext",
             "message.max.bytes": 26214400,
             "fetch.message.max.bytes": 26214400
         }
-    ),
+    );
 
+    // Start the consumer
     consumer.start({
         next: () => {},
         error: () => {},
@@ -168,51 +191,59 @@ Please note that both the Producer classes and Consumer classes utilize internal
 
     // or you can use the functional implementation
 
+    // Import the required modules
     import { consume } from "@maticnetwork/chainflow/kafka/consumer/consume";
     import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
 
-    consume({
-        "metadata.broker.list": '<KAFKA_CONNECTION_URL>'
-        "group.id": '<GROUP_ID>'
-        "security.protocol": "plaintext",
-        "topic": '<CONSUMER_TOPIC>'
-        "coderConfig": {
-            fileName: "block",
-            packageName: "blockpackage",
-            messageType: "Block",
+    // Configure the Kafka consumer
+    consume(
+        {
+            "metadata.broker.list": '<KAFKA_CONNECTION_URL>',
+            "group.id": '<GROUP_ID>',
+            "security.protocol": "plaintext",
+            "topic": '<CONSUMER_TOPIC>',
+            "coderConfig": {
+                fileName: "block",
+                packageName: "blockpackage",
+                messageType: "Block",
+            },
+            type: 'synchronous'
         },
-        type: 'synchronous'
-    }, {
-        next: () => {},
-        error: () => {},
-        closed: () => {}
-    });
+        {
+            next: () => {},
+            error: () => {},
+            closed: () => {}
+        }
+    );
     ```
 
-    On the other hand, the Asynchronous Consumer class is designed for scenarios where the speed of data consumption takes precedence over potential data loss. If the timely processing of events is critical and the occasional loss of some events is acceptable within defined limits, the asynchronous approach offers enhanced performance. By consuming events in a non-blocking manner, it allows for faster processing and higher throughput, albeit with a higher risk of occasional data loss.
+    On the other hand, the **Asynchronous Consumer** class is designed for scenarios where the speed of data consumption takes precedence over potential data loss. If the timely processing of events is critical and the occasional loss of some events is acceptable within defined limits, the asynchronous approach offers enhanced performance. By consuming events in a non-blocking manner, it allows for faster processing and higher throughput, albeit with a higher risk of occasional data loss.
 
     ```js
+    // Import the required modules
     import { AsynchronousConsumer } from "@maticnetwork/chainflow/kafka/consumer/asynchronous_consumer";
     import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
 
+    // Initialize the asynchronous Kafka consumer
     const consumer = new AsynchronousConsumer(
         '<CONSUMER_TOPIC>',
         {
             ['<CONSUMER_TOPIC>']: new Coder(
-                "block", // fileName
-                "blockpackage", // packageName
-                "Block", // messageType
+                "block",           // fileName
+                "blockpackage",    // packageName
+                "Block",           // messageType
             )
         },
         {
-            "bootstrap.servers": '<KAFKA_CONNECTION_URL>'
-            "group.id": '<GROUP_ID>'
+            "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
+            "group.id": '<GROUP_ID>',
             "security.protocol": "plaintext",
             "message.max.bytes": 26214400,
             "fetch.message.max.bytes": 26214400
         }
-    ),
+    );
 
+    // Start the consumer
     consumer.start({
         next: () => {},
         error: () => {},
@@ -229,37 +260,11 @@ ChainFlow block producers encompass three distinct types of producers, each desi
 1. **BlockPollingProducer**: This producer employs a polling method to continuously check the blockchain for new blocks. If the blockchain is already in sync, it waits for the completion of a predefined timeout before initiating the polling process again. This method is straightforward and involves utilizing basic RPC calls commonly found in every node. Additionally, it serves as an ideal choice when the web socket (wss) node is unavailable for a particular blockchain network.
 
     ```typescript
+    // Import the required module
     import { BlockPollerProducer } from "@maticnetwork/chainflow/block_producers/block_polling_producer";
 
-    BlockPollerProducer.new(
-        {
-            startBlock: '<START_BLOCK as number>',
-            rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
-            blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
-            topic: '<PRODUCER_TOPIC>',
-            maxReOrgDepth: '<MAX_REORG_DEPTH>',
-            maxRetries: '<MAX_RETRIES>',
-            mongoUrl: '<MONGO_DB_URL>',
-            "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
-            "security.protocol": "plaintext"
-        }
-    ).then(producer => {
-        producer.on("blockProducer.fatalError", (error) => {
-            console.error(`Block producer exited. ${error.message}`);
-
-            process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
-        });
-        
-        producer.start().catch((error) => {
-            console.error(error);
-        });
-    });
-
-    // or you can use the functional implementation
-
-    import { getProducer } from "@maticnetwork/chainflow/block_producers/produce_blocks";
-
-    const producer = produceBlocks({
+    // Set up and start the Block Poller Producer
+    BlockPollerProducer.new({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
         blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
@@ -269,49 +274,84 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         mongoUrl: '<MONGO_DB_URL>',
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext"
-        blockSubscriptionTimeout: 120000,
-    })
+    }).then(producer => {
+        // Handle fatal error
+        producer.on("blockProducer.fatalError", (error) => {
+            console.error(`Block producer exited. ${error.message}`);
+            process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
+        });
+        
+        // Start the producer
+        producer.start().catch((error) => {
+            console.error(error);
+        });
+    });
 
+
+    // or you can use the functional implementation
+
+    // Import the required module
+    import { produceBlocks } from "@maticnetwork/chainflow/block_producers/produce_blocks";
+
+    // Set up the Block Poller Producer
+    const producer = produceBlocks({
+        startBlock: '<START_BLOCK as number>',
+        rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
+        blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
+        topic: '<PRODUCER_TOPIC>',
+        maxReOrgDepth: '<MAX_REORG_DEPTH>',
+        maxRetries: '<MAX_RETRIES>',
+        mongoUrl: '<MONGO_DB_URL>',
+        "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
+        "security.protocol": "plaintext",
+        blockSubscriptionTimeout: 120000,
+    });
+
+    // Handle fatal error
     producer.on("blockProducer.fatalError", (error: any) => {
         Logger.error(`Block producer exited. ${error.message}`);
-
         process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
-    }); 
+    });
+
     ```
 
 2. **ErigonBlockProducer**: This particular block producer operates by subscribing to blocks through a web socket providers and utilizes an erigon node to produce data for Kafka. What sets the erigon node apart from other nodes is its unique characteristic of not requiring separate calls for obtaining receipts for each transaction. Instead, it efficiently retrieves block details with just two calls: one to retrieve the overall block information and another to fetch all the transaction details within that block. While the former call is commonly used across various nodes, the latter, that used the `eth_getBlockReceipts` method, distinguishes the erigon node from others in the network.
 
     ```typescript
+    // Import the required module
     import { ErigonBlockProducer } from "@maticnetwork/chainflow/block_producers/erigon_block_producer";
 
-    ErigonBlockProducer.new(
-        {
-            startBlock: '<START_BLOCK as number>',
-            rpcWsEndpoints: ['<RPC_WS_ENDPOINT_URL_LIST_1>', '<RPC_WS_ENDPOINT_URL_LIST_2>'],
-            blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
-            topic: '<PRODUCER_TOPIC>',
-            maxReOrgDepth: '<MAX_REORG_DEPTH>',
-            maxRetries: '<MAX_RETRIES>',
-            mongoUrl: '<MONGO_DB_URL>',
-            "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
-            "security.protocol": "plaintext"
-        }
-    ).then(producer => {
+    // Set up the Erigon Block Producer
+    ErigonBlockProducer.new({
+        startBlock: '<START_BLOCK as number>',
+        rpcWsEndpoints: ['<RPC_WS_ENDPOINT_URL_LIST_1>', '<RPC_WS_ENDPOINT_URL_LIST_2>'],
+        blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
+        topic: '<PRODUCER_TOPIC>',
+        maxReOrgDepth: '<MAX_REORG_DEPTH>',
+        maxRetries: '<MAX_RETRIES>',
+        mongoUrl: '<MONGO_DB_URL>',
+        "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
+        "security.protocol": "plaintext"
+    }).then(producer => {
+        // Handle fatal error
         producer.on("blockProducer.fatalError", (error) => {
             console.error(`Block producer exited. ${error.message}`);
-
             process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
         });
         
+        // Start the producer
         producer.start().catch((error) => {
             console.error(error);
         });
     });
 
+
     // or you can use the functional implementation
 
-    import { getProducer } from "@maticnetwork/chainflow/block_producers/produce_blocks";
+    // Import the required module
+    import { produceBlocks } from "@maticnetwork/chainflow/block_producers/produce_blocks";
 
+    // Set up the Erigon Block Producer
     const producer = produceBlocks({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
@@ -321,51 +361,53 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         maxRetries: '<MAX_RETRIES>',
         mongoUrl: '<MONGO_DB_URL>',
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
-        "security.protocol": "plaintext"
+        "security.protocol": "plaintext",
         blockSubscriptionTimeout: 120000,
         type: 'erigon' // required if erigon block producer is needed
-    })
+    });
 
+    // Handle fatal error
     producer.on("blockProducer.fatalError", (error: any) => {
         Logger.error(`Block producer exited. ${error.message}`);
-
         process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
-    }); 
+    });
     ```
 
 3. **QuickNodeBlockProducer**: The highly optimized block producer exclusively runs on QuickNode RPCs, utilizing the same web socket provider. However, what sets it apart is that QuickNode exposes the `qn_getBlockWithReceipts` method, which streamlines the process of retrieving both block details and transaction information within a single call. Unlike the ErigonBlockProducer, which necessitates two separate calls, or the BlockPollingProducer, which requires multiple calls, this method significantly simplifies the data retrieval process. To utilize this producer effectively, it is essential for QuickNode to support the `qn_getBlockWithReceipts` method for the desired chain.
 
     ```typescript
+    // Import the required module
     import { QuickNodeBlockProducer } from "@maticnetwork/chainflow/block_producers/quicknode_block_producer";
 
-    QuickNodeBlockProducer.new(
-        {
-            startBlock: '<START_BLOCK as number>',
-            rpcWsEndpoints: ['<RPC_WS_ENDPOINT_URL_LIST_1>', '<RPC_WS_ENDPOINT_URL_LIST_2>'],
-            blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
-            topic: '<PRODUCER_TOPIC>',
-            maxReOrgDepth: '<MAX_REORG_DEPTH>',
-            maxRetries: '<MAX_RETRIES>',
-            mongoUrl: '<MONGO_DB_URL>',
-            "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
-            "security.protocol": "plaintext"
-        }
-    ).then(producer => {
+    // Set up the QuickNode Block Producer
+    QuickNodeBlockProducer.new({
+        startBlock: '<START_BLOCK as number>',
+        rpcWsEndpoints: ['<RPC_WS_ENDPOINT_URL_LIST_1>', '<RPC_WS_ENDPOINT_URL_LIST_2>'],
+        blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
+        topic: '<PRODUCER_TOPIC>',
+        maxReOrgDepth: '<MAX_REORG_DEPTH>',
+        maxRetries: '<MAX_RETRIES>',
+        mongoUrl: '<MONGO_DB_URL>',
+        "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
+        "security.protocol": "plaintext"
+    }).then(producer => {
         producer.on("blockProducer.fatalError", (error) => {
             console.error(`Block producer exited. ${error.message}`);
-
             process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
         });
-        
+
         producer.start().catch((error) => {
             console.error(error);
         });
     });
 
+
     // or you can use the functional implementation
 
-    import { getProducer } from "@maticnetwork/chainflow/block_producers/produce_blocks";
+    // Import the required module
+    import { produceBlocks } from "@maticnetwork/chainflow/block_producers/produce_blocks";
 
+    // Set up the QuickNode Block Producer
     const producer = produceBlocks({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
@@ -375,16 +417,17 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         maxRetries: '<MAX_RETRIES>',
         mongoUrl: '<MONGO_DB_URL>',
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
-        "security.protocol": "plaintext"
+        "security.protocol": "plaintext",
         blockSubscriptionTimeout: 120000,
         type: 'quicknode' // required if quicknode block producer is needed
-    })
+    });
 
+    // Handle fatal error
     producer.on("blockProducer.fatalError", (error: any) => {
         Logger.error(`Block producer exited. ${error.message}`);
-
         process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
-    }); 
+    });
+
     ```
 
 ## Transformers
@@ -409,18 +452,14 @@ import { SynchronousConsumer } from "@maticnetwork/chainflow/kafka/consumer/sync
 import { AsynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/asynchronous_producer";
 import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
 
-
 // <T> is the consuming data type interface
 // <Y> is the producer data type interface
 export class TransformerClass extends SynchronousDataTransformer<T, Y> {
-	constructor(
-		consumer: SynchronousConsumer,
-        producer: AsynchronousProducer
-	) {
-		super(consumer, producer);
-	}
+    constructor(consumer: SynchronousConsumer, producer: AsynchronousProducer) {
+        super(consumer, producer);
+    }
 
-	protected async transform(block: T): Promise<ITransformedBlock<Y>> {
+    protected async transform(block: T): Promise<ITransformedBlock<Y>> {
         return {
             blockNumber: block.number,
             timestamp: block.timestamp,
@@ -428,22 +467,27 @@ export class TransformerClass extends SynchronousDataTransformer<T, Y> {
         };
     }
 
-	private map(block: IBlock): Y[] {
+    private map(block: IBlock): Y[] {
         let transformedData: Y[] = [];
 
         block.transactions.forEach((transaction: ITransaction) => {
             // Here logic can be changed based on the application requirement 
-            // and even based on the domain event that is trasnformed
-            const getFormattedTransaction = tranform_X_to_Y_Function(transaction);
+            // and even based on the domain event that is transformed
+            const getFormattedTransaction = transform_X_to_Y_Function(transaction);
             transformedData = transformedData.concat(getFormattedTransaction);
         });
 
         return transformedData;
-  }
+    }
 }
 
-let transformer = new TransformerClass('<CONSUMER>','<PRODUCER>');
+// Replace '<CONSUMER>' and '<PRODUCER>' with your actual SynchronousConsumer and AsynchronousProducer instances.
+let consumer = new SynchronousConsumer(/*...*/);
+let producer = new AsynchronousProducer(/*...*/);
+
+let transformer = new TransformerClass(consumer, producer);
 transformer.start();
+
 ```
 
 ## Consumers
@@ -456,13 +500,17 @@ import { DeserialisedMessage } from "@maticnetwork/chainflow/interfaces/deserial
 import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
 
 export class ConsumerClass {
-	constructor(
-		consumer1: SynchronousConsumer,
+    constructor(
+        consumer1: SynchronousConsumer,
         consumer2: SynchronousConsumer,
-		serviceClass: '<CUSTOM_SERVICE_CLASS>'
-	) {}
+        serviceClass: CustomServiceClass // Replace '<CUSTOM_SERVICE_CLASS>' with the actual CustomServiceClass type
+    ) {
+        this.consumer1 = consumer1;
+        this.consumer2 = consumer2;
+        this.serviceClass = serviceClass;
+    }
 
-	public async execute(): Promise<void> {
+    public async execute(): Promise<void> {
         await this.consumer1.start({
             next: this.onConsumer1Data.bind(this),
             error(err: Error) {
@@ -470,10 +518,10 @@ export class ConsumerClass {
             },
             closed: () => {
                 Logger.info('subscription is ended');
-
                 this.onFatalError(new Error("Consumer stopped."));
             },
         });
+
         await this.consumer2.start({
             next: this.onConsumer2Data.bind(this),
             error(err: Error) {
@@ -481,23 +529,41 @@ export class ConsumerClass {
             },
             closed: () => {
                 Logger.info('subscription is ended');
-
                 this.onFatalError(new Error("Consumer stopped."));
             },
         });
     }
-	private async onConsumer1Data(message: DeserialisedMessage): Promise<void> {
-        const transformedBlock = message.value as ITransformedBlock<TYPE>;
+
+    private async onConsumer1Data(message: DeserialisedMessage): Promise<void> {
+        const transformedBlock = message.value as ITransformedBlock<TYPE>; // Replace 'TYPE' with the actual data type for Consumer 1
         if (transformedBlock.data && transformedBlock.data.length > 0) {
-            // this service class is used to add data to DB and also exposes
-            // function to call the DB for api calls. 
+            // This service class is used to add data to the DB and also exposes
+            // functions to call the DB for API calls.
             await this.serviceClass.save(transformedBlock);
         }
     }
+
+    private async onConsumer2Data(message: DeserialisedMessage): Promise<void> {
+        // Implement the data processing logic for Consumer 2 here
+        // Similar to onConsumer1Data, you can use this.serviceClass to interact with the DB
+    }
+
+    private onFatalError(error: Error): void {
+        Logger.error(`Consumer encountered a fatal error: ${error.message}`);
+        process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
+    }
 }
 
-let consumer = new ConsumerClass('<CONSUMER_1>', '<CONSUMER_2>', '<SERVICE>');
-transformer.execute();
+// Replace '<CONSUMER_1>', '<CONSUMER_2>', and '<SERVICE>' with actual instances of SynchronousConsumer and CustomServiceClass respectively.
+// You should create instances of SynchronousConsumer and CustomServiceClass with proper configurations before passing them to ConsumerClass constructor.
+
+let consumer1 = new SynchronousConsumer(/*...*/); // Configure consumer1 with appropriate settings and topic
+let consumer2 = new SynchronousConsumer(/*...*/); // Configure consumer2 with appropriate settings and topic
+let service = new CustomServiceClass(/*...*/); // Replace CustomServiceClass with your actual service class and configure it accordingly
+
+let consumer = new ConsumerClass(consumer1, consumer2, service);
+consumer.execute();
+
 
 // or you can use the functional implementation
 
@@ -506,22 +572,40 @@ import { DeserialisedMessage } from "@maticnetwork/chainflow/interfaces/deserial
 import { consume } from "@maticnetwork/chainflow/kafka/consumer/consume";
 import transferService from "path_to_service_file";
 
-consume({...consumerConfig}, {
+// Configure your consumerConfig object with the required Kafka settings and topic.
+// For example:
+const consumerConfig = {
+    "metadata.broker.list": "<BROKER_LIST>",
+    "group.id": "<GROUP_ID>",
+    "security.protocol": "plaintext",
+    "topic": "<CONSUMER_TOPIC>",
+    "coderConfig": {
+        fileName: "block",
+        packageName: "blockpackage",
+        messageType: "Block",
+    },
+    type: "synchronous",
+};
+
+// Start consuming messages from the Kafka topic.
+consume(consumerConfig, {
     next: async (message: DeserialisedMessage) => {
-        const transformedBlock = message.value as ITransformedBlock<TYPE>;
+        const transformedBlock = message.value as ITransformedBlock<TYPE>; // Replace 'TYPE' with the actual data type for the transformed block.
 
         if (transformedBlock.data && transformedBlock.data.length > 0) {
+            // Use the transferService to save the data to the database or perform other operations.
             await transferService.save(transformedBlock);
         }
     },
-    error(err: Error) {
-        console.error('something wrong occurred: ' + err);
+    error: (err: Error) => {
+        console.error('Something wrong occurred: ' + err);
     },
     closed: () => {
-        Logger.info(`subscription is ended.`);
-        throw new Error("Consumer stopped");
+        Logger.info(`Subscription is ended.`);
+        throw new Error("Consumer stopped.");
     },
 });
+
 
 ```
 
@@ -553,13 +637,156 @@ const coderFucntion = async() => {
 	const coderInstance = new Coder(
 	    '<fileName>', // The file for finding the protobuf type.  
 	    '<packageName>', // The default package where the protobuf type is defined. 
-	    '<messageType>' // The default protobuf message type to be used for deserialising.
+	    '<messageType>', // The default protobuf message type to be used for deserialising.
         '<fileDirectory>' // directory where all schemas are there. this field is optional if .proto type that is required is already present in chainflow package.
 	)
 	
 	let buffer = await coderInstance.serialize('<messageObject>');
 	let message = await coderInstance.deserialize(buffer);
 }
+```
+
+### Database
+
+The Database class is a singleton class that provides a simple and straightforward method to connect and disconnect from a database with a particular collection. It is designed to work with Mongoose, a popular MongoDB object modeling tool for Node.js. The class is initialized with a database URL, and it manages the connection state and creation of models for the database.
+
+The `Database` class encapsulates the following key functionalities:
+
+1. **Singleton Pattern**: The class follows the Singleton design pattern to ensure that only one instance of the database connection exists throughout the application.
+
+2. **Database Connection**: The class handles the connection to the database specified by the provided URL.
+
+3. **Connection Status**: It allows checking the connection status and ensures that no unnecessary connections are established.
+
+4. **Model Creation**: The class provides a method to define and retrieve Mongoose models associated with a specific collection.
+
+```typescript
+import { Coder } from "@maticnetwork/chainflow/mongo/database";
+
+// Create an instance of the Database class
+const database = new Database("mongodb://localhost/mydatabase");
+
+// Connect to the database
+await database.connect();
+
+// Define a Mongoose schema
+const userSchema = new Schema({
+    name: String,
+    age: Number,
+});
+
+// Create a Mongoose model for the "users" collection
+const UserModel = database.model("User", userSchema, "users");
+
+// Perform database operations using the UserModel
+// ...
+
+// Disconnect from the database when done
+await database.disconnect();
+```
+
+### Logger
+
+The Logger class is a singleton class designed to provide a centralized and straightforward approach to log application events. It utilizes the winston library, a popular logging tool for Node.js, and integrates with Sentry for error reporting and DataDog for log aggregation. The class allows developers to create a singleton logger instance with custom configurations and log events at various severity levels, such as "info," "debug," "error," and "warn."
+
+```typescript
+// Import the Logger class and LoggerConfig interface
+import { Logger } from "@maticnetwork/chainflow/logger/logger";
+
+// Configuration for the logger
+const loggerConfig = {
+    console: {
+        level: "debug", // Log all messages with severity level "debug" and above to the console
+    },
+    sentry: {
+        dsn: "your-sentry-dsn", // Sentry DSN for error reporting
+        level: "error", // Log messages with severity level "error" and above to Sentry
+    },
+    datadog: {
+        api_key: "your-datadog-api-key", // DataDog API key for log aggregation
+        service_name: "your-service-name", // Service name for log identification in DataDog
+    },
+    winston: {
+        // Any additional Winston configuration options can be provided here
+    },
+};
+
+// Create the singleton logger instance with the specified configuration
+Logger.create(loggerConfig);
+
+// Log events with different severity levels
+Logger.info("This is an information message.");
+Logger.debug({ foo: "bar", baz: "qux" }); // Logging a JSON object
+Logger.error(new Error("An error occurred."));
+Logger.warn("This is a warning message.");
+
+// Log events with custom severity level
+Logger.log("custom", "This is a custom log message.");
+
+```
+
+### ABI Coder
+
+The ABICoder class is a helper class for web3.js-related functionalities. It provides methods to encode and decode data based on the Ethereum contract Application Binary Interface (ABI). The class utilizes the web3-eth-abi library to perform the encoding and decoding operations. Developers can use this class to handle ABI-related tasks, such as encoding parameters for contract function calls, decoding function call outputs, and decoding logs emitted by smart contracts.
+
+```typescript
+// Import the ABICoder class
+import { ABICoder } from "@maticnetwork/chainflow/coder/abi-coder";
+
+// Example function call encoding and decoding
+const types = ["address", "uint256"];
+const values = ["0x1234567890123456789012345678901234567890", "42"];
+
+// Encode the parameters
+const encodedParams = ABICoder.encodeParameters(types, values);
+console.log("Encoded Parameters:", encodedParams);
+
+// Decode the parameters
+const decodedParams = ABICoder.decodeParameters(types, encodedParams);
+console.log("Decoded Parameters:", decodedParams);
+
+// Example log decoding
+const eventInputs = [
+    { type: "address", name: "from" },
+    { type: "address", name: "to" },
+    { type: "uint256", name: "amount" },
+];
+
+const logData = "0x1234567890123456789012345678901234567890";
+const logTopics = ["0xabcdef1234567890", "0x0123456789abcdef"];
+
+const decodedLog = ABICoder.decodeLog(eventInputs, logData, logTopics);
+console.log("Decoded Log:", decodedLog);
+
+// Example method call data decoding
+const methodTypes = ["address", "uint256"];
+const methodData = "0x0123456789abcdef"; // Assuming this is the data received from a method call
+
+const decodedMethodData = ABICoder.decodeMethod(methodTypes, methodData);
+console.log("Decoded Method Data:", decodedMethodData);
+
+```
+
+### Bloom Filter
+
+The `BloomFilter` class is a wrapper around the `ethereum-bloom-filters` package, providing methods to check for the presence of contract addresses and topics in a Bloom filter. A Bloom filter is a probabilistic data structure used for efficient set membership tests. It allows fast and memory-efficient checks to determine whether an element is likely to be present in the set, with a certain probability of false positives.
+
+```typescript
+import { BloomFilter } from "./BloomFilter";
+
+// Example Bloom filter and addresses/topics to check
+const bloomFilter = "0x0123456789abcdef";
+const contractAddress = "0x1234567890abcdef";
+const topic = "0x7890abcdef1234567890abcdef";
+
+// Check if the contract address is in the Bloom filter
+const isAddressInBloom = BloomFilter.isContractAddressInBloom(bloomFilter, contractAddress);
+console.log(`Is Contract Address in Bloom Filter? ${isAddressInBloom}`); // true or false
+
+// Check if the topic is in the Bloom filter
+const isTopicInBloom = BloomFilter.isTopicInBloom(bloomFilter, topic);
+console.log(`Is Topic in Bloom Filter? ${isTopicInBloom}`); // true or false
+
 ```
 
 ## Building
