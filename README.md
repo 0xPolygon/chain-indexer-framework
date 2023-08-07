@@ -772,7 +772,8 @@ console.log("Decoded Method Data:", decodedMethodData);
 The `BloomFilter` class is a wrapper around the `ethereum-bloom-filters` package, providing methods to check for the presence of contract addresses and topics in a Bloom filter. A Bloom filter is a probabilistic data structure used for efficient set membership tests. It allows fast and memory-efficient checks to determine whether an element is likely to be present in the set, with a certain probability of false positives.
 
 ```typescript
-import { BloomFilter } from "./BloomFilter";
+// Import the ABICoder class
+import { BloomFilter } from "@maticnetwork/chainflow/filter/bloom_Filter";
 
 // Example Bloom filter and addresses/topics to check
 const bloomFilter = "0x0123456789abcdef";
