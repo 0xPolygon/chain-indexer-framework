@@ -842,6 +842,14 @@ Our [Discord](https://discord.gg/0xPolygonDevs) is the best way to reach us ✨.
 
 You are very welcome to contribute, please see contributing guidelines - [[Contribute](./CONTRIBUTING.md)].
 
+Thank you to all the people who already contributed to chainflow!
+
+<a href="https://github.com/maticnetwork/chainflow/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=maticnetwork/chainflow" />
+</a>
+
+Made with [contributors-img](https://contrib.rocks).
+
 ## License
 
 [UNLICENSED](./LICENSE)
