@@ -1,5 +1,12 @@
 # Chainflow - Blockchain Data Indexer
 
+[![GitHub version](https://badge.fury.io/gh/maticnetwork%2Fchainflow.svg)](https://badge.fury.io/gh/maticnetwork%2Fchainflow)
+![Build Status](https://github.com/maticnetwork/chainflow/workflows/CI/badge.svg?branch=main)
+[![npm version](https://badge.fury.io/js/%40maticnetwork%2Fchainflow.svg)](https://badge.fury.io/js/%40maticnetwork%2Fchainflow)
+![GitHub](https://img.shields.io/github/license/maticnetwork/chainflow)
+[![TEST](https://github.com/maticnetwork/chainflow/actions/workflows/tests.yml/badge.svg)](https://github.com/maticnetwork/chainflow/actions/workflows/tests.yml)
+
+
 ChainFlow, is a powerful framework designed to facilitate the development of flexible event-driven data pipelines on EVM blockchains. Built on the reliable foundation of Kafka, ChainFlow empowers developers to build robust and scalable applications that seamlessly process blockchain events and enable real-time data integration.
 
 In today's rapidly evolving blockchain ecosystem, the need for efficient and reliable data processing is paramount. EVM (Ethereum Virtual Machine) blockchains, such as Ethereum itself and its compatible networks, have gained significant traction due to their smart contract capabilities and decentralized nature. However, working with blockchain data at scale and in real time presents unique challenges.
@@ -827,9 +834,13 @@ using package locally
 npm run build:link
 ```
 
+## Support
+
+Our [Discord](https://discord.gg/0xPolygonDevs) is the best way to reach us ✨.
+
 ## Contributing
 
-Please follow the [Contribution Guidelines](./CONTRIBUTIONS.md) on contributing to the chainflow.
+You are very welcome to contribute, please see contributing guidelines - [[Contribute](./CONTRIBUTING.md)].
 
 ## License
 
