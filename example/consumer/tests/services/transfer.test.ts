@@ -59,10 +59,4 @@ describe("transfer service", () => {
         //@ts-ignore
         expect(mockTransferModel.addAllTransfers).toBeCalledWith(data, mockSession);
     })
-
-    test("test the getAllTransactions method", async () => {
-        await transferService.getAllTransactions(1, 10);
-        //@ts-ignore
-        expect(mockTransferModel.getAll).toBeCalledWith(1, 10, {});
-    })
 })

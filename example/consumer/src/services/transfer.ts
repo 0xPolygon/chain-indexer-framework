@@ -1,7 +1,6 @@
 import { Logger } from "@maticnetwork/chainflow/logger";
 import { Model } from "mongoose";
 import { ITransfer } from "../interfaces/transfer.js";
-import { IQueryResponse } from "../interfaces/query_response.js";
 
 /**
  * TransferService class has all the exposed functions to fetch transfer data from db so that API service can create an
@@ -62,33 +61,5 @@ export default class TransferService {
         });
 
         return true;
-    }
-
-    /**
-     * this returns all the transfer transactions
-     * 
-     * @param {number} page
-     * @param {number} pageSize
-     * @param {object} condition
-     * 
-     * @returns {Promise<IQueryResponse<ITransferERC20>>}
-     */
-    public async getAllTransactions(
-        page: number,
-        pageSize: number,
-        condition: object = {}
-    ): Promise<IQueryResponse<ITransfer>> {
-        //@ts-ignore
-        const totalCount = await this.transferModel.getTransactionCount(condition);
-        return {
-            //@ts-ignore
-            result: await this.transferModel.getAll(page, pageSize, condition) ?? [],
-            paginationData: {
-                hasNextPage: (page * pageSize) <= totalCount,
-                page,
-                pageSize,
-                totalCount
-            }
-        };
     }
 }

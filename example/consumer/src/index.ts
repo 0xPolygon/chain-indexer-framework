@@ -6,12 +6,6 @@ import TransferService from "./services/transfer.js";
 import { TransferModel } from "./models/transfer.js";
 
 import startConsuming from "./consumer.js";
-import startApi from "./start_api.js"
-
-import fastify, { FastifyInstance } from "fastify";
-import { Server, IncomingMessage, ServerResponse } from "http";
-
-const app: FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify.default();
 
 async function start(): Promise<void> {
     try {
@@ -36,13 +30,8 @@ async function start(): Promise<void> {
             await TransferModel.new(database),
         );
 
-        if (process.env.START_CONSUMER === "true") {
-            await startConsuming(transferService, new TransferMapper());
-        }
+        await startConsuming(transferService, new TransferMapper());
 
-        if (process.env.START_API_ENDPOINTS === "true") {
-            await startApi(app, transferService);
-        }
     } catch (error) {
         Logger.error(`Error when starting consumer service: ${(error as Error).message}`);
     }

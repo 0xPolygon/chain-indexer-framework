@@ -9,21 +9,6 @@ import { ITransfer } from "./transfer.js";
 const statics = {
 
     /**
-     * Get all the documents from the transfer collection
-     * 
-     * @param {number} page 
-     * @param {number} pageSize 
-     * @param {object} condition 
-     * 
-     * @returns {Promise<ITransfer[] | null>}
-     */
-    getAll(page: number, pageSize: number, condition: object = {}): Promise<ITransfer[] | null> {
-        //Check below and change to  (page - 1) * pageSize for skip if does not start from 0.
-        //@ts-ignore
-        return this.find(condition, null, { limit: pageSize, skip: page * pageSize }).sort({ timestamp: -1 }).exec();
-    },
-
-    /**
      * Get the last block number in the transfer collection for matic transfers
      * 
      * @returns {Promise<number>}
@@ -49,23 +34,6 @@ const statics = {
             await this.create([transfer], { rawResult: false, session: session });
         }
         return;
-    },
-
-    /**
-     * Get the transaction count based on the condition being passed
-     * 
-     * @param {object} condition 
-     * 
-     * @returns {Promise<number>}
-     */
-    getTransactionCount(condition?: object): Promise<number> {
-        let countQuery: object = {};
-
-        if (condition) {
-            countQuery = { ...countQuery, ...condition }
-        }
-        //@ts-ignore
-        return this.countDocuments(countQuery).exec();
     },
 
     /**
