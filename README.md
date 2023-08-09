@@ -640,7 +640,7 @@ The `Database` class encapsulates the following key functionalities:
 4. **Model Creation**: The class provides a method to define and retrieve Mongoose models associated with a specific collection.
 
 ```typescript
-import { Coder } from "@maticnetwork/chainflow/mongo/database";
+import { Database } from "@maticnetwork/chainflow/mongo/database";
 
 // Create an instance of the Database class
 const database = new Database("mongodb://localhost/mydatabase");
