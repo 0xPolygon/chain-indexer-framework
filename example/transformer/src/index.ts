@@ -1,6 +1,3 @@
-import { SynchronousConsumer } from "@maticnetwork/chainflow/kafka/consumer/synchronous_consumer";
-import { AsynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/asynchronous_producer";
-import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
 import { Logger } from "@maticnetwork/chainflow/logger";
 import { BlockProducerError } from "@maticnetwork/chainflow/errors/block_producer_error";
 import { MaticTransferDataTransformer } from "./matic_transfer_data_transformer.js";
@@ -23,35 +20,31 @@ Logger.create({
 
 async function main() {
     const tranformer: MaticTransferDataTransformer = new MaticTransferDataTransformer(
-        new SynchronousConsumer(
-            process.env.CONSUMER_TOPIC || "polygon.1.blocks",
-            {
-                "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
-                "group.id": "matic.transfer.transformer",
-                "security.protocol": "plaintext",
-                "message.max.bytes": 26214400,
-                "fetch.message.max.bytes": 26214400,
-                coderConfig: {
-                    fileName: "block",
-                    packageName: "blockpackage",
-                    messageType: "Block"
-                }
+        {
+            "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
+            "group.id": "matic.transfer.transformer",
+            "security.protocol": "plaintext",
+            "message.max.bytes": 26214400,
+            "fetch.message.max.bytes": 26214400,
+            coders: {
+                fileName: "block",
+                packageName: "blockpackage",
+                messageType: "Block"
+            },
+            topic: process.env.CONSUMER_TOPIC || "polygon.1.blocks",
+        },
+        {
+            topic: process.env.PRODUCER_TOPIC || "apps.1.matic.transfer",
+            "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
+            "security.protocol": "plaintext",
+            "message.max.bytes": 26214400,
+            coder: {
+                fileName: "matic_transfer",
+                packageName: "matictransferpackage",
+                messageType: "MaticTransferBlock",
+                fileDirectory: path.resolve("./schemas")
             }
-        ),
-        new AsynchronousProducer(
-            {
-                "topic": process.env.PRODUCER_TOPIC || "apps.1.matic.transfer",
-                "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
-                "security.protocol": "plaintext",
-                "message.max.bytes": 26214400,
-                coderConfig: {
-                    fileName: "matic_transfer",
-                    packageName: "matictransferpackage",
-                    messageType: "MaticTransferBlock",
-                    fileDirectory: path.resolve("./schemas")
-                }
-            }
-        ),
+        },
         new MaticTransferMapper()
     );
 

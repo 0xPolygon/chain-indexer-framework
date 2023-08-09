@@ -1,9 +1,11 @@
-import { SynchronousConsumer } from "@maticnetwork/chainflow/kafka/consumer/synchronous_consumer";
-import { AsynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/asynchronous_producer";
 import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
 import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
 import { ABICoder } from "@maticnetwork/chainflow/coder/abi_coder";
 import { IBlock } from "@maticnetwork/chainflow/interfaces/block";
+import { IConsumerConfig } from "@maticnetwork/chainflow/interfaces/consumer_config";
+import { IProducerConfig } from "@maticnetwork/chainflow/interfaces/producer_config";
+import { ICoder } from "@maticnetwork/chainflow/interfaces/coder";
+import { IKafkaCoderConfig } from "@maticnetwork/chainflow/interfaces/kafka_coder_config";
 import { BloomFilter } from "@maticnetwork/chainflow/filter";
 import { MaticTransferMapper } from "../dist/mappers/matic_transfer_mapper.js";
 import { MaticTransferDataTransformer } from "../dist/matic_transfer_data_transformer.js";
@@ -39,8 +41,8 @@ describe("MaticTransferDataTransformer", () => {
             mockedMaticTransferMapperObject = new MaticTransferMapper() as jest.MockedObject<MaticTransferMapper>
 
             extendedTransformer = new ExtendedTransformer(
-                {} as SynchronousConsumer,
-                {} as AsynchronousProducer,
+                {topic: "mocktopic", coders: {} as IKafkaCoderConfig} as IConsumerConfig,
+                {coder: {} as ICoder} as IProducerConfig,
                 mockedMaticTransferMapperObject
 
             )

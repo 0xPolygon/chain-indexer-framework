@@ -9,6 +9,5 @@ export interface IProducerConfig extends ProducerGlobalConfig {
     flushTimeout?: number,
     deliveryTimeout?: number,
     type?: string,
-    coder?: ICoder,
-    coderConfig?: ICoderConfig
+    coder?: ICoder | ICoderConfig
 }

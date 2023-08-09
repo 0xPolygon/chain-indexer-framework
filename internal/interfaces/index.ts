@@ -12,6 +12,7 @@ export * from "./common_kafka_events.js";
 export * from "./config.js";
 export * from "./consumer_config.js";
 export * from "./consumer_queue_object.js";
+export * from "./data_transformer_config.js";
 export * from "./deposit.js";
 export * from "./deserialised_kafka_message.js";
 export * from "./event_log.js";

@@ -1,11 +1,12 @@
-import { SynchronousConsumer } from "@maticnetwork/chainflow/kafka/consumer/synchronous_consumer";
-import { AsynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/asynchronous_producer";
 import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
 import { ITransaction } from "@maticnetwork/chainflow/interfaces/transaction";
 import { IBlock } from "@maticnetwork/chainflow/interfaces/block";
+import { IConsumerConfig } from "@maticnetwork/chainflow/interfaces/consumer_config";
+import { IProducerConfig } from "@maticnetwork/chainflow/interfaces/producer_config";
 import { SynchronousDataTransformer } from "@maticnetwork/chainflow";
 import IMaticTransferTx from "./interfaces/matic_transfer_tx.js";
 import { MaticTransferMapper } from "./mappers/matic_transfer_mapper.js";
+
 
 /**
  * Matic transfer Data transformer extends the SynchronousDataTransformer to transform 
@@ -15,18 +16,18 @@ import { MaticTransferMapper } from "./mappers/matic_transfer_mapper.js";
  */
 export class MaticTransferDataTransformer extends SynchronousDataTransformer<IBlock, IMaticTransferTx> {
     /**
-     * @param {SynchronousConsumer} consumer 
-     * @param {AsynchronousProducer} producer
+     * @param {IConsumerConfig} consumerConfig
+     * @param {IProducerConfig} producerConfig
      * @param  {MaticTransferMapper} maticTransferMapper
      * 
      * @constructor
      */
     constructor(
-        consumer: SynchronousConsumer,
-        producer: AsynchronousProducer,
+        consumerConfig: IConsumerConfig,
+        producerConfig: IProducerConfig,
         private maticTransferMapper: MaticTransferMapper,
     ) {
-        super(consumer, producer);
+        super(consumerConfig, producerConfig);
     }
 
     /**

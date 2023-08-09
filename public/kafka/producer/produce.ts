@@ -3,6 +3,7 @@ import { AsynchronousProducer } from "@internal/kafka/producer/asynchronous_prod
 import { IProducerConfig } from "@internal/interfaces/producer_config.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
 import { ICoder } from "@internal/interfaces/coder.js";
+import { ICoderConfig } from "@internal/interfaces/coder_config.js";
 
 /**
  * Function to be used as functional implementation for the producer classes for asynchronous
@@ -18,21 +19,20 @@ export function produce(
 ): AsynchronousProducer | SynchronousProducer {
     const type = config.type;
     let coder = config.coder;
-    const coderConfig = config.coderConfig;
     delete config.type;
     delete config.coder;
-    delete config.coderConfig;
 
-    if (coder && coderConfig) {
-        throw new Error("Please provide either coder or coderConfig");
+    if (!coder) {
+        throw new Error("Please provide coder"); 
     }
 
-    if (!coder && !coderConfig) {
-        throw new Error("Please provide coder or coderConfig");
-    }
-
-    if (coderConfig) {
-        coder = new Coder(coderConfig.fileName, coderConfig.packageName, coderConfig.messageType);
+    if ("fileName" in coder) {
+        coder = new Coder(
+            (coder as ICoderConfig).fileName,
+            (coder as ICoderConfig).packageName,
+            (coder as ICoderConfig).messageType,
+            (coder as ICoderConfig).fileDirectory,
+        );
     }
 
     let producer: AsynchronousProducer | SynchronousProducer | null = null;
@@ -45,10 +45,11 @@ export function produce(
         producer = new SynchronousProducer(coder as ICoder, config);
     }
 
-    if (producer) {
-        producer.start();
-        return producer;
+    if (!producer) {
+        throw new Error("Invalid type");
     }
 
-    throw new Error("Invalid type");
+    producer.start();
+    return producer;
+
 }

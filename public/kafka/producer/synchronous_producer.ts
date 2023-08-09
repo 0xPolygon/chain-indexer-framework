@@ -1,7 +1,8 @@
 import { SynchronousProducer as InternalSynchronousProducer } from "@internal/kafka/producer/synchronous_producer.js";
 import { IProducerConfig } from "@internal/interfaces/producer_config.js";
-import { ICoder } from "../../interfaces/coder.js";
+import { ICoder } from "@internal/interfaces/coder.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
+import { ICoderConfig } from "@internal/interfaces/coder_config.js";
 
 /**
  * SynchronousProducer class entends InternalSynchronousProducer which creates an instance of SynchronousProducer
@@ -12,28 +13,28 @@ export class SynchronousProducer extends InternalSynchronousProducer {
     /**
      *
      * @param {IProducerConfig} config - key value pairs to override the default config of the producer client.
-     * @param {Coder} serialiser - The Serialiser object to serialise messages before production. 
      */
     constructor(
         config: IProducerConfig,
-        serialiser?: ICoder,
     ) {
-        if (serialiser && config.coderConfig) {
-            throw new Error("Please provide either serialiser or coder config");
+        let coder = config.coder;
+        delete config.coder;
+
+        if (!coder) {
+            throw new Error("Please provide coder"); 
         }
-        if (!serialiser && !config.coderConfig) {
-            throw new Error("Please provide serialiser or coder config");
+
+        if ("fileName" in coder) {
+            coder = new Coder(
+                (coder as ICoderConfig).fileName,
+                (coder as ICoderConfig).packageName,
+                (coder as ICoderConfig).messageType,
+                (coder as ICoderConfig).fileDirectory,
+            );
         }
-        if (config.coderConfig) {
-            serialiser = new Coder(
-                config.coderConfig.fileName,
-                config.coderConfig.packageName,
-                config.coderConfig.messageType,
-                config.coderConfig.fileDirectory,
-            )
-        }
+
         super(
-            serialiser as ICoder,
+            coder as ICoder,
             config
         );
     }

@@ -29,8 +29,8 @@ export default async function startConsuming(transferService: TransferService, t
             "metadata.broker.list": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
             "group.id": process.env.CONSUMER_GROUP_ID || "matic.transfer.consumer",
             "security.protocol": "plaintext",
-            "topic": process.env.TRANSFER_TOPIC || "apps.1.matic.transfer",
-            "coderConfig": {
+            topic: process.env.TRANSFER_TOPIC || "apps.1.matic.transfer",
+            coders: {
                 fileName: "matic_transfer",
                 packageName: "matictransferpackage",
                 messageType: "MaticTransferBlock",
