@@ -26,32 +26,30 @@ async function main() {
         new SynchronousConsumer(
             process.env.CONSUMER_TOPIC || "polygon.1.blocks",
             {
-                [process.env.CONSUMER_TOPIC || "polygon.1.blocks"]: new Coder(
-                    "block",
-                    "blockpackage",
-                    "Block",
-                )
-            },
-            {
                 "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
                 "group.id": "matic.transfer.transformer",
                 "security.protocol": "plaintext",
                 "message.max.bytes": 26214400,
-                "fetch.message.max.bytes": 26214400
+                "fetch.message.max.bytes": 26214400,
+                coderConfig: {
+                    fileName: "block",
+                    packageName: "blockpackage",
+                    messageType: "Block"
+                }
             }
         ),
         new AsynchronousProducer(
-            new Coder(
-                "matic_transfer",
-                "matictransferpackage",
-                "MaticTransferBlock",
-                path.resolve("./schemas")
-            ),
             {
                 "topic": process.env.PRODUCER_TOPIC || "apps.1.matic.transfer",
                 "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
                 "security.protocol": "plaintext",
-                "message.max.bytes": 26214400
+                "message.max.bytes": 26214400,
+                coderConfig: {
+                    fileName: "matic_transfer",
+                    packageName: "matictransferpackage",
+                    messageType: "MaticTransferBlock",
+                    fileDirectory: path.resolve("./schemas")
+                }
             }
         ),
         new MaticTransferMapper()

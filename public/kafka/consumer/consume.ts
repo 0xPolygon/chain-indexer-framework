@@ -5,6 +5,7 @@ import { Coder } from "@internal/coder/protobuf_coder.js";
 import { IObserver } from "@internal/interfaces/observer.js";
 import { DeserialisedMessage } from "public/index.js";
 import { BaseError } from "@internal/errors/base_error.js";
+import { IKafkaCoderConfig } from "@internal/interfaces/kafka_coder_config.js";
 
 /**
  * Function to be used as functional implementation for the consumer classes for asynchronous
@@ -18,45 +19,50 @@ import { BaseError } from "@internal/errors/base_error.js";
 export function consume(
     config: IConsumerConfig, observer: IObserver<DeserialisedMessage, BaseError>
 ): AsynchronousConsumer | SynchronousConsumer {
-    const topic = config.topic;
     let coders = config.coders;
     const type = config.type;
     const coderConfig = config.coderConfig;
-    const encoding = config.encoding;
-    delete config.topic;
     delete config.coders;
     delete config.type;
     delete config.coderConfig;
-    delete config.encoding;
 
-    if (!encoding || encoding === "protobuf") {
-        if (!coderConfig || !topic) {
-            throw new Error("Please provide coder config or topic");
-        }
+    if (coders && coderConfig) {
+        throw new Error("Please provide either coder or coderConfig");
+    }
+
+    if (!coders && !coderConfig) {
+        throw new Error("Please provide coder or coderConfig");
+    }
+
+    if (!config.topic) {
+        throw new Error("Please provide topic");
+    }
+
+    if (coderConfig) {
         coders = {};
-        if (Array.isArray(topic) && Array.isArray(coderConfig)) {
-            for (let topicIndex = 0; topicIndex < topic.length; topicIndex++) {
-                coders[topic[topicIndex]] = new Coder(coderConfig[topicIndex].fileName, coderConfig[topicIndex].packageName, coderConfig[topicIndex].messageType);
+        if (Array.isArray(config.topic) && Array.isArray(coderConfig)) {
+            for (let topicIndex = 0; topicIndex < config.topic.length; topicIndex++) {
+                coders[config.topic[topicIndex]] = new Coder(
+                    coderConfig[topicIndex].fileName,
+                    coderConfig[topicIndex].packageName,
+                    coderConfig[topicIndex].messageType
+                );
             }
-        } else if (!Array.isArray(topic) && !Array.isArray(coderConfig)) {
-            coders[topic] = new Coder(coderConfig.fileName, coderConfig.packageName, coderConfig.messageType);
+        } else if (!Array.isArray(config.topic) && !Array.isArray(coderConfig)) {
+            coders[config.topic] = new Coder(coderConfig.fileName, coderConfig.packageName, coderConfig.messageType);
         } else {
             throw new Error("Please provide valid coder config or topic");
         }
     }
 
-    if (!topic || !coders) {
-        throw new Error("Please provide coders or topic");
-    }
-
     let consumer: AsynchronousConsumer | SynchronousConsumer | null = null;
 
     if (type === "asynchronous") {
-        consumer = new AsynchronousConsumer(topic, coders, config);
+        consumer = new AsynchronousConsumer(config.topic, coders as IKafkaCoderConfig, config);
     }
 
     if (type === "synchronous") {
-        consumer = new SynchronousConsumer(topic, coders, config);
+        consumer = new SynchronousConsumer(config.topic, coders as IKafkaCoderConfig, config);
     }
 
     if (consumer) {

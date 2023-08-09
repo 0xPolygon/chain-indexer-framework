@@ -271,7 +271,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     import { BlockPollerProducer } from "@maticnetwork/chainflow/block_producers/block_polling_producer";
 
     // Set up and start the Block Poller Producer
-    BlockPollerProducer.new({
+    const producer = new BlockPollerProducer({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
         blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
@@ -281,17 +281,17 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         mongoUrl: '<MONGO_DB_URL>',
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext"
-    }).then(producer => {
-        // Handle fatal error
-        producer.on("blockProducer.fatalError", (error) => {
-            console.error(`Block producer exited. ${error.message}`);
-            process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
-        });
-        
-        // Start the producer
-        producer.start().catch((error) => {
-            console.error(error);
-        });
+    })
+
+    // Handle fatal error
+    producer.on("blockProducer.fatalError", (error) => {
+        console.error(`Block producer exited. ${error.message}`);
+        process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
+    });
+    
+    // Start the producer
+    producer.start().catch((error) => {
+        console.error(error);
     });
 
 
@@ -329,7 +329,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     import { ErigonBlockProducer } from "@maticnetwork/chainflow/block_producers/erigon_block_producer";
 
     // Set up the Erigon Block Producer
-    ErigonBlockProducer.new({
+    const producer = new ErigonBlockProducer({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<RPC_WS_ENDPOINT_URL_LIST_1>', '<RPC_WS_ENDPOINT_URL_LIST_2>'],
         blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
@@ -339,17 +339,17 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         mongoUrl: '<MONGO_DB_URL>',
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext"
-    }).then(producer => {
-        // Handle fatal error
-        producer.on("blockProducer.fatalError", (error) => {
-            console.error(`Block producer exited. ${error.message}`);
-            process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
-        });
-        
-        // Start the producer
-        producer.start().catch((error) => {
-            console.error(error);
-        });
+    })
+
+    // Handle fatal error
+    producer.on("blockProducer.fatalError", (error) => {
+        console.error(`Block producer exited. ${error.message}`);
+        process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
+    });
+    
+    // Start the producer
+    producer.start().catch((error) => {
+        console.error(error);
     });
 
 
@@ -387,7 +387,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     import { QuickNodeBlockProducer } from "@maticnetwork/chainflow/block_producers/quicknode_block_producer";
 
     // Set up the QuickNode Block Producer
-    QuickNodeBlockProducer.new({
+    const producer = new QuickNodeBlockProducer({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<RPC_WS_ENDPOINT_URL_LIST_1>', '<RPC_WS_ENDPOINT_URL_LIST_2>'],
         blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
@@ -397,15 +397,15 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         mongoUrl: '<MONGO_DB_URL>',
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext"
-    }).then(producer => {
-        producer.on("blockProducer.fatalError", (error) => {
-            console.error(`Block producer exited. ${error.message}`);
-            process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
-        });
+    })
 
-        producer.start().catch((error) => {
-            console.error(error);
-        });
+    producer.on("blockProducer.fatalError", (error) => {
+        console.error(`Block producer exited. ${error.message}`);
+        process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
+    });
+
+    producer.start().catch((error) => {
+        console.error(error);
     });
 
 

@@ -14,6 +14,5 @@ export interface IConsumerConfig extends ConsumerGlobalConfig {
     topic?: string | string[],
     coders?: IKafkaCoderConfig,
     type?: string,
-    encoding?: string,
     coderConfig?: ICoderConfig | ICoderConfig[]
 } 

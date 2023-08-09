@@ -10,6 +10,5 @@ export interface IProducerConfig extends ProducerGlobalConfig {
     deliveryTimeout?: number,
     type?: string,
     coder?: ICoder,
-    encoding?: string,
     coderConfig?: ICoderConfig
 }
