@@ -16,6 +16,7 @@ export * from "./data_transformer_config.js";
 export * from "./deposit.js";
 export * from "./deserialised_kafka_message.js";
 export * from "./event_log.js";
+export * from "./event_producer.js";
 export * from "./kafka_coder_config.js";
 export * from "./logger_config.js";
 export * from "./mapper.js";

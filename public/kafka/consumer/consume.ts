@@ -14,11 +14,12 @@ import { ICoderConfig } from "@internal/interfaces/coder_config.js";
  * type and coder can be passed if coder other that protobuf coder is needed.
  * 
  * @param {IConsumerConfig} config - consumer config
+ * @param {IObserver<DeserialisedMessage, BaseError>} observer - observer class for next, error, closed event
  *  
  * @returns {AsynchronousConsumer | SynchronousConsumer}
  */
 export function consume(
-    config: IConsumerConfig, observer: IObserver<DeserialisedMessage, BaseError>
+    config: IConsumerConfig, observer?: IObserver<DeserialisedMessage, BaseError>
 ): AsynchronousConsumer | SynchronousConsumer {
     let coders = config.coders;
     const type = config.type;
@@ -28,11 +29,11 @@ export function consume(
     delete config.coders;
 
     if (!topic) {
-        throw new Error("Please provide topic"); 
+        throw new Error("Please provide topic");
     }
 
     if (!coders) {
-        throw new Error("Please provide coders"); 
+        throw new Error("Please provide coders");
     }
 
     if (Array.isArray(coders) || "fileName" in coders) {
@@ -68,10 +69,13 @@ export function consume(
         consumer = new SynchronousConsumer(topic, coders as IKafkaCoderConfig, config);
     }
 
-    if (consumer) {
-        consumer.start(observer);
-        return consumer;
+    if (!consumer) {
+        throw new Error("Invalid type");
     }
 
-    throw new Error("Invalid type");
+    if (observer) {
+        consumer.start(observer);
+    }
+
+    return consumer;
 }

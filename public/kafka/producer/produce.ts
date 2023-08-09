@@ -4,6 +4,8 @@ import { IProducerConfig } from "@internal/interfaces/producer_config.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
 import { ICoder } from "@internal/interfaces/coder.js";
 import { ICoderConfig } from "@internal/interfaces/coder_config.js";
+import { IEventProducer } from "@internal/interfaces/event_producer.js";
+import { KafkaError } from "@internal/errors/kafka_error.js";
 
 /**
  * Function to be used as functional implementation for the producer classes for asynchronous
@@ -11,11 +13,13 @@ import { ICoderConfig } from "@internal/interfaces/coder_config.js";
  * type and coder can be passed if coder other that protobuf coder is needed.
  * 
  * @param {IProducerConfig} config - producer config
+ * @param {IEventProducer<KafkaError>} eventProducer - event producer function object for subscribe, error and close
  *  
  * @returns {AsynchronousProducer | SynchronousProducer}
  */
 export function produce(
-    config: IProducerConfig
+    config: IProducerConfig,
+    eventProducer: IEventProducer<KafkaError>
 ): AsynchronousProducer | SynchronousProducer {
     const type = config.type;
     let coder = config.coder;
@@ -23,7 +27,7 @@ export function produce(
     delete config.coder;
 
     if (!coder) {
-        throw new Error("Please provide coder"); 
+        throw new Error("Please provide coder");
     }
 
     if ("fileName" in coder) {
@@ -50,6 +54,14 @@ export function produce(
     }
 
     producer.start();
+
+    if (eventProducer) {
+        producer.on("producer.error", eventProducer.error);
+        producer.on("producer.disconnected", eventProducer.closed);
+
+        eventProducer.subscribe();
+    }
+
     return producer;
 
 }
