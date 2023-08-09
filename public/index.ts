@@ -6,7 +6,6 @@ export * from "./block_producers/quicknode_block_producer.js";
 
 // coder
 export * from "./coder/abi_coder.js";
-export * from "./coder/protobuf_coder.js";
 
 // data transformation
 export * from "./data_transformation/asynchronous_data_transformer.js";
