@@ -10,6 +10,7 @@ export * from "./coder/abi_coder.js";
 // data transformation
 export * from "./data_transformation/asynchronous_data_transformer.js";
 export * from "./data_transformation/synchronous_data_transformer.js";
+export * from "./data_transformation/transform.js";
 
 // Enums
 export * from "./enums/bridgetype.js";

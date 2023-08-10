@@ -15,8 +15,7 @@
     "./interfaces/*": "./dist/public/interfaces/*.js",
     "./errors/*": "./dist/public/errors/*.js",
     "./event_consumer/*": "./dist/public/event_consumer/*.js",
-    "./data_transformation/asynchronous_data_transformer": "./dist/public/data_transformation/asynchronous_data_transformer.js",
-    "./data_transformation/synchronous_data_transformer": "./dist/public/data_transformation/synchronous_data_transformer.js",
+    "./data_transformation/*": "./dist/public/data_transformation/*.js",
     "./logger": "./dist/public/logger/logger.js",
     "./filter": "./dist/public/filter/bloom_filter.js",
     "./jsonrpcclient": "./dist/public/rpc/json_rpc_client.js"

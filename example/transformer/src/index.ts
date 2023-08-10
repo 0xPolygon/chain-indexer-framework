@@ -1,6 +1,6 @@
 import { Logger } from "@maticnetwork/chainflow/logger";
 import { BlockProducerError } from "@maticnetwork/chainflow/errors/block_producer_error";
-import { MaticTransferDataTransformer } from "./matic_transfer_data_transformer.js";
+import startTransforming from "./matic_transfer_data_transformer.js";
 import { MaticTransferMapper } from "./mappers/matic_transfer_mapper.js";
 import dotenv from 'dotenv';
 import path from "path";
@@ -18,8 +18,12 @@ Logger.create({
     }
 });
 
-async function main() {
-    const tranformer: MaticTransferDataTransformer = new MaticTransferDataTransformer(
+/**
+ * Initialise the transform service with producer topic, proto file names,
+ *  producer config, consumer topic and consumer proto files
+ */
+try {
+    startTransforming(
         {
             "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
             "group.id": "matic.transfer.transformer",
@@ -47,22 +51,6 @@ async function main() {
         },
         new MaticTransferMapper()
     );
-
-    tranformer.on("dataTransformer.fatalError", (error) => {
-        Logger.error(`Tranformer exited due to error: ${error.message}`);
-
-        process.exit(1);
-    });
-
-    await tranformer.start();
-}
-
-/**
- * Initialise the transform service with producer topic, proto file names,
- *  producer config, consumer topic and consumer proto files
- */
-try {
-    main();
 } catch (e) {
     Logger.error(BlockProducerError.createUnknown(e));
 }
