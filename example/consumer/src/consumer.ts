@@ -34,7 +34,7 @@ export default async function startConsuming(transferService: TransferService, t
                 fileName: "matic_transfer",
                 packageName: "matictransferpackage",
                 messageType: "MaticTransferBlock",
-                fileDirectory: path.resolve("./schemas")
+                fileDirectory: path.resolve("dist", "./schemas")
             },
             type: 'synchronous'
         }, {

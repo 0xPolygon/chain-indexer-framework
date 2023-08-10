@@ -22,9 +22,9 @@ export class Coder implements ICoder {
      * @param {string} [fileDirectory] - Optional: The custom path for loading the protobuf type. 
      */
     constructor(
-        private fileName: string, 
-        private packageName: string, 
-        private messageType: string, 
+        private fileName: string,
+        private packageName: string,
+        private messageType: string,
         private fileDirectory: string = "@maticnetwork/chainflow/schemas"
     ) { }
 
@@ -39,7 +39,7 @@ export class Coder implements ICoder {
     private async loadType(): Promise<Type> {
         try {
             if (!this.loadPromise) {
-                 this.loadPromise = load(
+                this.loadPromise = load(
                     // https://nodejs.org/api/esm.html#no-requireresolve - Alternative for require.resolve
                     // @ts-ignore
                     createRequire(import.meta.url).resolve(`${this.fileDirectory}/${this.fileName}.proto`)
@@ -48,7 +48,7 @@ export class Coder implements ICoder {
                 });
             }
 
-            return await  this.loadPromise;
+            return await this.loadPromise;
         } catch (error) {
             const message = getErrorMessage(error);
             throw new CoderError(
@@ -71,12 +71,12 @@ export class Coder implements ICoder {
      * @throws {CoderError} - Throws error on failure to find protobuf type definition at the path specified.
      */
     public async deserialize(buffer: Buffer): Promise<object> {
-        if (! this.protobufType) {
-             this.protobufType = await  this.loadType();
+        if (!this.protobufType) {
+            this.protobufType = await this.loadType();
         }
 
         try {
-            return  this.protobufType.decode(buffer);
+            return this.protobufType.decode(buffer);
         } catch (error) {
             throw new CoderError(
                 "Decoding error",
@@ -98,11 +98,11 @@ export class Coder implements ICoder {
     * @throws {CoderError} - Throws error object on verification failure or if failure in finding protobuf type definition.
     */
     public async serialize(messageObject: object): Promise<Uint8Array | CoderError> {
-        if (! this.protobufType) {
-             this.protobufType = await  this.loadType();
+        if (!this.protobufType) {
+            this.protobufType = await this.loadType();
         }
-        
-        const verificationError =  this.protobufType.verify(messageObject);
+
+        const verificationError = this.protobufType.verify(messageObject);
         if (verificationError) {
             throw new CoderError(
                 "Message verification failed",
@@ -111,7 +111,7 @@ export class Coder implements ICoder {
                 verificationError
             );
         }
-        
-        return  this.protobufType.encode(messageObject).finish();
+
+        return this.protobufType.encode(messageObject).finish();
     }
 }

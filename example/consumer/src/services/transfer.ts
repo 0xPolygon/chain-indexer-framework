@@ -40,7 +40,7 @@ export default class TransferService {
         });
 
 
-        if (data && data.length > 0) {
+        if (data && data.length) {
             //@ts-ignore
             const latestTransferBlockNumber = await this.transferModel.getLastTransferBlock();
 

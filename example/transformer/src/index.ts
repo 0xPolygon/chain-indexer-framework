@@ -42,7 +42,7 @@ async function main() {
                 fileName: "matic_transfer",
                 packageName: "matictransferpackage",
                 messageType: "MaticTransferBlock",
-                fileDirectory: path.resolve("./schemas")
+                fileDirectory: path.resolve("dist", "./schemas/")
             }
         },
         new MaticTransferMapper()
