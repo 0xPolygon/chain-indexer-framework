@@ -1,13 +1,13 @@
 import { IBlockWorkerMessage } from "../interfaces/block_worker_message.js";
 import { parentPort, workerData } from "worker_threads";
-import { BlockGetter } from "./block_getter.js";
+import { ErigonBlockGetter } from "./erigon_block_getter.js";
 import EthClass from "web3-eth";
 
 if (!workerData || !parentPort) {
     process.exit(1);
 }
 
-const blockGetter = new BlockGetter(
+const blockGetter = new ErigonBlockGetter(
     //@ts-ignore
     new EthClass(
         //@ts-ignore

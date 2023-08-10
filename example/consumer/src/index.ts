@@ -23,7 +23,7 @@ async function start(): Promise<void> {
             }
         });
 
-        const database = new Database(process.env.MONGO_URL || 'mongodb://localhost:27017/transfers');
+        const database = new Database(process.env.MONGO_URL || 'mongodb://localhost:27017/chain-flow');
         await database.connect();
 
         const transferService = new TransferService(
