@@ -391,6 +391,24 @@ export class TransformerClass extends SynchronousDataTransformer<T, Y> {
 let transformer = new TransformerClass({...consumerConfig}, {...producerConfig});
 transformer.start();
 
+// or you can use the functional implementation
+
+// Import the required modules
+import transform from "@maticnetwork/chainflow/data_transformation/transform";
+
+// Configure the trasnformer
+transform(
+    {
+        consumerConfig, // consumer config object
+        producerConfig, // producer config object
+        type: 'asynchronous'
+    },
+    {
+        transform: () => {},
+        error: () => {}
+    }
+);
+
 ```
 
 ## Consumers
