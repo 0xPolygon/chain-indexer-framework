@@ -1,1 +1,5 @@
-export * from "@internal/interfaces/event_producer.js";
+export interface IEventProducer<E> {
+    subscribe: () => Promise<void> | void
+    error: (value: E) => void
+    closed: () => void
+}

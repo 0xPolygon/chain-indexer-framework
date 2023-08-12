@@ -34,7 +34,7 @@ export class AsynchronousConsumer extends InternalAsynchronousConsumer {
         }
 
         if (Array.isArray(coders) || "fileName" in coders) {
-            const coderConfig = coders as ICoderConfig | ICoderConfig[];
+            const coderConfig = coders;
             coders = {};
             if (Array.isArray(topic) && Array.isArray(coderConfig)) {
                 for (let topicIndex = 0; topicIndex < topic.length; topicIndex++) {
@@ -44,7 +44,7 @@ export class AsynchronousConsumer extends InternalAsynchronousConsumer {
                         coderConfig[topicIndex].messageType
                     );
                 }
-            } else if (!Array.isArray(topic) && !Array.isArray(coders)) {
+            } else if (!Array.isArray(topic) && !Array.isArray(coderConfig)) {
                 coders[topic] = new Coder(
                     (coderConfig as ICoderConfig).fileName,
                     (coderConfig as ICoderConfig).packageName,

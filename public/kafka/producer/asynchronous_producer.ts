@@ -1,8 +1,6 @@
 import { AsynchronousProducer as InternalAsynchronousProducer } from "@internal/kafka/producer/asynchronous_producer.js";
 import { IProducerConfig } from "@internal/interfaces/producer_config.js";
-import { ICoder } from "@internal/interfaces/coder.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
-import { ICoderConfig } from "@internal/interfaces/coder_config.js";
 
 /**
  * AsynchronousProducer class entends InternalAsynchronousProducer which creates an instance of AsynchronousProducer
@@ -26,15 +24,15 @@ export class AsynchronousProducer extends InternalAsynchronousProducer {
 
         if ("fileName" in coder) {
             coder = new Coder(
-                (coder as ICoderConfig).fileName,
-                (coder as ICoderConfig).packageName,
-                (coder as ICoderConfig).messageType,
-                (coder as ICoderConfig).fileDirectory,
+                coder.fileName,
+                coder.packageName,
+                coder.messageType,
+                coder.fileDirectory,
             );
         }
 
         super(
-            coder as ICoder,
+            coder,
             config
         );
     }

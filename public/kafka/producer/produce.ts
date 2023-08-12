@@ -1,11 +1,8 @@
-import { SynchronousProducer } from "@internal/kafka/producer/synchronous_producer.js";
-import { AsynchronousProducer } from "@internal/kafka/producer/asynchronous_producer.js";
+import { SynchronousProducer } from "./synchronous_producer.js";
+import { AsynchronousProducer } from "./asynchronous_producer.js";
 import { IProducerConfig } from "@internal/interfaces/producer_config.js";
-import { Coder } from "@internal/coder/protobuf_coder.js";
-import { ICoder } from "@internal/interfaces/coder.js";
-import { ICoderConfig } from "@internal/interfaces/coder_config.js";
-import { IEventProducer } from "@internal/interfaces/event_producer.js";
 import { KafkaError } from "@internal/errors/kafka_error.js";
+import { IEventProducer } from "../../interfaces/event_producer.js";
 
 /**
  * Function to be used as functional implementation for the producer classes for asynchronous
@@ -22,35 +19,24 @@ export function produce(
     eventProducer: IEventProducer<KafkaError>
 ): AsynchronousProducer | SynchronousProducer {
     const type = config.type;
-    let coder = config.coder;
     delete config.type;
-    delete config.coder;
-
-    if (!coder) {
-        throw new Error("Please provide coder");
-    }
-
-    if ("fileName" in coder) {
-        coder = new Coder(
-            (coder as ICoderConfig).fileName,
-            (coder as ICoderConfig).packageName,
-            (coder as ICoderConfig).messageType,
-            (coder as ICoderConfig).fileDirectory,
-        );
-    }
 
     let producer: AsynchronousProducer | SynchronousProducer | null = null;
 
-    if (type === "asynchronous") {
-        producer = new AsynchronousProducer(coder as ICoder, config);
-    }
+    switch (type) {
+        case "asynchronous": {
+            producer = new AsynchronousProducer(config);
+            break;
+        }
 
-    if (type === "synchronous") {
-        producer = new SynchronousProducer(coder as ICoder, config);
-    }
+        case "synchronous": {
+            producer = new SynchronousProducer(config);
+            break;
+        }
 
-    if (!producer) {
-        throw new Error("Invalid type");
+        default: {
+            throw new Error("Invalid type");
+        }
     }
 
     producer.start();

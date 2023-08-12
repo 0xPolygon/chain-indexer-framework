@@ -1,7 +1,7 @@
 import { AsynchronousDataTransformer } from "./asynchronous_data_transformer.js";
 import { SynchronousDataTransformer } from "./synchronous_data_transformer.js";
-import { ITransformerConfig } from "@internal/interfaces/transformer_config.js";
-import { IEventTransformer } from "@internal/interfaces/event_transformer.js";
+import { ITransformerConfig } from "../interfaces/transformer_config.js";
+import { IEventTransformer } from "../interfaces/event_transformer.js";
 import { KafkaError } from "@internal/errors/kafka_error.js";
 
 /**
@@ -23,27 +23,34 @@ export function transform<T, G>(
 
     let transformer: AsynchronousDataTransformer<T, G> | SynchronousDataTransformer<T, G> | null = null;
 
-    if (type === "asynchronous") {
-        //@ts-ignore
-        transformer = new AsynchronousDataTransformer<T, G>(consumerConfig, producerConfig);
-    }
+    switch (type) {
+        case "asynchronous": {
+            //@ts-ignore
+            transformer = new AsynchronousDataTransformer<T, G>(consumerConfig, producerConfig);
+            break;
+        }
 
-    if (type === "synchronous") {
-        //@ts-ignore
-        transformer = new SynchronousDataTransformer<T, G>(consumerConfig, producerConfig);
-    }
+        case "synchronous": {
+            //@ts-ignore
+            transformer = new SynchronousDataTransformer<T, G>(consumerConfig, producerConfig);
+            break;
+        }
 
-    if (!transformer) {
-        throw new Error("Invalid type");
+        default: {
+            throw new Error("Invalid type");
+        }
     }
 
     //@ts-ignore
     transformer.transform = eventTransformer.transform;
 
+    //@ts-ignore
     transformer.on("dataTransformer.fatalError", eventTransformer.error);
 
+    //@ts-ignore
     transformer.start();
 
+    //@ts-ignore
     return transformer;
 
 }
