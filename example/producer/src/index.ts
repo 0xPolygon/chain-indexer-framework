@@ -1,7 +1,7 @@
 import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
 import { Logger } from "@maticnetwork/chainflow/logger";
 import dotenv from 'dotenv';
-import { BlockProducer } from "../../../dist/internal/block_producers/block_producer.js";
+import { ErigonBlockProducer } from "@maticnetwork/chainflow/block_producers/erigon_block_producer";
 
 dotenv.config();
 Logger.create({
@@ -18,7 +18,7 @@ Logger.create({
     }
 });
 
-const producer = produce<BlockProducer>({
+const producer = produce<ErigonBlockProducer>({
     startBlock: parseInt(process.env.START_BLOCK as string),
     rpcWsEndpoints: process.env.RPC_WS_ENDPOINT_URL_LIST?.split(','),
     topic: process.env.PRODUCER_TOPIC || "polygon.1.blocks",

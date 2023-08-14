@@ -113,7 +113,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     // or you can use the functional implementation
 
     // Import the required module
-    import { produceBlocks } from "@maticnetwork/chainflow/kafka/producer/produce";
+    import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
     import { BlockPollerProducer } from "@maticnetwork/chainflow/block_producers/block_polling_producer";
 
     // Set up the Block Poller Producer
@@ -173,11 +173,11 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     // or you can use the functional implementation
 
     // Import the required module
-    import { produceBlocks } from "@maticnetwork/chainflow/kafka/producer/produce";
+    import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
     import { ErigonBlockProducer } from "@maticnetwork/chainflow/block_producers/erigon_block_producer";
 
     // Set up the Erigon Block Producer
-    const producer = produceBlocks<ErigonBlockProducer>({
+    const producer = produce<ErigonBlockProducer>({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
         blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
@@ -230,11 +230,11 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     // or you can use the functional implementation
 
     // Import the required module
-    import { produceBlocks } from "@maticnetwork/chainflow/kafka/producer/produce";
+    import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
     import { QuickNodeBlockProducer } from "@maticnetwork/chainflow/block_producers/quicknode_block_producer";
 
     // Set up the QuickNode Block Producer
-    const producer = produceBlocks<QuickNodeBlockProducer>({
+    const producer = produce<QuickNodeBlockProducer>({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
         blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
