@@ -1,8 +1,8 @@
 // block_producer
-export * from "./block_producers/produce_blocks.js";
 export * from "./block_producers/block_polling_producer.js";
 export * from "./block_producers/erigon_block_producer.js";
 export * from "./block_producers/quicknode_block_producer.js";
+export * from "./block_producers/block_producer.js";
 
 // coder
 export * from "./coder/abi_coder.js";

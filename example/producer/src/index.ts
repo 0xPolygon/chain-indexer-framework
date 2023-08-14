@@ -1,6 +1,7 @@
-import { produceBlocks } from "@maticnetwork/chainflow/block_producers/produce_blocks";
+import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
 import { Logger } from "@maticnetwork/chainflow/logger";
 import dotenv from 'dotenv';
+import { BlockProducer } from "../../../dist/internal/block_producers/block_producer.js";
 
 dotenv.config();
 Logger.create({
@@ -17,7 +18,7 @@ Logger.create({
     }
 });
 
-const producer = produceBlocks({
+const producer = produce({
     startBlock: parseInt(process.env.START_BLOCK as string),
     rpcWsEndpoints: process.env.RPC_WS_ENDPOINT_URL_LIST?.split(','),
     topic: process.env.PRODUCER_TOPIC || "polygon.1.blocks",
@@ -27,8 +28,8 @@ const producer = produceBlocks({
     blockSubscriptionTimeout: 120000,
     "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
     "security.protocol": "plaintext",
-    type: "erigon"
-})
+    type: "blocks:erigon"
+}) as BlockProducer;
 
 producer.on("blockProducer.fatalError", (error: any) => {
     Logger.error(`Block producer exited. ${error.message}`);
