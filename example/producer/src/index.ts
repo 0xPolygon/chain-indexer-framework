@@ -1,6 +1,7 @@
-import { produceBlocks } from "@maticnetwork/chainflow/block_producers/produce_blocks";
+import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
 import { Logger } from "@maticnetwork/chainflow/logger";
 import dotenv from 'dotenv';
+import { ErigonBlockProducer } from "@maticnetwork/chainflow/block_producers/erigon_block_producer";
 
 dotenv.config();
 Logger.create({
@@ -17,18 +18,18 @@ Logger.create({
     }
 });
 
-const producer = produceBlocks({
+const producer = produce<ErigonBlockProducer>({
     startBlock: parseInt(process.env.START_BLOCK as string),
     rpcWsEndpoints: process.env.RPC_WS_ENDPOINT_URL_LIST?.split(','),
     topic: process.env.PRODUCER_TOPIC || "polygon.1.blocks",
     maxReOrgDepth: 96,
     maxRetries: 5,
-    mongoUrl: process.env.MONGO_URL,
+    mongoUrl: process.env.MONGO_URL || 'mongodb://localhost:27017/chain-flow',
     blockSubscriptionTimeout: 120000,
     "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
     "security.protocol": "plaintext",
-    type: "erigon"
-})
+    type: "blocks:erigon"
+});
 
 producer.on("blockProducer.fatalError", (error: any) => {
     Logger.error(`Block producer exited. ${error.message}`);

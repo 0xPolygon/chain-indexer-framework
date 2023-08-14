@@ -5,6 +5,7 @@ import { BlockProducerError } from "../errors/block_producer_error.js";
 import { IBlock } from "../interfaces/block.js";
 import { Worker } from "worker_threads";
 import { Eth } from "web3-eth";
+import { createRequire } from "module";
 
 /**
  * Block subscription class which emits full block data whenever added to chain.
@@ -43,8 +44,7 @@ export class BlockSubscription extends AbstractBlockSubscription {
      */
     private setWorkers(): void {
         const workers: Worker[] = [];
-        const workerPath: string = require.resolve(`../block_getters/${this.blockGetterType}_worker`);
-
+        const workerPath: string = createRequire(import.meta.url).resolve(`../block_getters/${this.blockGetterType}_worker`);
         if (!this.rpcWsEndpoints.length) {
             //TODO - throw error if no rpc
             return;

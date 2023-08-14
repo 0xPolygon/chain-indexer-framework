@@ -25,7 +25,7 @@ export class ErigonBlockProducer extends BlockProducer {
     constructor(config: IBlockProducerConfig) {
         const endpoints = config.rpcWsEndpoints || [];
         const startBlock = config.startBlock || 0;
-        const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/open-api";
+        const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-flow";
         const maxReOrgDepth = config.maxReOrgDepth || 0;
         const maxRetries = config.maxRetries || 0;
         const blockSubscriptionTimeout = config.blockSubscriptionTimeout;

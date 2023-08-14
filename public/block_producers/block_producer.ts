@@ -1,29 +1,30 @@
-import { BlockProducer } from "@internal/block_producers/block_producer.js";
 import { IProducedBlock, ProducedBlocksModel, IProducedBlocksModel } from "@internal/block_producers/produced_blocks_model.js";
+import { BlockProducer as InternalBlockProducer } from "@internal/block_producers/block_producer.js";
 import { BlockSubscription } from "@internal/block_subscription/block_subscription.js";
 import { IBlockProducerConfig } from "@internal/interfaces/block_producer_config.js";
 import { IProducerConfig } from "@internal/interfaces/producer_config.js";
 import { BlockGetter } from "@internal/block_getters/block_getter.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
 import { Database } from "@internal/mongo/database.js";
-import Eth from "web3-eth";
 
 /**
- * Quicknode block producer class which retrieves block from quick node
- * for producing to kafka.
- *  
+ * Common lock producer class which contains the common logic to retrieve 
+ * raw block data from the configurable "startblock" number, and produce it to 
+ * a kafka cluster while detecting re orgs and handling them. 
+ * The block data source, and kafka modules is provided the user of this class. 
+ * 
+ * @author - Nitin Mittal
  */
-export class QuickNodeBlockProducer extends BlockProducer {
-    
+export class BlockProducer extends InternalBlockProducer {
+
     /**
      * @constructor
      * 
      * @param {IBlockProducerConfig} config
      * 
-     * @returns {QuickNodeBlockProducer}
+     * @returns {BlockProducer}
      */
     constructor(config: IBlockProducerConfig) {
-
         const endpoints = config.rpcWsEndpoints || [];
         const startBlock = config.startBlock || 0;
         const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-flow";
@@ -38,6 +39,8 @@ export class QuickNodeBlockProducer extends BlockProducer {
         delete config.maxReOrgDepth;
         delete config.maxRetries;
         delete config.blockSubscriptionTimeout;
+
+        const database = new Database(mongoUrl);
 
         //@ts-ignore
         const eth = new Eth(
@@ -56,8 +59,6 @@ export class QuickNodeBlockProducer extends BlockProducer {
             )
         );
 
-        const database = new Database(mongoUrl);
-
         super(
             new Coder("block", "blockpackage", "Block"),
             config as IProducerConfig,
@@ -66,7 +67,7 @@ export class QuickNodeBlockProducer extends BlockProducer {
                 eth,
                 endpoints,
                 maxRetries,
-                "quicknode_block_getter",
+                "block_getter",
                 blockSubscriptionTimeout
             ),
             new BlockGetter(eth, maxRetries),
@@ -79,6 +80,5 @@ export class QuickNodeBlockProducer extends BlockProducer {
             startBlock,
             maxReOrgDepth
         );
-        
     }
 }

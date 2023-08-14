@@ -1,54 +1,82 @@
-import { SynchronousProducer } from "@internal/kafka/producer/synchronous_producer.js";
-import { AsynchronousProducer } from "@internal/kafka/producer/asynchronous_producer.js";
+import { SynchronousProducer } from "./synchronous_producer.js";
+import { AsynchronousProducer } from "./asynchronous_producer.js";
 import { IProducerConfig } from "@internal/interfaces/producer_config.js";
-import { Coder } from "@internal/coder/protobuf_coder.js";
+import { IBlockProducerConfig } from "@internal/interfaces/block_producer_config.js";
+import { KafkaError } from "@internal/errors/kafka_error.js";
+import { IEventProducer } from "../../interfaces/event_producer.js";
+import { BlockPollerProducer } from "../../block_producers/block_polling_producer.js";
+import { QuickNodeBlockProducer } from "../../block_producers/quicknode_block_producer.js";
+import { ErigonBlockProducer } from "../../block_producers/erigon_block_producer.js";
+import { BlockProducer } from "../../block_producers/block_producer.js";
 
 /**
  * Function to be used as functional implementation for the producer classes for asynchronous
- * and synchronous producer. this function will create coder class if protobuf coder is required.
+ * and synchronous producer and block producers. this function will create coder class if protobuf coder is required.
  * type and coder can be passed if coder other that protobuf coder is needed.
  * 
  * @param {IProducerConfig} config - producer config
+ * @param {IEventProducer<KafkaError>} eventProducer - event producer function object for emitter, error and close
  *  
- * @returns {AsynchronousProducer | SynchronousProducer}
+ * @returns {AsynchronousProducer | SynchronousProducer | BlockProducer}
  */
-export function produce(
-    config: IProducerConfig
-): AsynchronousProducer | SynchronousProducer {
+export function produce<T>(
+    config: IProducerConfig | IBlockProducerConfig,
+    eventProducer?: IEventProducer<KafkaError>
+): T {
     const type = config.type;
-    const encoding = config.encoding;
-    let coder = config.coder;
-    const coderConfig = config.coderConfig;
     delete config.type;
-    delete config.encoding;
-    delete config.coder;
-    delete config.coderConfig;
 
-    if (!encoding || encoding === "protobuf") {
-        if (!coderConfig) {
-            throw new Error("Please provide coder config");
+    let producer: AsynchronousProducer | SynchronousProducer | BlockProducer;
+
+    switch (type) {
+        case "asynchronous": {
+            producer = new AsynchronousProducer(config);
+            break;
         }
-        coder = new Coder(coderConfig.fileName, coderConfig.packageName, coderConfig.messageType);
+
+        case "synchronous": {
+            producer = new SynchronousProducer(config);
+            break;
+        }
+
+        case "blocks:quicknode": {
+            producer = new QuickNodeBlockProducer(config);
+            break;
+        }
+
+        case "blocks:erigon": {
+            producer = new ErigonBlockProducer(config);
+            break;
+        }
+
+        case "blocks:polling": {
+            producer = new BlockPollerProducer(config);
+            break;
+        }
+
+        case "blocks": {
+            producer = new BlockProducer(config);
+            break;
+        }
+
+        default: {
+            throw new Error("Invalid type");
+        }
     }
 
-    if (!coder) {
-        throw new Error("Please provide coders");
+    producer.start();
+
+    if (eventProducer) {
+        eventProducer.emitter.bind(producer);
+        eventProducer.error.bind(producer);
+        eventProducer.closed.bind(producer);
+
+        producer.on("producer.error", eventProducer.error);
+        producer.on("producer.disconnected", eventProducer.closed);
+
+        eventProducer.emitter();
     }
 
-    let producer: AsynchronousProducer | SynchronousProducer | null = null;
+    return producer as unknown as T;
 
-    if (type === "asynchronous") {
-        producer = new AsynchronousProducer(coder, config);
-    }
-
-    if (type === "synchronous") {
-        producer = new SynchronousProducer(coder, config);
-    }
-
-    if (producer) {
-        producer.start();
-        return producer;
-    }
-
-    throw new Error("Invalid type");
 }

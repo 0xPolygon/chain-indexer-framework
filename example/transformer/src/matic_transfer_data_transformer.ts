@@ -1,68 +1,56 @@
-import { SynchronousConsumer } from "@maticnetwork/chainflow/kafka/consumer/synchronous_consumer";
-import { AsynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/asynchronous_producer";
 import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
 import { ITransaction } from "@maticnetwork/chainflow/interfaces/transaction";
 import { IBlock } from "@maticnetwork/chainflow/interfaces/block";
-import { SynchronousDataTransformer } from "@maticnetwork/chainflow";
+import { Logger } from "@maticnetwork/chainflow/logger";
+import { IConsumerConfig } from "@maticnetwork/chainflow/interfaces/consumer_config";
+import { IProducerConfig } from "@maticnetwork/chainflow/interfaces/producer_config";
+import { transform } from "@maticnetwork/chainflow/data_transformation/transform";
 import IMaticTransferTx from "./interfaces/matic_transfer_tx.js";
 import { MaticTransferMapper } from "./mappers/matic_transfer_mapper.js";
 
 /**
- * Matic transfer Data transformer extends the SynchronousDataTransformer to transform 
- * a consumed raw block to produce the block with relevant matic transfer events. 
+ * startTransforming function which starts consuming events from the consumer and then transforming it
+ * and then finally producing the trasnformed data to new kafka topic
  * 
- * @author - Nitin Mittal, Polygon Technology
+ * @function startTransforming
+ * 
+ * @param {IConsumerConfig} consumerConfig - consumer config
+ * @param {IProducerConfig} producerConfig - producer config
+ * @param {MaticTransferMapper} maticTransferMapper - transfer mapper class instance
+ * 
+ * @returns {Promise<void>}
  */
-export class MaticTransferDataTransformer extends SynchronousDataTransformer<IBlock, IMaticTransferTx> {
-    /**
-     * @param {SynchronousConsumer} consumer 
-     * @param {AsynchronousProducer} producer
-     * @param  {MaticTransferMapper} maticTransferMapper
-     * 
-     * @constructor
-     */
-    constructor(
-        consumer: SynchronousConsumer,
-        producer: AsynchronousProducer,
-        private maticTransferMapper: MaticTransferMapper,
-    ) {
-        super(consumer, producer);
-    }
+export default async function startTransforming(
+    consumerConfig: IConsumerConfig,
+    producerConfig: IProducerConfig,
+    maticTransferMapper: MaticTransferMapper
+): Promise<void> {
+    try {
+        transform<IBlock, IMaticTransferTx>({
+            consumerConfig,
+            producerConfig,
+            type: 'asynchronous'
+        }, {
+            transform: async (block: IBlock): Promise<ITransformedBlock<IMaticTransferTx>> => {
+                let transfers: IMaticTransferTx[] = [];
 
-    /**
-     * @async
-     * 
-     * This method is main entry point to the class. It transforms a given block to block 
-     * with matic transfer events. 
-     * 
-     * @param {IBlock} block - The raw block object with transaction receipts. 
-     * 
-     * @returns {ITransformedBlock<IMaticTransferTx>} - Transformed block with matic transfer events.
-     */
-    protected async transform(block: IBlock): Promise<ITransformedBlock<IMaticTransferTx>> {
-        return {
-            blockNumber: block.number,
-            timestamp: block.timestamp,
-            data: this.map(block)
-        };
-    }
+                block.transactions.forEach((transaction: ITransaction) => {
+                    transfers = transfers.concat(maticTransferMapper.map(transaction));
+                });
 
-    /**
-     * @private
-     * 
-     * Private method which maps a given block to relevant mappers and returns array of matic transfer events.
-     * 
-     * @param {IBlock} block - Raw block object with transaction objects and receipts.
-     * 
-     * @returns {IMaticTransferTx[]} - Array of transfer events.
-     */
-    private map(block: IBlock): IMaticTransferTx[] {
-        let transfers: IMaticTransferTx[] = [];
+                return {
+                    blockNumber: block.number,
+                    timestamp: block.timestamp,
+                    data: transfers
+                };
+            },
+            error(err: Error) {
+                console.error('something wrong occurred: ' + err);
+            },
+        })
+    } catch (error) {
+        Logger.error(`Transformer instance is exiting due to error: ${error}`);
+        process.exit(1);
 
-        block.transactions.forEach((transaction: ITransaction) => {
-            transfers = transfers.concat(this.maticTransferMapper.map(transaction));
-        });
-
-        return transfers;
     }
 }
