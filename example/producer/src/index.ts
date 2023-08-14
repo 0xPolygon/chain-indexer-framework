@@ -18,7 +18,7 @@ Logger.create({
     }
 });
 
-const producer = produce({
+const producer = produce<BlockProducer>({
     startBlock: parseInt(process.env.START_BLOCK as string),
     rpcWsEndpoints: process.env.RPC_WS_ENDPOINT_URL_LIST?.split(','),
     topic: process.env.PRODUCER_TOPIC || "polygon.1.blocks",
@@ -29,7 +29,7 @@ const producer = produce({
     "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
     "security.protocol": "plaintext",
     type: "blocks:erigon"
-}) as BlockProducer;
+});
 
 producer.on("blockProducer.fatalError", (error: any) => {
     Logger.error(`Block producer exited. ${error.message}`);

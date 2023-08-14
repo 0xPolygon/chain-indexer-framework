@@ -113,10 +113,11 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     // or you can use the functional implementation
 
     // Import the required module
-    import { produceBlocks } from "@maticnetwork/chainflow/block_producers/produce_blocks";
+    import { produceBlocks } from "@maticnetwork/chainflow/kafka/producer/produce";
+    import { BlockPollerProducer } from "@maticnetwork/chainflow/block_producers/block_polling_producer";
 
     // Set up the Block Poller Producer
-    const producer = produceBlocks({
+    const producer = produce<BlockPollerProducer>({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
         blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
@@ -127,6 +128,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext",
         blockSubscriptionTimeout: 120000,
+        type: 'blocks:poller'
     });
 
     // Handle fatal error
@@ -171,10 +173,11 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     // or you can use the functional implementation
 
     // Import the required module
-    import { produceBlocks } from "@maticnetwork/chainflow/block_producers/produce_blocks";
+    import { produceBlocks } from "@maticnetwork/chainflow/kafka/producer/produce";
+    import { ErigonBlockProducer } from "@maticnetwork/chainflow/block_producers/erigon_block_producer";
 
     // Set up the Erigon Block Producer
-    const producer = produceBlocks({
+    const producer = produceBlocks<ErigonBlockProducer>({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
         blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
@@ -185,7 +188,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext",
         blockSubscriptionTimeout: 120000,
-        type: 'erigon' // required if erigon block producer is needed
+        type: 'blocks:erigon'
     });
 
     // Handle fatal error
@@ -227,10 +230,11 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     // or you can use the functional implementation
 
     // Import the required module
-    import { produceBlocks } from "@maticnetwork/chainflow/block_producers/produce_blocks";
+    import { produceBlocks } from "@maticnetwork/chainflow/kafka/producer/produce";
+    import { QuickNodeBlockProducer } from "@maticnetwork/chainflow/block_producers/quicknode_block_producer";
 
     // Set up the QuickNode Block Producer
-    const producer = produceBlocks({
+    const producer = produceBlocks<QuickNodeBlockProducer>({
         startBlock: '<START_BLOCK as number>',
         rpcWsEndpoints: ['<HTTP_PROVIDER_1>', '<HTTP_PROVIDER_2>'],
         blockPollingTimeout: '<BLOCK_POLLING_TIMEOUT as string>',
@@ -241,7 +245,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext",
         blockSubscriptionTimeout: 120000,
-        type: 'quicknode' // required if quicknode block producer is needed
+        type: 'blocks:quicknode'
     });
 
     // Handle fatal error
@@ -286,9 +290,10 @@ producer.produceEvent("<key: string>", "<message: object>");
 
 // Import the required modules
 import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
+import { SynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/synchronous_producer";
 
 // Initialize and start the Kafka producer
-const producer = produce(
+const producer = produce<SynchronousProducer>(
     {
         topic: "<PRODUCER_TOPIC>",
         "bootstrap.servers": "<KAFKA_CONNECTION_URL>",

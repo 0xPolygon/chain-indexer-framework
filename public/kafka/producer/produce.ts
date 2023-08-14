@@ -19,10 +19,10 @@ import { BlockProducer } from "../../block_producers/block_producer.js";
  *  
  * @returns {AsynchronousProducer | SynchronousProducer | BlockProducer}
  */
-export function produce(
+export function produce<T>(
     config: IProducerConfig | IBlockProducerConfig,
     eventProducer?: IEventProducer<KafkaError>
-): AsynchronousProducer | SynchronousProducer | BlockProducer {
+): T {
     const type = config.type;
     delete config.type;
 
@@ -77,6 +77,6 @@ export function produce(
         eventProducer.emitter();
     }
 
-    return producer;
+    return producer as unknown as T;
 
 }
