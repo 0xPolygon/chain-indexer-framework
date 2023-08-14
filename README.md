@@ -110,7 +110,8 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     });
 
 
-    // or you can use the functional implementation
+    // Or use the functional API
+
 
     // Import the required module
     import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
@@ -128,15 +129,12 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext",
         blockSubscriptionTimeout: 120000,
-        type: 'blocks:poller'
+        type: 'blocks:poller'.
+        {
+            error: (error: KafkaError | BlockProducerError) => {},
+            closed: () => {} // On broker connection closed
+        }
     });
-
-    // Handle fatal error
-    producer.on("blockProducer.fatalError", (error: any) => {
-        Logger.error(`Block producer exited. ${error.message}`);
-        process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
-    });
-
     ```
 
 2. **ErigonBlockProducer**: This particular block producer operates by subscribing to blocks through a web socket providers and utilizes an erigon node to produce data for Kafka. What sets the erigon node apart from other nodes is its unique characteristic of not requiring separate calls for obtaining receipts for each transaction. Instead, it efficiently retrieves block details with just two calls: one to retrieve the overall block information and another to fetch all the transaction details within that block. While the former call is commonly used across various nodes, the latter, that used the `eth_getBlockReceipts` method, distinguishes the erigon node from others in the network.
@@ -170,7 +168,8 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     });
 
 
-    // or you can use the functional implementation
+    // Or use the functional API
+
 
     // Import the required module
     import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
@@ -188,13 +187,11 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext",
         blockSubscriptionTimeout: 120000,
-        type: 'blocks:erigon'
-    });
-
-    // Handle fatal error
-    producer.on("blockProducer.fatalError", (error: any) => {
-        Logger.error(`Block producer exited. ${error.message}`);
-        process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
+        type: 'blocks:erigon',
+        {
+            error: (error: KafkaError | BlockProducerError) => {},
+            closed: () => {} // On broker connection closed
+        }
     });
     ```
 
@@ -214,7 +211,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         maxRetries: '<MAX_RETRIES>',
         mongoUrl: '<MONGO_DB_URL>',
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
-        "security.protocol": "plaintext"
+        "security.protocol": "plaintext",
     })
 
     producer.on("blockProducer.fatalError", (error) => {
@@ -227,7 +224,8 @@ ChainFlow block producers encompass three distinct types of producers, each desi
     });
 
 
-    // or you can use the functional implementation
+    // Or use the functional API
+
 
     // Import the required module
     import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
@@ -245,13 +243,11 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext",
         blockSubscriptionTimeout: 120000,
-        type: 'blocks:quicknode'
-    });
-
-    // Handle fatal error
-    producer.on("blockProducer.fatalError", (error: any) => {
-        Logger.error(`Block producer exited. ${error.message}`);
-        process.exit(1); // Exiting process on fatal error. Process manager needs to restart the process.
+        type: 'blocks:quicknode',
+        {
+            error: (error: KafkaError | BlockProducerError) => {},
+            closed: () => {} // On broker connection closed
+        }
     });
 
     ```
@@ -286,7 +282,9 @@ producer.start();
 // Send an event to the Kafka topic
 producer.produceEvent("<key: string>", "<message: object>");
 
-// or use functional implementation
+
+// Or use the functional API
+
 
 // Import the required modules
 import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
@@ -304,13 +302,16 @@ const producer = produce<SynchronousProducer>(
             packageName: "matictransferpackage",
             messageType: "MaticTransferBlock",
         },
-        type: "synchronous" // use 'synchronous'. if synchronous producer is needed
+        type: "synchronous" // use 'synchronous'. if synchronous producer is needed,
+        {
+            emitter: () => {
+                this.produceEvent("<key: string>", "<message: object>");
+            }
+            error: (error: KafkaError | BlockProducerError) => {},
+            closed: () => {} // On broker connection closed
+        }
     }
 )
-
-// Send an event to the Kafka topic
-producer.produceEvent("<key: string>", "<message: object>");
-
 ```
 
 ### Asynchronous Producer
@@ -333,6 +334,13 @@ const producer = new AsynchronousProducer(
             packageName: "matictransferpackage",
             messageType: "MaticTransferBlock",
         },
+        {
+            emitter: () => {
+                this.produceEvent("<key: string>", "<message: object>");
+            }
+            error: (error: KafkaError | BlockProducerError) => {},
+            closed: () => {} // On broker connection closed
+        }
     }
 );
 
@@ -341,6 +349,37 @@ producer.start();
 
 // Send an event to the Kafka topic
 producer.produceEvent("<key: string>", "<message: object>");
+
+
+// Or use the functional API
+
+
+// Import the required modules
+import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
+import { AsynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/asynchronous_producer";
+
+// Initialize and start the Kafka producer
+const producer = produce<AsynchronousProducer>(
+    {
+        topic: "<PRODUCER_TOPIC>",
+        "bootstrap.servers": "<KAFKA_CONNECTION_URL>",
+        "security.protocol": "plaintext",
+        "message.max.bytes": 26214400,
+        coder: {
+            fileName: "matic_transfer",
+            packageName: "matictransferpackage",
+            messageType: "MaticTransferBlock",
+        },
+        type: "asynchronous"
+        {
+            emitter: () => {
+                this.produceEvent("<key: string>", "<message: object>");
+            }
+            error: (error: KafkaError | BlockProducerError) => {},
+            closed: () => {} // On broker connection closed
+        }
+    }
+)
 ```
 
 

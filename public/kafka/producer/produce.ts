@@ -72,6 +72,7 @@ export function produce<T>(
         eventProducer.closed.bind(producer);
 
         producer.on("producer.error", eventProducer.error);
+        (producer as BlockProducer).on("blockProducer.fatalError", eventProducer.error);
         producer.on("producer.disconnected", eventProducer.closed);
 
         eventProducer.emitter();
