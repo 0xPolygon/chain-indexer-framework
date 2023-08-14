@@ -4,27 +4,35 @@ import { ErigonBlockProducer } from "./erigon_block_producer.js";
 import { BlockProducer } from "@internal/block_producers/block_producer.js";
 import { IBlockProducerConfig } from "@internal/interfaces/block_producer_config.js";
 
-function getProducer(
+export function produceBlocks(
     config: IBlockProducerConfig
 ): BlockProducer {
     const type = config.type;
     delete config.type;
 
-    if (type === "quicknode") {
-        return new QuickNodeBlockProducer(config);
+    let producer: BlockProducer;
+
+    switch (type) {
+        case "quicknode": {
+            producer = new QuickNodeBlockProducer(config);
+            break;
+        }
+
+        case "erigon": {
+            producer = new ErigonBlockProducer(config);
+            break;
+        }
+
+        case "polling": {
+            producer = new BlockPollerProducer(config);
+            break;
+        }
+
+        default: {
+            throw new Error("Invalid type");
+        }
     }
 
-    if (type === "erigon") {
-        return new ErigonBlockProducer(config);
-    }
-
-    return new BlockPollerProducer(config);
-}
-
-export function produceBlocks(
-    config: IBlockProducerConfig
-): BlockProducer {
-    const producer = getProducer(config);
     producer.start();
     return producer;
 }

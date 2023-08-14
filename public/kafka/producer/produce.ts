@@ -21,7 +21,7 @@ export function produce(
     const type = config.type;
     delete config.type;
 
-    let producer: AsynchronousProducer | SynchronousProducer | null = null;
+    let producer: AsynchronousProducer | SynchronousProducer;
 
     switch (type) {
         case "asynchronous": {
@@ -41,12 +41,14 @@ export function produce(
 
     producer.start();
 
-    if (eventProducer) {
-        producer.on("producer.error", eventProducer.error);
-        producer.on("producer.disconnected", eventProducer.closed);
+    eventProducer.subscribe.bind(producer);
+    eventProducer.error.bind(producer);
+    eventProducer.closed.bind(producer);
 
-        eventProducer.subscribe();
-    }
+    producer.on("producer.error", eventProducer.error);
+    producer.on("producer.disconnected", eventProducer.closed);
+
+    eventProducer.subscribe();
 
     return producer;
 

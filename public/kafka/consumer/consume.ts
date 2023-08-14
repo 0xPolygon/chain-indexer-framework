@@ -16,12 +16,12 @@ import { BaseError } from "@internal/errors/base_error.js";
  * @returns {AsynchronousConsumer | SynchronousConsumer}
  */
 export function consume(
-    config: IConsumerConfig, observer?: IObserver<DeserialisedMessage, BaseError>
+    config: IConsumerConfig, observer: IObserver<DeserialisedMessage, BaseError>
 ): AsynchronousConsumer | SynchronousConsumer {
     const type = config.type;
     delete config.type;
 
-    let consumer: AsynchronousConsumer | SynchronousConsumer | null = null;
+    let consumer: AsynchronousConsumer | SynchronousConsumer;
 
     switch (type) {
         case "asynchronous": {
@@ -39,9 +39,7 @@ export function consume(
         }
     }
 
-    if (observer) {
-        consumer.start(observer);
-    }
+    consumer.start(observer);
 
     return consumer;
 }

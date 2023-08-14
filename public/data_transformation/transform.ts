@@ -21,7 +21,7 @@ export function transform<T, G>(
     const consumerConfig = config.consumerConfig;
     const producerConfig = config.producerConfig;
 
-    let transformer: AsynchronousDataTransformer<T, G> | SynchronousDataTransformer<T, G> | null = null;
+    let transformer: AsynchronousDataTransformer<T, G> | SynchronousDataTransformer<T, G>;
 
     switch (type) {
         case "asynchronous": {
@@ -41,16 +41,15 @@ export function transform<T, G>(
         }
     }
 
+    eventTransformer.error.bind(transformer);
+    eventTransformer.transform.bind(transformer);
+
     //@ts-ignore
     transformer.transform = eventTransformer.transform;
 
-    //@ts-ignore
     transformer.on("dataTransformer.fatalError", eventTransformer.error);
 
-    //@ts-ignore
     transformer.start();
 
-    //@ts-ignore
     return transformer;
-
 }
