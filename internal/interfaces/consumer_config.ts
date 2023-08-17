@@ -1,5 +1,4 @@
-import { ConsumerGlobalConfig } from "node-rdkafka";
-import { ConsumerTopicConfig } from "node-rdkafka";
+import { ConsumerGlobalConfig, ConsumerTopicConfig } from "node-rdkafka";
 import { ICoderConfig } from "./coder_config.js";
 import { IKafkaCoderConfig } from "./kafka_coder_config.js";
 

@@ -31,7 +31,7 @@
     "lint:fix": "npx eslint --fix \"./internal/**/*.ts\" \"./public/**/*.ts\""
   },
   "author": "nitinmittal23",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "publishConfig": {
     "@maticnetwork:registry": "https://npm.pkg.github.com/maticnetwork"
   },

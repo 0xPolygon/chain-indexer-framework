@@ -32,11 +32,10 @@ export class Database {
      * @returns {Promis<boolean>}
      */
     public async connect(): Promise<boolean> {
-        if (this.database.connection.readyState === 1 || this.database.connection.readyState === 2) {
-            return true;
+        if (!(this.database.connection.readyState === 1 || this.database.connection.readyState === 2)) {
+            await this.database.connect(this.url);
         }
 
-        await this.database.connect(this.url);
         return true;
     }
 
@@ -47,11 +46,9 @@ export class Database {
     * @returns {Promise<boolean>}
     */
     public async disconnect(): Promise<boolean> {
-        if (this.database.connection.readyState === 0 || this.database.connection.readyState === 3) {
-            return true;
+        if (!(this.database.connection.readyState === 0 || this.database.connection.readyState === 3)) {
+            await this.database.disconnect();
         }
-
-        await this.database.disconnect();
 
         return true;
     }

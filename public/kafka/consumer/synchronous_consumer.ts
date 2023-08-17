@@ -58,7 +58,7 @@ export class SynchronousConsumer extends InternalSynchronousConsumer {
 
         super(
             topic,
-            coders as IKafkaCoderConfig,
+            coders,
             config
         );
     }

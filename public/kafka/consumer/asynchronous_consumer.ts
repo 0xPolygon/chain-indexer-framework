@@ -58,7 +58,7 @@ export class AsynchronousConsumer extends InternalAsynchronousConsumer {
 
         super(
             topic,
-            coders as IKafkaCoderConfig,
+            coders,
             config
         );
     }
