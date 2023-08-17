@@ -885,4 +885,4 @@ Made with [contributors-img](https://contrib.rocks).
 
 ## License
 
-[UNLICENSED](./LICENSE)
+[MIT](./LICENSE)
