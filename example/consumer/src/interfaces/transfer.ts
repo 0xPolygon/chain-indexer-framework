@@ -4,7 +4,7 @@
  * be saved there for all transfers.
 */
 export interface ITransfer {
-    transactionIndex: Number,
+    transactionIndex: number,
     transactionHash: string,
     transactionInitiator: string,
     tokenAddress: string,
@@ -12,5 +12,5 @@ export interface ITransfer {
     receiverAddress: string,
     amount: string,
     timestamp: Date,
-    blockNumber: Number
+    blockNumber: number
 }

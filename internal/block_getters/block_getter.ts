@@ -62,7 +62,7 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
         }
 
         return this.formatBlockWithTransactions(
-            block as BlockTransactionObject,
+            block,
             transactions
         );
     }

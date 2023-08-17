@@ -66,6 +66,7 @@ export class Queue<T> {
      * @returns {number} - The queue length after clearing. 
      */
     public clear(): number {
-        return this.items.length = 0;
+        this.items.length = 0;
+        return this.items.length;
     }
 }

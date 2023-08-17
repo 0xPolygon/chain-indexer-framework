@@ -336,27 +336,6 @@ export abstract class AbstractConsumer extends noderdkafka.KafkaConsumer {
             // Can alternatively use this.assign();
             this.subscribe(this.topics);
 
-            // if (Object.keys(this.startOffsets).length) {
-            //     await new Promise(r => setTimeout(r, 10000));
-            //     for (let topic of Object.keys(this.startOffsets)) {
-            //         Logger.info(`Seeking offset number: ${this.startOffsets[topic]}, for topic: ${topic}`);
-
-            //         await new Promise(
-            //             (res, rej) => this.seek({
-            //                 topic: topic,
-            //                 offset: this.startOffsets[topic],
-            //                 partition: 0
-            //             }, this.connectionTimeout, (err) => {
-            //                 if (err) {
-            //                     return rej(err);
-            //                 }
-
-            //                 res(undefined);
-            //             })
-            //         );
-            //     }
-            // }
-
             this.consume();
         } catch (error) {
             throw KafkaError.createUnknown(error);
