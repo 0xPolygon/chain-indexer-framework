@@ -129,7 +129,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
         "security.protocol": "plaintext",
         blockSubscriptionTimeout: 120000,
-        type: 'blocks:poller'.
+        type: 'blocks:poller',
         {
             error: (error: KafkaError | BlockProducerError) => {},
             closed: () => {} // On broker connection closed
@@ -211,7 +211,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
         maxRetries: '<MAX_RETRIES>',
         mongoUrl: '<MONGO_DB_URL>',
         "bootstrap.servers": '<KAFKA_CONNECTION_URL>',
-        "security.protocol": "plaintext",
+        "security.protocol": "plaintext"
     })
 
     producer.on("blockProducer.fatalError", (error) => {
@@ -271,7 +271,7 @@ const producer = new SynchronousProducer(
         coder: {
             fileName: "matic_transfer",
             packageName: "matictransferpackage",
-            messageType: "MaticTransferBlock",
+            messageType: "MaticTransferBlock"
         }
     }
 );
@@ -302,11 +302,11 @@ const producer = produce<SynchronousProducer>(
             packageName: "matictransferpackage",
             messageType: "MaticTransferBlock",
         },
-        type: "synchronous" // use 'synchronous'. if synchronous producer is needed,
+        type: "synchronous", // use 'synchronous'. if synchronous producer is needed
         {
             emitter: () => {
                 this.produceEvent("<key: string>", "<message: object>");
-            }
+            },
             error: (error: KafkaError | BlockProducerError) => {},
             closed: () => {} // On broker connection closed
         }
@@ -332,14 +332,7 @@ const producer = new AsynchronousProducer(
         coder: {
             fileName: "matic_transfer",
             packageName: "matictransferpackage",
-            messageType: "MaticTransferBlock",
-        },
-        {
-            emitter: () => {
-                this.produceEvent("<key: string>", "<message: object>");
-            }
-            error: (error: KafkaError | BlockProducerError) => {},
-            closed: () => {} // On broker connection closed
+            messageType: "MaticTransferBlock"
         }
     }
 );
@@ -368,13 +361,13 @@ const producer = produce<AsynchronousProducer>(
         coder: {
             fileName: "matic_transfer",
             packageName: "matictransferpackage",
-            messageType: "MaticTransferBlock",
+            messageType: "MaticTransferBlock"
         },
-        type: "asynchronous"
+        type: "asynchronous",
         {
             emitter: () => {
                 this.produceEvent("<key: string>", "<message: object>");
-            }
+            },
             error: (error: KafkaError | BlockProducerError) => {},
             closed: () => {} // On broker connection closed
         }
@@ -480,7 +473,7 @@ const consumer = new SynchronousConsumer(
         coders: {
             fileName: "block",
             packageName: "blockpackage",
-            messageType: "Block",
+            messageType: "Block"
         }
     }
 );
@@ -508,7 +501,7 @@ consume(
         "coderConfig": {
             fileName: "block",
             packageName: "blockpackage",
-            messageType: "Block",
+            messageType: "Block"
         },
         type: 'synchronous'
     },
@@ -541,7 +534,7 @@ const consumer = new AsynchronousConsumer(
         coders: {
             fileName: "block",
             packageName: "blockpackage",
-            messageType: "Block",
+            messageType: "Block"
         }
     }
 );
@@ -647,7 +640,7 @@ const consumerConfig = {
         packageName: "blockpackage",
         messageType: "Block",
     },
-    type: "synchronous",
+    type: "synchronous"
 };
 
 // Start consuming messages from the Kafka topic.
@@ -666,7 +659,7 @@ consume(consumerConfig, {
     closed: () => {
         Logger.info(`Subscription is ended.`);
         throw new Error("Consumer stopped.");
-    },
+    }
 });
 
 
@@ -736,7 +729,7 @@ const loggerConfig = {
     },
     winston: {
         // Any additional Winston configuration options can be provided here
-    },
+    }
 };
 
 // Create the singleton logger instance with the specified configuration
