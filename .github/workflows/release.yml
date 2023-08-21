@@ -1,0 +1,42 @@
+name: NPM Release Workflow
+run-name: ${{ github.actor }} just pushed to Chainflow
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  Deployment:
+    name: Publish Chainflow
+    runs-on: ubuntu-latest
+    env: 
+      working-directory: ./
+    permissions:
+    contents: read
+    packages: write
+    steps:
+      - name: CHECK-OUT GIT REPOSITORY
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Use Node.js
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@maticnetwork'
+
+      - name: Create Release
+        run: npm run release
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Create GitHub Release
+        run: gh release create v${{ cat package.json | jq -r .version }} -F CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
