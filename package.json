@@ -33,9 +33,6 @@
   },
   "author": "nitinmittal23",
   "license": "MIT",
-  "publishConfig": {
-    "@maticnetwork:registry": "https://npm.pkg.github.com/maticnetwork"
-  },
   "files": [
     "./dist/**"
   ],
