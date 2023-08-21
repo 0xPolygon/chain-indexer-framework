@@ -1,5 +1,4 @@
 name: NPM Release Workflow
-run-name: ${{ github.actor }} just pushed to Chainflow
 
 on:
   push:
@@ -36,7 +35,11 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+      - name: Extract Package Version
+        id: extract_version
+        run: echo ::set-output name=version::$(node -p "require('./package.json').version")
+
       - name: Create GitHub Release
-        run: gh release create v${{ cat package.json | jq -r .version }} -F CHANGELOG.md
+        run: gh release create v${{ steps.extract_version.outputs.version }} -F CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
