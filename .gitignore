@@ -14,6 +14,3 @@ package-lock.json
 *.key
 *.cert
 pids/
-
-#packages/services/producers/ethereum/taskdef
-#Dockerfile.ethereum-producer

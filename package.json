@@ -29,7 +29,7 @@
     "copy-proto": "cp -R ./schemas/ ./dist/schemas",
     "lint": "npx eslint \"./internal/**/*.ts\" \"./public/**/*.ts\"",
     "lint:fix": "npx eslint --fix \"./internal/**/*.ts\" \"./public/**/*.ts\"",
-    "release": "standard-version && gh release create v$(cat package.json | jq -r .version) -F CHANGELOG.md"
+    "release": "standard-version"
   },
   "author": "nitinmittal23",
   "license": "MIT",
