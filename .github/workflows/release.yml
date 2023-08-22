@@ -1,8 +1,9 @@
-name: NPM Release Workflow
+name: NPM Semantic Release
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   Deployment:
@@ -26,19 +27,14 @@ jobs:
           node-version: '18.x'
           registry-url: 'https://npm.pkg.github.com'
 
-      - name: Create Release
-        run: npm run release
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build
+        run: npm run build
 
-      - name: Publish to npm
-        run: npm publish
+      - name: Run semantic-release
+        run: npx semantic-release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-
-      - name: Extract Package Version
-        id: extract_version
-        run: echo ::set-output name=version::$(node -p "require('./package.json').version")
-
-      - name: Create GitHub Release
-        run: gh release create v${{ steps.extract_version.outputs.version }} -F CHANGELOG.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

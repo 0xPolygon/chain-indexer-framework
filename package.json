@@ -28,8 +28,7 @@
     "build:link": "npm run build && npm link",
     "copy-proto": "cp -R ./schemas/ ./dist/schemas",
     "lint": "npx eslint \"./internal/**/*.ts\" \"./public/**/*.ts\"",
-    "lint:fix": "npx eslint --fix \"./internal/**/*.ts\" \"./public/**/*.ts\"",
-    "release": "standard-version"
+    "lint:fix": "npx eslint --fix \"./internal/**/*.ts\" \"./public/**/*.ts\""
   },
   "author": "nitinmittal23",
   "license": "MIT",
@@ -66,24 +65,39 @@
   "devDependencies": {
     "@babel/preset-env": "^7.19.1",
     "@babel/preset-typescript": "^7.18.6",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.0.4",
+    "@semantic-release/npm": "^10.0.5",
+    "semantic-release": "^21.0.9",
     "@types/jest": "^29.0.3",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^6.2.1",
     "babel-plugin-transform-import-meta": "^2.2.0",
-    "commitizen": "^4.3.0",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.24.0",
-    "gh": "^2.8.9",
     "jest": "^29.0.3",
-    "standard-version": "^9.5.0",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.7",
     "typescript": "^4.9.5"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+  "release": {
+    "tagFormat": "${version}",
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/github",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "message": ":bookmark: chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
+        }
+      ]
+    ]
   }
 }
