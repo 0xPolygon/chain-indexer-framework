@@ -1,5 +1,4 @@
 import { AsynchronousConsumer as InternalAsynchronousConsumer } from "@internal/kafka/consumer/asynchronous_consumer.js";
-import { IKafkaCoderConfig } from "@internal/interfaces/kafka_coder_config.js";
 import { IConsumerConfig } from "@internal/interfaces/consumer_config.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
 import { ICoderConfig } from "@internal/interfaces/coder_config.js";
