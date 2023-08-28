@@ -59,7 +59,9 @@ export class SynchronousProducer extends AbstractProducer {
         timestamp?: number
     ): Promise<DeliveryReport | KafkaError> {
         return new Promise(async (resolve, reject) => {
-            let deliveryListener: (error: LibrdKafkaError, report: DeliveryReport) => void = () => { };
+            // @ts-ignore
+            let deliveryListener: (error: LibrdKafkaError, report: DeliveryReport) => void;
+
             try {
                 const identifier = { time: Date.now() };
                 const timer = setTimeout(() => {
@@ -88,7 +90,9 @@ export class SynchronousProducer extends AbstractProducer {
                         return;
                     }
                 };
+
                 this.on("delivery-report", deliveryListener);
+                
                 await this.sendToInternalProducer(
                     key,
                     message,
@@ -102,7 +106,10 @@ export class SynchronousProducer extends AbstractProducer {
                     this.poll();
                 }, 100);
             } catch (error) {
-                this.removeListener("delivery-report", deliveryListener);
+                // @ts-ignore
+                if (deliveryListener) {
+                    this.removeListener("delivery-report", deliveryListener);
+                }
 
                 throw KafkaError.createUnknown(error);
             }
