@@ -106,6 +106,7 @@ export class SynchronousProducer extends AbstractProducer {
                     this.poll();
                 }, 100);
             } catch (error) {
+                // @ts-ignore
                 if (deliveryListener) {
                     this.removeListener("delivery-report", deliveryListener);
                 }
