@@ -59,7 +59,8 @@ export class SynchronousProducer extends AbstractProducer {
         timestamp?: number
     ): Promise<DeliveryReport | KafkaError> {
         return new Promise(async (resolve, reject) => {
-            let deliveryListener: (error: LibrdKafkaError, report: DeliveryReport) => void = () => { };
+            let deliveryListener: (error: LibrdKafkaError, report: DeliveryReport) => void;
+            
             try {
                 const identifier = { time: Date.now() };
                 const timer = setTimeout(() => {
