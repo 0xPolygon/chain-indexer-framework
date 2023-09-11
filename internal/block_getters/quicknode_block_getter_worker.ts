@@ -25,7 +25,24 @@ const blockGetter = new QuickNodeBlockGetter(
             }
         )
     ),
-    workerData.maxRetries
+    workerData.maxRetries,
+    //@ts-ignore
+    new EthClass(
+        //@ts-ignore
+        new EthClass.providers.WebsocketProvider(
+            workerData.alternateEndpoint,
+            {
+                reconnect: {
+                    auto: true
+                },
+                clientConfig: {
+                    maxReceivedFrameSize: 1000000000,
+                    maxReceivedMessageSize: 1000000000,
+                },
+                timeout: 45000
+            }
+        )
+    ),
 );
 
 parentPort.on("message", async (message: {

@@ -34,7 +34,7 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
     private lastEmittedBlock?: {
         number: number,
         hash: string
-    };
+    }
 
     /**
      * @constructor
@@ -42,7 +42,7 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
      * @param {Eth} eth - Eth module from web3.js
      * @param {number} timeout - Timeout for which if there has been no event, connection must be restarted. 
      */
-    constructor(private eth: Eth, private timeout: number = 60000) {
+    constructor(private eth: Eth, private timeout: number = 60000, private blockDelay: number = 0) {
         super();
     }
 
@@ -59,11 +59,14 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
      */
     public async subscribe(observer: IObserver<IBlock, BlockProducerError>, startBlock: number): Promise<void> {
         try {
+
+            this.lastFinalizedBlock = this.blockDelay > 0
+                                        ? (await this.eth.getBlock('latest')).number - this.blockDelay 
+                                        : (await this.eth.getBlock('finalized')).number;
             //Clear any previously existing queue
             this.clear();
             this.observer = observer;
             this.fatalError = false;
-            this.lastFinalizedBlock = (await this.eth.getBlock("finalized")).number;
             this.nextBlock = startBlock;
             this.lastBlockHash = "";
             this.lastReceivedBlockNumber = startBlock - 1;

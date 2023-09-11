@@ -14,7 +14,7 @@ import Eth from "web3-eth";
  *  
  */
 export class QuickNodeBlockProducer extends BlockProducer {
-    
+
     /**
      * @constructor
      * 
@@ -30,6 +30,8 @@ export class QuickNodeBlockProducer extends BlockProducer {
         const maxReOrgDepth = config.maxReOrgDepth || 0;
         const maxRetries = config.maxRetries || 0;
         const blockSubscriptionTimeout = config.blockSubscriptionTimeout;
+        const blockDelay = config.blockDelay || 0;
+        const alternateEndpoint = config.alternateEndpoint;
 
         // Has to be done or Kafka complains later
         delete config.rpcWsEndpoints;
@@ -38,6 +40,8 @@ export class QuickNodeBlockProducer extends BlockProducer {
         delete config.maxReOrgDepth;
         delete config.maxRetries;
         delete config.blockSubscriptionTimeout;
+        delete config.blockDelay;
+        delete config.alternateEndpoint;
 
         //@ts-ignore
         const eth = new Eth(
@@ -67,7 +71,9 @@ export class QuickNodeBlockProducer extends BlockProducer {
                 endpoints,
                 maxRetries,
                 "quicknode_block_getter",
-                blockSubscriptionTimeout
+                blockSubscriptionTimeout,
+                blockDelay,
+                alternateEndpoint
             ),
             new BlockGetter(eth, maxRetries),
             database,
@@ -79,6 +85,6 @@ export class QuickNodeBlockProducer extends BlockProducer {
             startBlock,
             maxReOrgDepth
         );
-        
+
     }
 }

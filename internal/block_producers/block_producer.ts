@@ -260,10 +260,16 @@ export class BlockProducer extends AsynchronousProducer {
 
         try {
             while (!this.mongoInsertQueue.isEmpty()) {
-                await this.addBlockToMongo(
-                    this.mongoInsertQueue.front() as IProducedBlock
-                );
-                this.mongoInsertQueue.shift();
+                const queueLength = this.mongoInsertQueue.getLength();
+                if (queueLength > this.maxReOrgDepth) {
+                    await this.addBlockToMongo(
+                        this.mongoInsertQueue.shiftByN(queueLength - this.maxReOrgDepth) as IProducedBlock
+                    )
+                } else {
+                    await this.addBlockToMongo(
+                        this.mongoInsertQueue.shift() as IProducedBlock
+                    )
+                }
             }
         } catch (error) {
             Logger.error(error as object);

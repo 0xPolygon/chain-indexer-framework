@@ -30,9 +30,11 @@ export class BlockSubscription extends AbstractBlockSubscription {
         protected rpcWsEndpoints: string[] = [],
         protected maxRetries: number = 0,
         private blockGetterType: "quicknode_block_getter" | "erigon_block_getter" | "block_getter" = "block_getter",
-        timeout?: number
+        timeout?: number,
+        blockDelay?: number,
+        protected alternateEndpoint?: string
     ) {
-        super(eth, timeout);
+        super(eth, timeout, blockDelay);
 
         this.setWorkers();
     }
@@ -45,6 +47,7 @@ export class BlockSubscription extends AbstractBlockSubscription {
     private setWorkers(): void {
         const workers: Worker[] = [];
         const workerPath: string = createRequire(import.meta.url).resolve(`../block_getters/${this.blockGetterType}_worker`);
+
         if (!this.rpcWsEndpoints.length) {
             //TODO - throw error if no rpc
             return;
@@ -53,7 +56,8 @@ export class BlockSubscription extends AbstractBlockSubscription {
         for (let i = 0; i < this.rpcWsEndpoints.length; i++) {
             const workerData = {
                 endpoint: this.rpcWsEndpoints[i],
-                maxRetries: this.maxRetries
+                maxRetries: this.maxRetries,
+                alternateEndpoint: this.alternateEndpoint ? this.alternateEndpoint : undefined
             };
 
             const worker = new Worker(
@@ -207,6 +211,17 @@ export class BlockSubscription extends AbstractBlockSubscription {
         this.enqueue(
             blockPromise
         );
+
+        // this part limit the queue length to 2500 and keep on waiting 5 seconds if
+        // the length is more than 2500
+        if (this.getLength() >= 2500) {
+            for (let i = 0; i < 1;) {
+                await new Promise(r => setTimeout(r, 5000));
+                if (this.getLength() < 2500) {
+                    break;
+                }
+            }
+        }
 
         try {
             await blockPromise;

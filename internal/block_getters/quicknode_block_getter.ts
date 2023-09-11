@@ -5,6 +5,7 @@ import { ITransaction } from "../interfaces/transaction.js";
 import { IBlock } from "../interfaces/block.js";
 import { IBlockGetter } from "../interfaces/block_getter.js";
 import { BlockGetter } from "./block_getter.js";
+import { Eth } from "web3-eth";
 
 /**
  * A wrapper class on web3 to get blocks from quicknode and format them.
@@ -12,6 +13,16 @@ import { BlockGetter } from "./block_getter.js";
  * @author - Vibhu Rajeev
  */
 export class QuickNodeBlockGetter extends BlockGetter implements IBlockGetter {
+
+    /**
+     * @param {Eth} eth - Eth module from web3.js
+     * @param {number} maxRetries - The number of times to retry on errors.
+     *
+     * @constructor
+     */
+    constructor(eth: Eth, maxRetries: number = 0, private alternateEth?: Eth) {
+        super(eth, maxRetries);
+    }
 
     /**
      * @async
@@ -28,12 +39,17 @@ export class QuickNodeBlockGetter extends BlockGetter implements IBlockGetter {
             const response: IQuickNodeResponse = await new Promise((resolve, reject) => {
                 const timeout = setTimeout(() => {
                     reject(new Error(`Request timed out for block: ${blockNumber}`));
-                }, 45000);
-                
-                (this.eth.currentProvider as WebsocketProvider).send({
+                }, 4000);
+
+                let eth: Eth = this.eth;
+                if (retryCount > 0 && this.alternateEth) {
+                    eth = this.alternateEth;
+                }
+
+                (eth.currentProvider as WebsocketProvider).send({
                     method: "qn_getBlockWithReceipts",
                     id: Date.now().toString() + blockNumber,
-                    params: [ utils.numberToHex(blockNumber) ],
+                    params: [utils.numberToHex(blockNumber)],
                     jsonrpc: "2.0"
                 }, (error, response) => {
                     if (error) {
@@ -57,7 +73,7 @@ export class QuickNodeBlockGetter extends BlockGetter implements IBlockGetter {
                     await this.getTransactionReceipt(transactionObject.hash)
                 ));
             }
-            
+
             return this.formatRawBlock(
                 response.block,
                 transactions
