@@ -2,8 +2,7 @@ name: NPM Semantic Release
 
 on:
   push:
-    branches:
-      - main
+    branches: ['main']
 
 jobs:
   Deployment:
@@ -22,7 +21,7 @@ jobs:
           fetch-depth: 0
 
       - name: Use Node.js
-      - uses: actions/setup-node@v3
+        uses: actions/setup-node@v3
         with:
           node-version: '18.x'
           registry-url: 'https://npm.pkg.github.com'
