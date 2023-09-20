@@ -1,5 +1,5 @@
 # Producer
-The Producer package exemplifies the producer layer of Chainflow. It fetches blockchain data from Ethereum and produces it to a Kafka topic.
+The Producer package exemplifies the producer layer of Chain Indexer Framework. It fetches blockchain data from Ethereum and produces it to a Kafka topic.
 
 ## How to Use
 Note: Make sure you are inside the example/producer folder.
@@ -56,4 +56,4 @@ If you encounter permission issues, run the command using `sudo`.
     npm run link:lib
     ```
     
-This documentation clarifies the setup and usage of the Producer package in the Chainflow project, making it easier for developers to integrate the package into their applications or utilize it for debugging and testing purposes.
+This documentation clarifies the setup and usage of the Producer package in the Chain Indexer Framework project, making it easier for developers to integrate the package into their applications or utilize it for debugging and testing purposes.

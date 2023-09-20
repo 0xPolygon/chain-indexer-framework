@@ -1,6 +1,6 @@
 # Matic-transfers
 
-Matic-transfers is an exemplary project that showcases the usage of Chainflow to index all MATIC transfers occurring on the Ethereum blockchain.
+Matic-transfers is an exemplary project that showcases the usage of Chain Indexer Framework to index all MATIC transfers occurring on the Ethereum blockchain.
 
 ## Overview
 The project consists of three distinct packages, each serving a specific function:
@@ -11,7 +11,7 @@ The project consists of three distinct packages, each serving a specific functio
 
 3. **Consumers**: Consumers are responsible for subscribing to the event-specific Kafka stream and persisting the data into a database. Additionally, they expose endpoints that allow clients to retrieve the data according to their specific requirements.
 
-The Matic-transfers project serves as a useful reference for understanding how Chainflow can be effectively utilized to manage and process blockchain data efficiently.
+The Matic-transfers project serves as a useful reference for understanding how Chain Indexer Framework can be effectively utilized to manage and process blockchain data efficiently.
 
 
 ## How to Build

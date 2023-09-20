@@ -1,7 +1,7 @@
-import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
-import { Logger } from "@maticnetwork/chainflow/logger";
+import { produce } from "@maticnetwork/chain-indexer-framework/kafka/producer/produce";
+import { Logger } from "@maticnetwork/chain-indexer-framework/logger";
 import dotenv from 'dotenv';
-import { ErigonBlockProducer } from "@maticnetwork/chainflow/block_producers/erigon_block_producer";
+import { ErigonBlockProducer } from "@maticnetwork/chain-indexer-framework/block_producers/erigon_block_producer";
 
 dotenv.config();
 Logger.create({

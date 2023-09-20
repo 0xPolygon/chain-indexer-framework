@@ -1,4 +1,4 @@
-import { Database } from "@maticnetwork/chainflow/mongo/database";
+import { Database } from "@maticnetwork/chain-indexer-framework/mongo/database";
 import { Model, Schema } from "mongoose";
 import { ITransfer } from "../interfaces/transfer.js";
 import statics from "../interfaces/transfer_methods.js";

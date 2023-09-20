@@ -1,4 +1,4 @@
-import { Logger } from "@maticnetwork/chainflow/logger";
+import { Logger } from "@maticnetwork/chain-indexer-framework/logger";
 import { Model } from "mongoose";
 import { ITransfer } from "../interfaces/transfer.js";
 

@@ -1,5 +1,5 @@
-import { Logger } from "@maticnetwork/chainflow/logger";
-import { BlockProducerError } from "@maticnetwork/chainflow/errors/block_producer_error";
+import { Logger } from "@maticnetwork/chain-indexer-framework/logger";
+import { BlockProducerError } from "@maticnetwork/chain-indexer-framework/errors/block_producer_error";
 import startTransforming from "./matic_transfer_data_transformer.js";
 import { MaticTransferMapper } from "./mappers/matic_transfer_mapper.js";
 import dotenv from 'dotenv';

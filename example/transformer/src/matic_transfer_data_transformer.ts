@@ -1,10 +1,10 @@
-import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
-import { ITransaction } from "@maticnetwork/chainflow/interfaces/transaction";
-import { IBlock } from "@maticnetwork/chainflow/interfaces/block";
-import { Logger } from "@maticnetwork/chainflow/logger";
-import { IConsumerConfig } from "@maticnetwork/chainflow/interfaces/consumer_config";
-import { IProducerConfig } from "@maticnetwork/chainflow/interfaces/producer_config";
-import { transform } from "@maticnetwork/chainflow/data_transformation/transform";
+import { ITransformedBlock } from "@maticnetwork/chain-indexer-framework/interfaces/transformed_block";
+import { ITransaction } from "@maticnetwork/chain-indexer-framework/interfaces/transaction";
+import { IBlock } from "@maticnetwork/chain-indexer-framework/interfaces/block";
+import { Logger } from "@maticnetwork/chain-indexer-framework/logger";
+import { IConsumerConfig } from "@maticnetwork/chain-indexer-framework/interfaces/consumer_config";
+import { IProducerConfig } from "@maticnetwork/chain-indexer-framework/interfaces/producer_config";
+import { transform } from "@maticnetwork/chain-indexer-framework/data_transformation/transform";
 import IMaticTransferTx from "./interfaces/matic_transfer_tx.js";
 import { MaticTransferMapper } from "./mappers/matic_transfer_mapper.js";
 

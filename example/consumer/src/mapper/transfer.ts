@@ -1,5 +1,5 @@
-import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
-import { Logger } from "@maticnetwork/chainflow/logger";
+import { ITransformedBlock } from "@maticnetwork/chain-indexer-framework/interfaces/transformed_block";
+import { Logger } from "@maticnetwork/chain-indexer-framework/logger";
 import IMaticTransferTx from "../interfaces/matic_transfer_tx.js";
 import { ITransfer } from "../interfaces/transfer.js";
 

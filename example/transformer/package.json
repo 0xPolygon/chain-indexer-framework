@@ -13,13 +13,13 @@
         "build": "tsc && npm run copy-proto",
         "copy-proto": "cp -R ./src/schemas/ ./dist/schemas",
         "start": "node --experimental-import-meta-resolve --trace-warnings dist/index.js",
-        "link:lib": "npm link @maticnetwork/chainflow",
+        "link:lib": "npm link @maticnetwork/chain-indexer-framework",
         "link:lib:build": "npm run link:lib && npm run build"
     },
     "author": "nitinmittal23",
     "license": "UNLICENSED",
     "dependencies": {
-        "@maticnetwork/chainflow": "^1.0.0",
+        "@maticnetwork/chain-indexer-framework": "^1.0.0",
         "dotenv": "^16.0.3",
         "long": "^5.2.1",
         "path": "^0.12.7",

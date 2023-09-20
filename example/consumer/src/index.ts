@@ -1,5 +1,5 @@
-import { Database } from "@maticnetwork/chainflow/mongo/database";
-import { Logger } from "@maticnetwork/chainflow/logger";
+import { Database } from "@maticnetwork/chain-indexer-framework/mongo/database";
+import { Logger } from "@maticnetwork/chain-indexer-framework/logger";
 
 import TransferMapper from "./mapper/transfer.js";
 import TransferService from "./services/transfer.js";

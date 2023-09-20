@@ -61,6 +61,6 @@ If you encounter permission issues, run the command using `sudo`.
     npm run link:lib
     ```
     
-This documentation clarifies the setup and usage of the Consumer package in the Chainflow project, making it easier for developers to integrate the package into their applications or utilize it for debugging and testing purposes.
+This documentation clarifies the setup and usage of the Consumer package in the Chain Indexer Framework project, making it easier for developers to integrate the package into their applications or utilize it for debugging and testing purposes.
 
     

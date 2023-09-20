@@ -1,12 +1,12 @@
 import { MaticTransferMapper } from "../../dist/mappers/matic_transfer_mapper.js";
 import ethereumFullBlock from "../mock_data/ethereum_full_block.json";
 import maticTransfer from "../mock_data/matic_transfer.json";
-import { ABICoder } from "@maticnetwork/chainflow/coder/abi_coder";
-import { BloomFilter } from "@maticnetwork/chainflow/filter";
+import { ABICoder } from "@maticnetwork/chain-indexer-framework/coder/abi_coder";
+import { BloomFilter } from "@maticnetwork/chain-indexer-framework/filter";
 import utils from "web3-utils";
 
-jest.mock("@maticnetwork/chainflow/coder/abi_coder");
-jest.mock("@maticnetwork/chainflow/filter");
+jest.mock("@maticnetwork/chain-indexer-framework/coder/abi_coder");
+jest.mock("@maticnetwork/chain-indexer-framework/filter");
 jest.mock("web3-utils");
 
 describe("MaticTransferMapper", () => {

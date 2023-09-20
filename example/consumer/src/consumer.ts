@@ -1,7 +1,7 @@
-import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
-import { DeserialisedMessage } from "@maticnetwork/chainflow/interfaces/deserialised_kafka_message";
-import { consume } from "@maticnetwork/chainflow/kafka/consumer/consume";
-import { Logger } from "@maticnetwork/chainflow/logger";
+import { ITransformedBlock } from "@maticnetwork/chain-indexer-framework/interfaces/transformed_block";
+import { DeserialisedMessage } from "@maticnetwork/chain-indexer-framework/interfaces/deserialised_kafka_message";
+import { consume } from "@maticnetwork/chain-indexer-framework/kafka/consumer/consume";
+import { Logger } from "@maticnetwork/chain-indexer-framework/logger";
 
 import TransferService from "./services/transfer.js";
 import TransferMapper from "./mapper/transfer.js";

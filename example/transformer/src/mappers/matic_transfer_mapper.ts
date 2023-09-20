@@ -1,7 +1,7 @@
-import { ITransaction } from "@maticnetwork/chainflow/interfaces/transaction";
-import { IMapper } from "@maticnetwork/chainflow/interfaces/mapper";
-import { ABICoder } from "@maticnetwork/chainflow/coder/abi_coder";
-import { BloomFilter } from "@maticnetwork/chainflow/filter";
+import { ITransaction } from "@maticnetwork/chain-indexer-framework/interfaces/transaction";
+import { IMapper } from "@maticnetwork/chain-indexer-framework/interfaces/mapper";
+import { ABICoder } from "@maticnetwork/chain-indexer-framework/coder/abi_coder";
+import { BloomFilter } from "@maticnetwork/chain-indexer-framework/filter";
 import utils from "web3-utils";
 import IMaticTransferTx from "../interfaces/matic_transfer_tx.js";
 

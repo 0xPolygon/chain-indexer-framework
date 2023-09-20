@@ -7,7 +7,7 @@ on:
 
 jobs:
   Deployment:
-    name: Publish Chainflow
+    name: Publish Chain Indexer Framework
     runs-on: ubuntu-latest
     env: 
       working-directory: ./
