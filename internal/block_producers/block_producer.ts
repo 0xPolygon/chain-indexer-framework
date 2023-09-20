@@ -264,11 +264,11 @@ export class BlockProducer extends AsynchronousProducer {
                 if (queueLength > this.maxReOrgDepth) {
                     await this.addBlockToMongo(
                         this.mongoInsertQueue.shiftByN(queueLength - this.maxReOrgDepth) as IProducedBlock
-                    )
+                    );
                 } else {
                     await this.addBlockToMongo(
                         this.mongoInsertQueue.shift() as IProducedBlock
-                    )
+                    );
                 }
             }
         } catch (error) {

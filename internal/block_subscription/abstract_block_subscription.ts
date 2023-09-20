@@ -34,7 +34,7 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
     private lastEmittedBlock?: {
         number: number,
         hash: string
-    }
+    };
 
     /**
      * @constructor
@@ -61,8 +61,8 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
         try {
 
             this.lastFinalizedBlock = this.blockDelay > 0
-                                        ? (await this.eth.getBlock('latest')).number - this.blockDelay 
-                                        : (await this.eth.getBlock('finalized')).number;
+                                        ? (await this.eth.getBlock("latest")).number - this.blockDelay 
+                                        : (await this.eth.getBlock("finalized")).number;
             //Clear any previously existing queue
             this.clear();
             this.observer = observer;
