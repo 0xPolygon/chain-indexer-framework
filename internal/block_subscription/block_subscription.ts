@@ -24,6 +24,9 @@ export class BlockSubscription extends AbstractBlockSubscription {
      * @param {number} maxRetries - Number of times to retry on failure before emitting an error.
      * @param {"quicknode_block_getter" | "erigon_block_getter" | "block_getter"} blockGetterType - The type of block getter to be used for this subscription.
      * @param {number} timeout - Timeout for which if there has been no event, connection must be restarted.
+     * @param {number} blockDelay - Block delay for chains not having safe blocks
+     * @param {number} alternateEndpoint - alternate endpoint which will be used when the logic to fetch transactions fails
+     * @param {number} rpcTimeout - time to wait before retrying again
      */
     constructor(
         eth: Eth,
@@ -32,7 +35,8 @@ export class BlockSubscription extends AbstractBlockSubscription {
         private blockGetterType: "quicknode_block_getter" | "erigon_block_getter" | "block_getter" = "block_getter",
         timeout?: number,
         blockDelay?: number,
-        protected alternateEndpoint?: string
+        protected alternateEndpoint?: string,
+        protected rpcTimeout?: number
     ) {
         super(eth, timeout, blockDelay);
 
@@ -57,7 +61,8 @@ export class BlockSubscription extends AbstractBlockSubscription {
             const workerData = {
                 endpoint: this.rpcWsEndpoints[i],
                 maxRetries: this.maxRetries,
-                alternateEndpoint: this.alternateEndpoint ? this.alternateEndpoint : undefined
+                alternateEndpoint: this.alternateEndpoint ? this.alternateEndpoint : undefined,
+                rpcTimeout: this.rpcTimeout 
             };
 
             const worker = new Worker(

@@ -43,6 +43,7 @@ const blockGetter = new QuickNodeBlockGetter(
             }
         )
     ),
+    workerData.rpcTimeout
 );
 
 parentPort.on("message", async (message: {

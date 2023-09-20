@@ -9,5 +9,6 @@ export interface IBlockProducerConfig extends IProducerConfig {
     blockPollingTimeout?: number, 
     blockSubscriptionTimeout?: number,
     blockDelay?: number,
-    alternateEndpoint?: string
+    alternateEndpoint?: string,
+    rpcTimeout?: number
 }

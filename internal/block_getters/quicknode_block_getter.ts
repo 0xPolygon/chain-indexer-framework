@@ -20,7 +20,7 @@ export class QuickNodeBlockGetter extends BlockGetter implements IBlockGetter {
      *
      * @constructor
      */
-    constructor(eth: Eth, maxRetries: number = 0, private alternateEth?: Eth) {
+    constructor(eth: Eth, maxRetries: number = 0, private alternateEth?: Eth, private rpcTimeout?: number) {
         super(eth, maxRetries);
     }
 
@@ -39,7 +39,7 @@ export class QuickNodeBlockGetter extends BlockGetter implements IBlockGetter {
             const response: IQuickNodeResponse = await new Promise((resolve, reject) => {
                 const timeout = setTimeout(() => {
                     reject(new Error(`Request timed out for block: ${blockNumber}`));
-                }, 4000);
+                }, this.rpcTimeout || 4000);
 
                 let eth: Eth = this.eth;
                 if (retryCount > 0 && this.alternateEth) {

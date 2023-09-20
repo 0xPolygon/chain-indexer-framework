@@ -141,6 +141,7 @@ describe("Block Producer", () => {
             "quicknode_block_getter", 
             60000,
             0,
+            undefined,
             undefined
         );
     });

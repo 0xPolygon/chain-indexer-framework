@@ -32,6 +32,7 @@ export class QuickNodeBlockProducer extends BlockProducer {
         const blockSubscriptionTimeout = config.blockSubscriptionTimeout;
         const blockDelay = config.blockDelay || 0;
         const alternateEndpoint = config.alternateEndpoint;
+        const rpcTimeout = config.rpcTimeout;
 
         // Has to be done or Kafka complains later
         delete config.rpcWsEndpoints;
@@ -42,6 +43,8 @@ export class QuickNodeBlockProducer extends BlockProducer {
         delete config.blockSubscriptionTimeout;
         delete config.blockDelay;
         delete config.alternateEndpoint;
+        delete config.rpcTimeout;
+
 
         //@ts-ignore
         const eth = new Eth(
@@ -73,7 +76,8 @@ export class QuickNodeBlockProducer extends BlockProducer {
                 "quicknode_block_getter",
                 blockSubscriptionTimeout,
                 blockDelay,
-                alternateEndpoint
+                alternateEndpoint,
+                rpcTimeout
             ),
             new BlockGetter(eth, maxRetries),
             database,
