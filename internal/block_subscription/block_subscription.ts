@@ -30,9 +30,10 @@ export class BlockSubscription extends AbstractBlockSubscription {
         protected rpcWsEndpoints: string[] = [],
         protected maxRetries: number = 0,
         private blockGetterType: "quicknode_block_getter" | "erigon_block_getter" | "block_getter" = "block_getter",
-        timeout?: number
+        timeout?: number,
+        blockDelay?: number,
     ) {
-        super(eth, timeout);
+        super(eth, timeout, blockDelay);
 
         this.setWorkers();
     }

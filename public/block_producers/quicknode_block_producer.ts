@@ -3,7 +3,7 @@ import { IProducedBlock, ProducedBlocksModel, IProducedBlocksModel } from "@inte
 import { BlockSubscription } from "@internal/block_subscription/block_subscription.js";
 import { IBlockProducerConfig } from "@internal/interfaces/block_producer_config.js";
 import { IProducerConfig } from "@internal/interfaces/producer_config.js";
-import { BlockGetter } from "@internal/block_getters/block_getter.js";
+import { QuickNodeBlockGetter } from "@internal/block_getters/quicknode_block_getter.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
 import { Database } from "@internal/mongo/database.js";
 import Eth from "web3-eth";
@@ -29,6 +29,7 @@ export class QuickNodeBlockProducer extends BlockProducer {
         const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-flow";
         const maxReOrgDepth = config.maxReOrgDepth || 0;
         const maxRetries = config.maxRetries || 0;
+        const blockDelay = config.blockDelay || 0;
         const blockSubscriptionTimeout = config.blockSubscriptionTimeout;
 
         // Has to be done or Kafka complains later
@@ -37,6 +38,7 @@ export class QuickNodeBlockProducer extends BlockProducer {
         delete config.mongoUrl;
         delete config.maxReOrgDepth;
         delete config.maxRetries;
+        delete config.blockDelay;
         delete config.blockSubscriptionTimeout;
 
         //@ts-ignore
@@ -67,9 +69,10 @@ export class QuickNodeBlockProducer extends BlockProducer {
                 endpoints,
                 maxRetries,
                 "quicknode_block_getter",
-                blockSubscriptionTimeout
+                blockSubscriptionTimeout,
+                blockDelay
             ),
-            new BlockGetter(eth, maxRetries),
+            new QuickNodeBlockGetter(eth, maxRetries),
             database,
             database.model<IProducedBlock, IProducedBlocksModel<IProducedBlock>>(
                 "ProducedBlocks",

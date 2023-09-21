@@ -8,4 +8,5 @@ export interface IBlockProducerConfig extends IProducerConfig {
     maxRetries?: number,
     blockPollingTimeout?: number, 
     blockSubscriptionTimeout?: number,
+    blockDelay?: number
 }

@@ -139,7 +139,8 @@ describe("Block Producer", () => {
             ["rpc.com", "rpc2.com"],
             0,
             "quicknode_block_getter", 
-            60000
+            60000,
+            0
         );
     });
 

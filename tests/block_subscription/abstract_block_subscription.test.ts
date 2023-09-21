@@ -62,13 +62,27 @@ describe("Abstract Block Subscription", () => {
             subscriber.unsubscribe();
         });
 
-        test("Must call get block to determine if backfilling is required", async () => {
+        test("Must call get block(finalized) to determine if backfilling is required", async () => {
             mockedEthObject.getBlock.mockResolvedValueOnce({ number: 0 } as BlockTransactionObject);
             expect(
                 await subscriber.subscribe(observer, 0)
             ).toEqual(undefined);
 
             expect(mockedEthObject.getBlock).toBeCalledWith("finalized");
+        });
+
+        test("Must call get block(latest) to determine if backfilling is required and if block delay is greater than 0", async () => {
+            subscriber = new BlockSubscription(
+                mockedEthObject,
+                60000,
+                256
+            );
+            mockedEthObject.getBlock.mockResolvedValueOnce({ number: 0 } as BlockTransactionObject);
+            expect(
+                await subscriber.subscribe(observer, 0)
+            ).toEqual(undefined);
+
+            expect(mockedEthObject.getBlock).toBeCalledWith("latest");
         });
 
         test("If the difference between last block and finalized block is more than 50, log subscription must not be called but backfill", async () => {
