@@ -1,9 +1,9 @@
-# Matic-transfers
+# Examples
 
-Matic-transfers is an exemplary project that showcases the usage of Chain Indexer Framework to index all MATIC transfers occurring on the Ethereum blockchain.
+Matic-transfer and NFT Balance is an exemplary project that showcases the usage of Chain Indexer Framework to index all MATIC transfers occurring on the Ethereum blockchain and NFT balance of particular contract on Blueberry chain.
 
 ## Overview
-The project consists of three distinct packages, each serving a specific function:
+The folder consists of 2 examples and each project consists of three distinct packages, each serving a specific function:
 
 1. **Producers**: This package acts as the initial entry point for the indexer service. It collects all blockchain data from a particular chain and streams it into Kafka without any discrimination.
 
@@ -11,7 +11,7 @@ The project consists of three distinct packages, each serving a specific functio
 
 3. **Consumers**: Consumers are responsible for subscribing to the event-specific Kafka stream and persisting the data into a database. Additionally, they expose endpoints that allow clients to retrieve the data according to their specific requirements.
 
-The Matic-transfers project serves as a useful reference for understanding how Chain Indexer Framework can be effectively utilized to manage and process blockchain data efficiently.
+Both the examples serves as a useful reference for understanding how Chain Indexer Framework can be effectively utilized to manage and process blockchain data efficiently.
 
 
 ## How to Build
@@ -42,10 +42,7 @@ Steps to build specifically on Ubuntu are as follows:
     sudo systemctl status mongod
     ```
   
-- Run [Producer](./producer/README.md)
+- Run [MATIC_TRANSFER](./matic_transfer/README.md)
 
-- Run [Transformer](./transformer/README.md)
-
-- Run [Consumer](./consumer/README.md)
-
+- Run [NFT_BALANCER](./nft_balancer/README.md)
   
