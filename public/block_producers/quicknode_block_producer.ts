@@ -29,7 +29,6 @@ export class QuickNodeBlockProducer extends BlockProducer {
         const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-flow";
         const maxReOrgDepth = config.maxReOrgDepth || 0;
         const maxRetries = config.maxRetries || 0;
-        const blockDelay = config.blockDelay || 0;
         const blockSubscriptionTimeout = config.blockSubscriptionTimeout;
         const blockDelay = config.blockDelay || 0;
         const alternateEndpoint = config.alternateEndpoint;
