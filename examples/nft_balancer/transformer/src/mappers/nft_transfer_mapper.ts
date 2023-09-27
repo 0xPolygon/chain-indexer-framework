@@ -2,7 +2,6 @@ import { ITransaction } from "@maticnetwork/chain-indexer-framework/interfaces/t
 import { IMapper } from "@maticnetwork/chain-indexer-framework/interfaces/mapper";
 import { ABICoder } from "@maticnetwork/chain-indexer-framework/coder/abi_coder";
 import { BloomFilter } from "@maticnetwork/chain-indexer-framework/filter";
-import utils from "web3-utils";
 import INFTTransferTx from "../interfaces/nft_transfer_tx.js";
 
 import dotenv from 'dotenv';
@@ -46,18 +45,18 @@ export class NFTTransferMapper implements IMapper<ITransaction, INFTTransferTx> 
 
         for (const log of transaction.receipt.logs) {
             if (
-                log.topics.length &&
+                log.topics.length && log.topics.length >= 3 &&
                 // Check if event was emitted by NFT Contract
                 log.address.toLowerCase() === (process.env.NFT_CONTRACT as string).toLowerCase()
             ) {
                 transfers.push({
                     transactionIndex: transaction.receipt.transactionIndex,
-                    transactionHash: transaction.hash,
+                    transactionHash: transaction.hash.toLowerCase(),
                     transactionInitiator: transaction.from.toLowerCase(),
                     tokenAddress: log.address.toLowerCase(),
-                    tokenId: ABICoder.decodeParameter("uint256", log.topics[3]),
-                    senderAddress: ABICoder.decodeParameter("address", log.topics[1]),
-                    receiverAddress: ABICoder.decodeParameter("address", log.topics[2]),
+                    tokenId: parseInt(ABICoder.decodeParameter("uint256", log.topics[3])),
+                    senderAddress: ABICoder.decodeParameter("address", log.topics[1]).toLowerCase(),
+                    receiverAddress: ABICoder.decodeParameter("address", log.topics[2]).toLowerCase()
                 })
             }
         }

@@ -23,7 +23,7 @@ async function start(): Promise<void> {
             }
         });
 
-        const database = new Database(process.env.MONGO_URL || 'mongodb://localhost:27017/chain-flow');
+        const database = new Database(process.env.MONGO_URL || 'mongodb://localhost:27017/chain-indexer');
         await database.connect();
 
         const transferService = new TransferTokenService(

@@ -26,10 +26,6 @@ export default class TransferService {
      * @returns {Promise<boolean>}
      */
     public async save(data: ITransfer[]): Promise<boolean> {
-
-        const session = await this.transferModel.startSession();
-        session.startTransaction();
-
         Logger.debug({
             location: "transfer_service",
             function: "saveTransfers",
@@ -46,12 +42,10 @@ export default class TransferService {
 
             if (latestTransferBlockNumber >= data[0].blockNumber) {
                 //@ts-ignore
-                await this.transferModel.deleteTxsForReorg(data[0].blockNumber, session);
+                await this.transferModel.deleteTxsForReorg(data[0].blockNumber);
             }
             //@ts-ignore
-            await this.transferModel.addAllTransfers(data, session);
-            await session.commitTransaction();
-            await session.endSession();
+            await this.transferModel.addAllTransfers(data);
         }
 
         Logger.debug({

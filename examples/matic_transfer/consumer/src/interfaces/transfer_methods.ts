@@ -1,4 +1,3 @@
-import { ClientSession } from "mongoose";
 import { ITransfer } from "./transfer.js";
 
 /**
@@ -24,14 +23,13 @@ const statics = {
      * Inserts multiple documents for matic transfers into transfer collection 
      * 
      * @param {ITransfer[]} data 
-     * @param {ClientSession} session 
      * 
      * @returns {Promise<void>}
      */
-    async addAllTransfers(data: ITransfer[], session: ClientSession): Promise<void> {
+    async addAllTransfers(data: ITransfer[]): Promise<void> {
         for (let transfer of data) {
             //@ts-ignore
-            await this.create([transfer], { rawResult: false, session: session });
+            await this.create([transfer], { rawResult: false });
         }
         return;
     },
@@ -40,15 +38,14 @@ const statics = {
      * Deletes all the transactions for reorg
      * 
      * @param {number} blockNumber 
-     * @param {ClientSession} session 
      * 
      * @returns {Promise<number>}
      */
-    async deleteTxsForReorg(blockNumber: number, session: ClientSession): Promise<number> {
+    async deleteTxsForReorg(blockNumber: number): Promise<number> {
 
         let deletedCount = (
             //@ts-ignore
-            await this.deleteMany({ blockNumber: { $gte: blockNumber } }, { session })
+            await this.deleteMany({ blockNumber: { $gte: blockNumber } })
         ).deletedCount;
 
         return deletedCount;

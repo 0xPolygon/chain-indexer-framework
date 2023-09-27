@@ -39,7 +39,7 @@ describe("NFTTransferMapper", () => {
             expect(mockedBloomFilterClass.isContractAddressInBloom).toHaveBeenNthCalledWith(
                 1,
                 "0x00000000000000000000000000000000000000000000000000000000000000020000000000000000000000100000000000208000000000000000000000000000000000000000000000000008000000800000000000000000000100000000000000000000020000000000000000000800000000000100000080000010000000200000004100010000000000004100000000000000000000000000000100000000200009000000000000000000000000000000080000000000000020000000004000000002000000000001000000000000000000000000800000108000000028000000000000002000080000000000000000000000000000000000000000500000",
-                "0xa131b877b12b0ae8bb7da7229b8a1095881497a6"
+                "0x46A15B0b27311cedF172AB29E4f4766fbE7F4364"
             );
         });
 
@@ -50,7 +50,7 @@ describe("NFTTransferMapper", () => {
             mockedBloomFilterClass.isContractAddressInBloom.mockReturnValueOnce(true);
 
             //@ts-ignore
-            mockedABICoderClass.decodeParameter.mockReturnValueOnce("mock_token_id");
+            mockedABICoderClass.decodeParameter.mockReturnValueOnce(1923);
             //@ts-ignore
             mockedABICoderClass.decodeParameter.mockReturnValueOnce("mock_sender_address");
             //@ts-ignore
@@ -64,8 +64,8 @@ describe("NFTTransferMapper", () => {
                     transactionIndex: 68,
                     transactionHash: '0x4c2f2eaf54685099b94e6d2035bec262b78d7df4baf30a84536924e241d07538',
                     transactionInitiator: "0xe95B7d229cfAed717600d64B0D938A36fd5d5060".toLowerCase(),
-                    tokenAddress: "0xa131b877b12b0ae8bb7da7229b8a1095881497a6".toLowerCase(),
-                    tokenId: 'mock_token_id',
+                    tokenAddress: "0x46A15B0b27311cedF172AB29E4f4766fbE7F4364".toLowerCase(),
+                    tokenId: 1923,
                     senderAddress: 'mock_sender_address',
                     receiverAddress: 'mock_receiver_address'
                 }

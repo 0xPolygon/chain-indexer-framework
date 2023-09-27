@@ -1,7 +1,7 @@
 import { produce } from "@maticnetwork/chain-indexer-framework/kafka/producer/produce";
 import { Logger } from "@maticnetwork/chain-indexer-framework/logger";
 import dotenv from 'dotenv';
-import { ErigonBlockProducer } from "@maticnetwork/chain-indexer-framework/block_producers/erigon_block_producer";
+import { BlockPollerProducer } from "@maticnetwork/chain-indexer-framework/block_producers/block_polling_producer";
 
 dotenv.config();
 Logger.create({
@@ -18,15 +18,15 @@ Logger.create({
     }
 });
 
-const producer = produce<ErigonBlockProducer>({
+const producer = produce<BlockPollerProducer>({
     startBlock: parseInt(process.env.START_BLOCK as string),
     rpcWsEndpoints: process.env.HTTP_PROVIDER ? [process.env.HTTP_PROVIDER] : undefined,
     blockPollingTimeout: parseInt(process.env.BLOCK_POLLING_TIMEOUT as string),
     topic: process.env.PRODUCER_TOPIC || "polygon.1442.blocks",
     maxReOrgDepth: 0,
     maxRetries: 5,
-    mongoUrl: process.env.MONGO_URL || 'mongodb://localhost:27017/chain-flow',
-    blockSubscriptionTimeout: 120000,
+    mongoUrl: process.env.MONGO_URL || 'mongodb://localhost:27017/chain-indexer',
+    // blockSubscriptionTimeout: 120000,
     "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
     "security.protocol": "plaintext",
     type: "blocks:polling"

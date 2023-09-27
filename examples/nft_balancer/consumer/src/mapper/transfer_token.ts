@@ -25,7 +25,7 @@ export default class TransferTokenMapper {
 
         for (const transfer of transformedBlock.data) {
             tokens.push({
-                owner: transfer.receiverAddress,
+                owner: transfer.receiverAddress.toLowerCase(),
                 tokenId: transfer.tokenId
             });
         }

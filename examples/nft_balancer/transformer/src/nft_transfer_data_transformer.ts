@@ -5,7 +5,7 @@ import { Logger } from "@maticnetwork/chain-indexer-framework/logger";
 import { IConsumerConfig } from "@maticnetwork/chain-indexer-framework/interfaces/consumer_config";
 import { IProducerConfig } from "@maticnetwork/chain-indexer-framework/interfaces/producer_config";
 import { transform } from "@maticnetwork/chain-indexer-framework/data_transformation/transform";
-import IMaticTransferTx from "./interfaces/nft_transfer_tx.js";
+import INFTTransferTx from "./interfaces/nft_transfer_tx.js";
 import { NFTTransferMapper } from "./mappers/nft_transfer_mapper.js";
 
 /**
@@ -26,13 +26,13 @@ export default async function startTransforming(
     nftTransferMapper: NFTTransferMapper
 ): Promise<void> {
     try {
-        transform<IBlock, IMaticTransferTx>({
+        transform<IBlock, INFTTransferTx>({
             consumerConfig,
             producerConfig,
             type: 'asynchronous'
         }, {
-            transform: async (block: IBlock): Promise<ITransformedBlock<IMaticTransferTx>> => {
-                let transfers: IMaticTransferTx[] = [];
+            transform: async (block: IBlock): Promise<ITransformedBlock<INFTTransferTx>> => {
+                let transfers: INFTTransferTx[] = [];
 
                 block.transactions.forEach((transaction: ITransaction) => {
                     transfers = transfers.concat(nftTransferMapper.map(transaction));

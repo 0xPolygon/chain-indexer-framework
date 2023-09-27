@@ -7,5 +7,5 @@ export default interface INFTTransferTx {
     tokenAddress: string,
     senderAddress: string,
     receiverAddress: string,
-    tokenId: string,
+    tokenId: number,
 }

@@ -24,7 +24,7 @@ const producer = produce<ErigonBlockProducer>({
     topic: process.env.PRODUCER_TOPIC || "polygon.1.blocks",
     maxReOrgDepth: 96,
     maxRetries: 5,
-    mongoUrl: process.env.MONGO_URL || 'mongodb://localhost:27017/chain-flow',
+    mongoUrl: process.env.MONGO_URL || 'mongodb://localhost:27017/chain-indexer',
     blockSubscriptionTimeout: 120000,
     "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
     "security.protocol": "plaintext",
