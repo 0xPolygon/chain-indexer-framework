@@ -3,7 +3,7 @@ import { IProducedBlock, ProducedBlocksModel, IProducedBlocksModel } from "@inte
 import { BlockSubscription } from "@internal/block_subscription/block_subscription.js";
 import { IBlockProducerConfig } from "@internal/interfaces/block_producer_config.js";
 import { IProducerConfig } from "@internal/interfaces/producer_config.js";
-import { BlockGetter } from "@internal/block_getters/block_getter.js";
+import { QuickNodeBlockGetter } from "@internal/block_getters/quicknode_block_getter.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
 import { Database } from "@internal/mongo/database.js";
 import Eth from "web3-eth";
@@ -40,6 +40,7 @@ export class QuickNodeBlockProducer extends BlockProducer {
         delete config.mongoUrl;
         delete config.maxReOrgDepth;
         delete config.maxRetries;
+        delete config.blockDelay;
         delete config.blockSubscriptionTimeout;
         delete config.blockDelay;
         delete config.alternateEndpoint;
@@ -79,7 +80,7 @@ export class QuickNodeBlockProducer extends BlockProducer {
                 alternateEndpoint,
                 rpcTimeout
             ),
-            new BlockGetter(eth, maxRetries),
+            new QuickNodeBlockGetter(eth, maxRetries),
             database,
             database.model<IProducedBlock, IProducedBlocksModel<IProducedBlock>>(
                 "ProducedBlocks",
