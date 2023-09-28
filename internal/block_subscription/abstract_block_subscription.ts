@@ -63,7 +63,7 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
             this.lastFinalizedBlock = this.blockDelay > 0
                                         ? (await this.eth.getBlock("latest")).number - this.blockDelay 
                                         : (await this.eth.getBlock("finalized")).number;
-            //Clear any previously existing queue
+            // Clear any previously existing queue
             this.clear();
             this.observer = observer;
             this.fatalError = false;
