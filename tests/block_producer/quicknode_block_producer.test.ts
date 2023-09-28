@@ -42,7 +42,7 @@ describe("Block Producer", () => {
         mockBlockProducerConfig = {
             rpcWsEndpoints: ["rpc.com", "rpc2.com"],
             startBlock: 0,
-            mongoUrl: "mongodb://localhost:27017/chain-flow",
+            mongoUrl: "mongodb://localhost:27017/chain-indexer",
             maxReOrgDepth: 0,
             topic: "demo",
             blockSubscriptionTimeout: 60000
@@ -67,7 +67,7 @@ describe("Block Producer", () => {
     // });
 
     test("Must create the database instance with passed mongouUrl", () => {
-        expect(mockedDatabaseClass).toBeCalledWith("mongodb://localhost:27017/chain-flow");
+        expect(mockedDatabaseClass).toBeCalledWith("mongodb://localhost:27017/chain-indexer");
     });
 
     test("Database.model must be called with ProducedBlocks as model name to get Produced blocks model.", () => {
@@ -140,7 +140,9 @@ describe("Block Producer", () => {
             0,
             "quicknode_block_getter", 
             60000,
-            0
+            0,
+            undefined,
+            undefined
         );
     });
 
@@ -148,7 +150,7 @@ describe("Block Producer", () => {
         expect(mockBlockProducerConfig).not.toEqual(expect.objectContaining({
             rpcWsEndpoints: ["rpc.com", "rpc2.com"],
             startBlock: 0,
-            mongoUrl: "mongodb://localhost:27017/chain-flow",
+            mongoUrl: "mongodb://localhost:27017/chain-indexer",
             maxReOrgDepth: 0,
             maxRetries: 5, 
             blockSubscriptionTimeout: 60000

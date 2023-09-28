@@ -1,75 +1,79 @@
-# Chainflow - Blockchain Data Indexer
+# Chain Indexer Framework - Blockchain Data Indexer
 
-[![GitHub version](https://badge.fury.io/gh/maticnetwork%2Fchainflow.svg)](https://badge.fury.io/gh/maticnetwork%2Fchainflow)
-![Build Status](https://github.com/maticnetwork/chainflow/workflows/CI/badge.svg?branch=main)
-[![npm version](https://badge.fury.io/js/%40maticnetwork%2Fchainflow.svg)](https://badge.fury.io/js/%40maticnetwork%2Fchainflow)
-![GitHub](https://img.shields.io/github/license/maticnetwork/chainflow)
-[![TEST](https://github.com/maticnetwork/chainflow/actions/workflows/tests.yml/badge.svg)](https://github.com/maticnetwork/chainflow/actions/workflows/tests.yml)
+[![GitHub version](https://badge.fury.io/gh/maticnetwork%2Fchain-indexer-framework.svg)](https://badge.fury.io/gh/maticnetwork%2Fchain-indexer-framework)
+![Build Status](https://github.com/maticnetwork/chain-indexer-framework/workflows/CI/badge.svg?branch=main)
+[![npm version](https://badge.fury.io/js/%40maticnetwork%2Fchain-indexer-framework.svg)](https://badge.fury.io/js/%40maticnetwork%2Fchain-indexer-framework)
+![GitHub](https://img.shields.io/github/license/maticnetwork/chain-indexer-framework)
+[![TEST](https://github.com/maticnetwork/chain-indexer-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/maticnetwork/chain-indexer-framework/actions/workflows/tests.yml)
 
 
-ChainFlow, is a powerful framework designed to facilitate the development of flexible event-driven data pipelines on EVM blockchains. Built on the reliable foundation of Kafka, ChainFlow empowers developers to build robust and scalable applications that seamlessly process blockchain events and enable real-time data integration.
+Chain Indexer Framework, is a powerful framework designed to facilitate the development of flexible event-driven data pipelines on EVM blockchains. Built on the reliable foundation of Kafka, Chain Indexer Framework empowers developers to build robust and scalable applications that seamlessly process blockchain events and enable real-time data integration.
 
 In today's rapidly evolving blockchain ecosystem, the need for efficient and reliable data processing is paramount. EVM (Ethereum Virtual Machine) blockchains, such as Ethereum itself and its compatible networks, have gained significant traction due to their smart contract capabilities and decentralized nature. However, working with blockchain data at scale and in real time presents unique challenges.
 
-ChainFlow addresses these challenges by providing a comprehensive Node.js package that simplifies the development of event-driven data pipelines. With its intuitive design and seamless integration with Kafka, one of the most popular and battle-tested distributed streaming platforms, ChainFlow offers a robust and reliable infrastructure for processing blockchain events efficiently.
+Chain Indexer Framework addresses these challenges by providing a comprehensive Node.js package that simplifies the development of event-driven data pipelines. With its intuitive design and seamless integration with Kafka, one of the most popular and battle-tested distributed streaming platforms, Chain Indexer Framework offers a robust and reliable infrastructure for processing blockchain events efficiently.
 
 ## Key Features
 
-- **Event-driven Architecture:** ChainFlow embraces the power of event-driven architecture, allowing developers to create pipelines that react to blockchain events in real time. By leveraging this approach, applications built with ChainFlow can easily respond to changes on the blockchain, enabling near-instantaneous data processing.
-- **Flexible Data Pipelines:** ChainFlow offers a flexible and extensible framework for building data pipelines that suit your specific needs. Developers can easily define their desired data flow, including event filtering, transformation, and aggregation, by utilizing the feature set of ChainFlow.
-- **Seamless Integration with Kafka:** As the backbone of ChainFlow, Kafka provides the necessary infrastructure for handling high-throughput, fault-tolerant, and scalable data streams. ChainFlow's integration with Kafka ensures reliable data processing and enables seamless interoperability with other Kafka-based systems, further enhancing the versatility of your data pipelines.
-- **EVM Blockchain Compatibility:** ChainFlow is specifically designed for EVM blockchains, enabling developers to harness the power of smart contracts and decentralized applications. Whether you are working with Ethereum or any other EVM-compatible blockchain, ChainFlow provides a unified and consistent approach to processing blockchain events across different networks. ChainFlow can also be used for other chains with custom implementations of the provided interfaces and abstract classes.
+- **Event-driven Architecture:** Chain Indexer Framework embraces the power of event-driven architecture, allowing developers to create pipelines that react to blockchain events in real time. By leveraging this approach, applications built with Chain Indexer Framework can easily respond to changes on the blockchain, enabling near-instantaneous data processing.
+- **Flexible Data Pipelines:** Chain Indexer Framework offers a flexible and extensible framework for building data pipelines that suit your specific needs. Developers can easily define their desired data flow, including event filtering, transformation, and aggregation, by utilizing the feature set of Chain Indexer Framework.
+- **Seamless Integration with Kafka:** As the backbone of Chain Indexer Framework, Kafka provides the necessary infrastructure for handling high-throughput, fault-tolerant, and scalable data streams. Chain Indexer Framework's integration with Kafka ensures reliable data processing and enables seamless interoperability with other Kafka-based systems, further enhancing the versatility of your data pipelines.
+- **EVM Blockchain Compatibility:** Chain Indexer Framework is specifically designed for EVM blockchains, enabling developers to harness the power of smart contracts and decentralized applications. Whether you are working with Ethereum or any other EVM-compatible blockchain, Chain Indexer Framework provides a unified and consistent approach to processing blockchain events across different networks. Chain Indexer Framework can also be used for other chains with custom implementations of the provided interfaces and abstract classes.
 
-With ChainFlow, you can unlock the true potential of EVM blockchains by seamlessly integrating them into your data infrastructure. Whether you are building real-time analytics, decentralized applications, or any other data-driven solution, this documentation will guide you through the intricacies of using ChainFlow's packages and assist you in developing robust and efficient event-driven data pipelines on EVM blockchains.
+With Chain Indexer Framework, you can unlock the true potential of EVM blockchains by seamlessly integrating them into your data infrastructure. Whether you are building real-time analytics, decentralized applications, or any other data-driven solution, this documentation will guide you through the intricacies of using Chain Indexer Framework's packages and assist you in developing robust and efficient event-driven data pipelines on EVM blockchains.
 
 ## Installation
 
-You can install the package using [NPM](https://www.npmjs.com/package/@maticnetwork/chainflow) or using [Yarn](https://yarnpkg.com/package/@maticnetwork/chainflow)
+You can install the package using [NPM](https://www.npmjs.com/package/@maticnetwork/chain-indexer-framework) or using [Yarn](https://yarnpkg.com/package/@maticnetwork/chain-indexer-framework)
 
 ### Using NPM
 
 ```bash
-npm install @maticnetwork/chainflow
+npm install @maticnetwork/chain-indexer-framework
 ```
 
 ### Yarn
 
 ```bash
-yarn add @maticnetwork/chainflow
+yarn add @maticnetwork/chain-indexer-framework
 ```
 
 ## Usage
 
 ```typescript
-// Import the chainflow module
-const chainflow = require('@maticnetwork/chainflow');
+// Import the chain-indexer-framework module
+const chain-indexer-framework = require('@maticnetwork/chain-indexer-framework');
 ```
 
 You will learn more about usage as we go through the doc below.
 
 ## Architecture
 
-ChainFlow's architecture is composed of three main layers: block producers, transformers, and consumers. Each layer plays a crucial role in processing and transforming blockchain events to facilitate various use cases.
+Chain Indexer Framework's architecture is composed of three main layers: block producers, transformers, and consumers. Each layer plays a crucial role in processing and transforming blockchain events to facilitate various use cases.
 
 1. **Block Producers:**
-Block producers are responsible for publishing raw block data to Kafka topics. This raw block data serves as the primary source of events for all use cases within ChainFlow. The block producers handle important tasks such as handling blockchain reorganizations (re-orgs) and backfilling of blocks. This ensures that developers only need to focus on specifying the desired RPC (Remote Procedure Call) endpoints they want to provide, without worrying about the intricacies of block management.
+Block producers are responsible for publishing raw block data to Kafka topics. This raw block data serves as the primary source of events for all use cases within Chain Indexer Framework. The block producers handle important tasks such as handling blockchain reorganizations (re-orgs) and backfilling of blocks. This ensures that developers only need to focus on specifying the desired RPC (Remote Procedure Call) endpoints they want to provide, without worrying about the intricacies of block management.
 
 By leveraging the block producers, developers can easily connect to blockchain networks, retrieve the latest blocks, and publish them to Kafka topics, establishing a reliable and continuous stream of blockchain events.
 
 2. **Transformers:**
 The transformers layer plays a critical role in transforming the raw block data into domain-specific events. These transformers take the raw block data from the Kafka topics and apply various transformations to create meaningful and specialized events. The transformations can encompass a wide range of operations such as data enrichment, filtering, aggregation, or any other processing logic required for a specific use case.
 
-The transformed domain-specific events are then published to their respective Kafka topics, enabling easy replay of events whenever required. This layer allows for flexibility and customization, ensuring that the events generated align with the specific needs of the applications and services built on top of ChainFlow.
+The transformed domain-specific events are then published to their respective Kafka topics, enabling easy replay of events whenever required. This layer allows for flexibility and customization, ensuring that the events generated align with the specific needs of the applications and services built on top of Chain Indexer Framework.
 
 3. **Consumers:**
 Consumers are responsible for responding to the events published by the transformers layer. They are designed to receive and process the domain-specific events, triggering actions based on the requirements of the specific service or application. The consumers can be tailored to perform various tasks such as building API endpoints, indexing data to data warehouses for analytics, or notifying events to frontend applications.
 
 By leveraging the events generated by the transformers, consumers can react in real time to changes on the blockchain, enabling seamless integration with other services and systems. This layer empowers developers to build powerful and dynamic applications that respond to blockchain events efficiently.
 
-Together, these three layers form the foundation of ChainFlow, providing a comprehensive framework for building flexible and scalable event-driven data pipelines on EVM blockchains. Whether it's building real-time analytics, decentralized applications, or any other data-driven solution, ChainFlow's architecture offers the necessary tools and abstractions to streamline the development process and unlock the full potential of EVM blockchains.
+Together, these three layers form the foundation of Chain Indexer Framework, providing a comprehensive framework for building flexible and scalable event-driven data pipelines on EVM blockchains. Whether it's building real-time analytics, decentralized applications, or any other data-driven solution, Chain Indexer Framework's architecture offers the necessary tools and abstractions to streamline the development process and unlock the full potential of EVM blockchains.
 
 ## Examples
-To gain a clearer understanding of the entire process, let's consider a straightforward example that involves indexing MATIC transfer events from the Ethereum blockchain. This [example](./example/README.md) encompasses all the layers involved, starting from producers, moving through transformers, and concluding with consumers.
+To gain a clearer understanding of the entire process, let's consider straightforward [examples](./examples/README.md) 
+- First example involves indexing [MATIC transfer](./examples/matic_transfer/README.md) events from the Ethereum blockchain.
+- Second example involes indexing NFT Transfer and maintaining [NFT Balance](./examples/nft_balancer/README.md)
+
+Both these examples encompasses all the layers involved, starting from producers, moving through transformers, and concluding with consumers.
 
 ## Producers
 
@@ -77,13 +81,13 @@ To gain a clearer understanding of the entire process, let's consider a straight
 
 Block producers play a critical role in the seamless publishing of raw block data to Kafka topics. It is essential to recognize that each blockchain network has its own unique implementation, and the functionality of Remote Procedure Calls (RPCs) can differ across these networks. In the current implementation, all block producers leverage the SynchronousProducerClass from the Kafka wrapper classes.
 
-ChainFlow block producers encompass three distinct types of producers, each designed to cater to the specific requirements of different blockchain networks.
+Chain Indexer Framework block producers encompass three distinct types of producers, each designed to cater to the specific requirements of different blockchain networks.
 
 1. **BlockPollingProducer**: This producer employs a polling method to continuously check the blockchain for new blocks. If the blockchain is already in sync, it waits for the completion of a predefined timeout before initiating the polling process again. This method is straightforward and involves utilizing basic RPC calls commonly found in every node. Additionally, it serves as an ideal choice when the web socket (wss) node is unavailable for a particular blockchain network.
 
     ```typescript
     // Import the required module
-    import { BlockPollerProducer } from "@maticnetwork/chainflow/block_producers/block_polling_producer";
+    import { BlockPollerProducer } from "@maticnetwork/chain-indexer-framework/block_producers/block_polling_producer";
 
     // Set up and start the Block Poller Producer
     const producer = new BlockPollerProducer({
@@ -114,8 +118,8 @@ ChainFlow block producers encompass three distinct types of producers, each desi
 
 
     // Import the required module
-    import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
-    import { BlockPollerProducer } from "@maticnetwork/chainflow/block_producers/block_polling_producer";
+    import { produce } from "@maticnetwork/chain-indexer-framework/kafka/producer/produce";
+    import { BlockPollerProducer } from "@maticnetwork/chain-indexer-framework/block_producers/block_polling_producer";
 
     // Set up the Block Poller Producer
     const producer = produce<BlockPollerProducer>({
@@ -141,7 +145,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
 
     ```typescript
     // Import the required module
-    import { ErigonBlockProducer } from "@maticnetwork/chainflow/block_producers/erigon_block_producer";
+    import { ErigonBlockProducer } from "@maticnetwork/chain-indexer-framework/block_producers/erigon_block_producer";
 
     // Set up the Erigon Block Producer
     const producer = new ErigonBlockProducer({
@@ -172,8 +176,8 @@ ChainFlow block producers encompass three distinct types of producers, each desi
 
 
     // Import the required module
-    import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
-    import { ErigonBlockProducer } from "@maticnetwork/chainflow/block_producers/erigon_block_producer";
+    import { produce } from "@maticnetwork/chain-indexer-framework/kafka/producer/produce";
+    import { ErigonBlockProducer } from "@maticnetwork/chain-indexer-framework/block_producers/erigon_block_producer";
 
     // Set up the Erigon Block Producer
     const producer = produce<ErigonBlockProducer>({
@@ -199,7 +203,7 @@ ChainFlow block producers encompass three distinct types of producers, each desi
 
     ```typescript
     // Import the required module
-    import { QuickNodeBlockProducer } from "@maticnetwork/chainflow/block_producers/quicknode_block_producer";
+    import { QuickNodeBlockProducer } from "@maticnetwork/chain-indexer-framework/block_producers/quicknode_block_producer";
 
     // Set up the QuickNode Block Producer
     const producer = new QuickNodeBlockProducer({
@@ -228,8 +232,8 @@ ChainFlow block producers encompass three distinct types of producers, each desi
 
 
     // Import the required module
-    import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
-    import { QuickNodeBlockProducer } from "@maticnetwork/chainflow/block_producers/quicknode_block_producer";
+    import { produce } from "@maticnetwork/chain-indexer-framework/kafka/producer/produce";
+    import { QuickNodeBlockProducer } from "@maticnetwork/chain-indexer-framework/block_producers/quicknode_block_producer";
 
     // Set up the QuickNode Block Producer
     const producer = produce<QuickNodeBlockProducer>({
@@ -258,8 +262,8 @@ The **Synchronous Producer** class is recommended when the utmost importance is 
 
 ```typescript
 // Import the required modules
-import { SynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/synchronous_producer";
-import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
+import { SynchronousProducer } from "@maticnetwork/chain-indexer-framework/kafka/producer/synchronous_producer";
+import { Coder } from "@maticnetwork/chain-indexer-framework/coder/protobuf_coder";
 
 // Initialize the Kafka producer
 const producer = new SynchronousProducer(
@@ -287,8 +291,8 @@ producer.produceEvent("<key: string>", "<message: object>");
 
 
 // Import the required modules
-import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
-import { SynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/synchronous_producer";
+import { produce } from "@maticnetwork/chain-indexer-framework/kafka/producer/produce";
+import { SynchronousProducer } from "@maticnetwork/chain-indexer-framework/kafka/producer/synchronous_producer";
 
 // Initialize and start the Kafka producer
 const producer = produce<SynchronousProducer>(
@@ -320,7 +324,7 @@ The **Asynchronous Producer** class is designed for scenarios where maximizing t
 
 ```typescript
 // Import the required modules
-import { AsynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/asynchronous_producer";
+import { AsynchronousProducer } from "@maticnetwork/chain-indexer-framework/kafka/producer/asynchronous_producer";
 
 // Initialize the asynchronous Kafka producer
 const producer = new AsynchronousProducer(
@@ -348,8 +352,8 @@ producer.produceEvent("<key: string>", "<message: object>");
 
 
 // Import the required modules
-import { produce } from "@maticnetwork/chainflow/kafka/producer/produce";
-import { AsynchronousProducer } from "@maticnetwork/chainflow/kafka/producer/asynchronous_producer";
+import { produce } from "@maticnetwork/chain-indexer-framework/kafka/producer/produce";
+import { AsynchronousProducer } from "@maticnetwork/chain-indexer-framework/kafka/producer/asynchronous_producer";
 
 // Initialize and start the Kafka producer
 const producer = produce<AsynchronousProducer>(
@@ -393,10 +397,10 @@ Once the data is transformed and mapped appropriately, it is published to the ne
 In summary, the Transformer layer acts as a vital intermediary in the data pipeline, facilitating the consumption of block events, their transformation into a domain-specific format, and the subsequent publication of the transformed data for consumption by downstream components.
 
 ```typescript
-import { SynchronousDataTransformer } from "@maticnetwork/chainflow/data_transformation/synchronous_data_transformer";
-import { IConsumerConfig } from "@maticnetwork/chainflow/interfaces/consumer_config";
-import { IProducerConfig } from "@maticnetwork/chainflow/interfaces/producer_config";
-import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
+import { SynchronousDataTransformer } from "@maticnetwork/chain-indexer-framework/data_transformation/synchronous_data_transformer";
+import { IConsumerConfig } from "@maticnetwork/chain-indexer-framework/interfaces/consumer_config";
+import { IProducerConfig } from "@maticnetwork/chain-indexer-framework/interfaces/producer_config";
+import { ITransformedBlock } from "@maticnetwork/chain-indexer-framework/interfaces/transformed_block";
 
 // <T> is the consuming data type interface
 // <Y> is the producer data type interface
@@ -433,7 +437,7 @@ transformer.start();
 // or you can use the functional implementation
 
 // Import the required modules
-import transform from "@maticnetwork/chainflow/data_transformation/transform";
+import transform from "@maticnetwork/chain-indexer-framework/data_transformation/transform";
 
 // Configure the trasnformer
 transform(
@@ -458,8 +462,8 @@ The **Synchronous Consumer** class is the preferred option when ensuring data in
 
 ```typescript
 // Import the required modules
-import { SynchronousConsumer } from "@maticnetwork/chainflow/kafka/consumer/synchronous_consumer";
-import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
+import { SynchronousConsumer } from "@maticnetwork/chain-indexer-framework/kafka/consumer/synchronous_consumer";
+import { Coder } from "@maticnetwork/chain-indexer-framework/coder/protobuf_coder";
 
 // Initialize the synchronous Kafka consumer
 const consumer = new SynchronousConsumer(
@@ -488,8 +492,8 @@ consumer.start({
 // or you can use the functional implementation
 
 // Import the required modules
-import { consume } from "@maticnetwork/chainflow/kafka/consumer/consume";
-import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
+import { consume } from "@maticnetwork/chain-indexer-framework/kafka/consumer/consume";
+import { Coder } from "@maticnetwork/chain-indexer-framework/coder/protobuf_coder";
 
 // Configure the Kafka consumer
 consume(
@@ -519,8 +523,8 @@ The **Asynchronous Consumer** class is designed for scenarios where the speed of
 
 ```typescript
 // Import the required modules
-import { AsynchronousConsumer } from "@maticnetwork/chainflow/kafka/consumer/asynchronous_consumer";
-import { Coder } from "@maticnetwork/chainflow/coder/protobuf_coder";
+import { AsynchronousConsumer } from "@maticnetwork/chain-indexer-framework/kafka/consumer/asynchronous_consumer";
+import { Coder } from "@maticnetwork/chain-indexer-framework/coder/protobuf_coder";
 
 // Initialize the asynchronous Kafka consumer
 const consumer = new AsynchronousConsumer(
@@ -551,9 +555,9 @@ consumer.start({
 The final layer of the architecture possesses both simplicity and intelligence. It can be considered "dumb" in the sense that it directly consumes Kafka topics generated by the transformers and saves them into the database without any modification. On the other hand, it demonstrates its intelligence by managing reorganization processes. This layer monitors the event stream for blocks, and if a block appears again, it recognizes it as a reorganization event and updates the database accordingly. Additionally, this layer exposes an endpoint that can be accessed by clients. When called, the endpoint queries the database to retrieve the required data and sends it back to the client. It is worth mentioning that this layer has the capability to consume multiple Kafka topics from the transformer layer and update the database accordingly. To facilitate event consumption, it employs a consumer wrapper class from Kafka.
 
 ```typescript
-import { SynchronousConsumer } from "@maticnetwork/chainflow/kafka/consumer/synchronous_consumer";
-import { DeserialisedMessage } from "@maticnetwork/chainflow/interfaces/deserialised_kafka_message";
-import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
+import { SynchronousConsumer } from "@maticnetwork/chain-indexer-framework/kafka/consumer/synchronous_consumer";
+import { DeserialisedMessage } from "@maticnetwork/chain-indexer-framework/interfaces/deserialised_kafka_message";
+import { ITransformedBlock } from "@maticnetwork/chain-indexer-framework/interfaces/transformed_block";
 
 export class ConsumerClass {
     constructor(
@@ -623,9 +627,9 @@ consumer.execute();
 
 // or you can use the functional implementation
 
-import { ITransformedBlock } from "@maticnetwork/chainflow/interfaces/transformed_block";
-import { DeserialisedMessage } from "@maticnetwork/chainflow/interfaces/deserialised_kafka_message";
-import { consume } from "@maticnetwork/chainflow/kafka/consumer/consume";
+import { ITransformedBlock } from "@maticnetwork/chain-indexer-framework/interfaces/transformed_block";
+import { DeserialisedMessage } from "@maticnetwork/chain-indexer-framework/interfaces/deserialised_kafka_message";
+import { consume } from "@maticnetwork/chain-indexer-framework/kafka/consumer/consume";
 import transferService from "path_to_service_file";
 
 // Configure your consumerConfig object with the required Kafka settings and topic.
@@ -682,7 +686,7 @@ The `Database` class encapsulates the following key functionalities:
 4. **Model Creation**: The class provides a method to define and retrieve Mongoose models associated with a specific collection.
 
 ```typescript
-import { Database } from "@maticnetwork/chainflow/mongo/database";
+import { Database } from "@maticnetwork/chain-indexer-framework/mongo/database";
 
 // Create an instance of the Database class
 const database = new Database("mongodb://localhost/mydatabase");
@@ -712,7 +716,7 @@ The Logger class is a singleton class designed to provide a centralized and stra
 
 ```typescript
 // Import the Logger class and LoggerConfig interface
-import { Logger } from "@maticnetwork/chainflow/logger/logger";
+import { Logger } from "@maticnetwork/chain-indexer-framework/logger/logger";
 
 // Configuration for the logger
 const loggerConfig = {
@@ -752,7 +756,7 @@ The ABICoder class is a helper class for web3.js-related functionalities. It pro
 
 ```typescript
 // Import the ABICoder class
-import { ABICoder } from "@maticnetwork/chainflow/coder/abi-coder";
+import { ABICoder } from "@maticnetwork/chain-indexer-framework/coder/abi-coder";
 
 // Example function call encoding and decoding
 const types = ["address", "uint256"];
@@ -794,7 +798,7 @@ The `BloomFilter` class is a wrapper around the `ethereum-bloom-filters` package
 
 ```typescript
 // Import the ABICoder class
-import { BloomFilter } from "@maticnetwork/chainflow/filter/bloom_Filter";
+import { BloomFilter } from "@maticnetwork/chain-indexer-framework/filter/bloom_Filter";
 
 // Example Bloom filter and addresses/topics to check
 const bloomFilter = "0x0123456789abcdef";
@@ -840,7 +844,7 @@ npm install
 
 ### Building
 
-Build the chainflow package:
+Build the chain-indexer-framework package:
 
 ```bash
 npm run build
@@ -868,10 +872,10 @@ Our [Discord](https://discord.gg/0xPolygonDevs) is the best way to reach us ✨.
 
 You are very welcome to contribute, please see contributing guidelines - [[Contribute](./CONTRIBUTING.md)].
 
-Thank you to all the people who already contributed to chainflow!
+Thank you to all the people who already contributed to chain-indexer-framework!
 
-<a href="https://github.com/maticnetwork/chainflow/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=maticnetwork/chainflow" />
+<a href="https://github.com/maticnetwork/chain-indexer-framework/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=maticnetwork/chain-indexer-framework" />
 </a>
 
 Made with [contributors-img](https://contrib.rocks).

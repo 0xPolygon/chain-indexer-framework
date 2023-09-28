@@ -14,7 +14,7 @@ import Eth from "web3-eth";
  *  
  */
 export class QuickNodeBlockProducer extends BlockProducer {
-    
+
     /**
      * @constructor
      * 
@@ -26,11 +26,13 @@ export class QuickNodeBlockProducer extends BlockProducer {
 
         const endpoints = config.rpcWsEndpoints || [];
         const startBlock = config.startBlock || 0;
-        const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-flow";
+        const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-indexer";
         const maxReOrgDepth = config.maxReOrgDepth || 0;
         const maxRetries = config.maxRetries || 0;
-        const blockDelay = config.blockDelay || 0;
         const blockSubscriptionTimeout = config.blockSubscriptionTimeout;
+        const blockDelay = config.blockDelay || 0;
+        const alternateEndpoint = config.alternateEndpoint;
+        const rpcTimeout = config.rpcTimeout;
 
         // Has to be done or Kafka complains later
         delete config.rpcWsEndpoints;
@@ -40,6 +42,10 @@ export class QuickNodeBlockProducer extends BlockProducer {
         delete config.maxRetries;
         delete config.blockDelay;
         delete config.blockSubscriptionTimeout;
+        delete config.blockDelay;
+        delete config.alternateEndpoint;
+        delete config.rpcTimeout;
+
 
         //@ts-ignore
         const eth = new Eth(
@@ -70,7 +76,9 @@ export class QuickNodeBlockProducer extends BlockProducer {
                 maxRetries,
                 "quicknode_block_getter",
                 blockSubscriptionTimeout,
-                blockDelay
+                blockDelay,
+                alternateEndpoint,
+                rpcTimeout
             ),
             new QuickNodeBlockGetter(eth, maxRetries),
             database,
@@ -82,6 +90,6 @@ export class QuickNodeBlockProducer extends BlockProducer {
             startBlock,
             maxReOrgDepth
         );
-        
+
     }
 }
