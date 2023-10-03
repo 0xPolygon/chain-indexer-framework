@@ -1,10 +1,10 @@
 # Chain Indexer Framework - Blockchain Data Indexer
 
-[![GitHub version](https://badge.fury.io/gh/maticnetwork%2Fchain-indexer-framework.svg)](https://badge.fury.io/gh/maticnetwork%2Fchain-indexer-framework)
-![Build Status](https://github.com/maticnetwork/chain-indexer-framework/workflows/CI/badge.svg?branch=main)
-[![npm version](https://badge.fury.io/js/%40maticnetwork%2Fchain-indexer-framework.svg)](https://badge.fury.io/js/%40maticnetwork%2Fchain-indexer-framework)
-![GitHub](https://img.shields.io/github/license/maticnetwork/chain-indexer-framework)
-[![TEST](https://github.com/maticnetwork/chain-indexer-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/maticnetwork/chain-indexer-framework/actions/workflows/tests.yml)
+[![GitHub version](https://badge.fury.io/gh/0xPolygon%2Fchain-indexer-framework.svg)](https://badge.fury.io/gh/0xPolygon%2Fchain-indexer-framework)
+![Build Status](https://github.com/0xPolygon/chain-indexer-framework/workflows/CI/badge.svg?branch=main)
+[![npm version](https://badge.fury.io/js/%400xPolygon%2Fchain-indexer-framework.svg)](https://badge.fury.io/js/%400xPolygon%2Fchain-indexer-framework)
+![GitHub](https://img.shields.io/github/license/0xPolygon/chain-indexer-framework)
+[![TEST](https://github.com/0xPolygon/chain-indexer-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/0xPolygon/chain-indexer-framework/actions/workflows/tests.yml)
 
 
 Chain Indexer Framework, is a powerful framework designed to facilitate the development of flexible event-driven data pipelines on EVM blockchains. Built on the reliable foundation of Kafka, Chain Indexer Framework empowers developers to build robust and scalable applications that seamlessly process blockchain events and enable real-time data integration.

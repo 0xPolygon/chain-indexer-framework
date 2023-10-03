@@ -19,10 +19,10 @@ jobs:
       - name: Check ubuntu version
         run: lsb_release -a
       - name: Install dependencies
-        run: yarn
+        run: npm ci
       - name: Build Packages
-        run: yarn run build
+        run: npm run build
       - name: Run Unit Tests
-        run: yarn run tests
+        run: npm run tests
       - name: Run Integration Tests
-        run: yarn tests:integration
+        run: npm run tests:integration

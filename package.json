@@ -23,7 +23,7 @@
   "scripts": {
     "tests": "jest --coverage",
     "tests:integration": "echo 'Hello integration tests'",
-    "prepublish": "yarn build && yarn tests",
+    "prepublish": "npm run build && npm run tests",
     "build": "tsc && tsc-alias && npm run copy-proto",
     "build:link": "npm run build && npm link",
     "copy-proto": "cp -R ./schemas/ ./dist/schemas",
@@ -37,12 +37,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maticnetwork/chain-indexer-framework.git"
+    "url": "git+https://github.com/0xPolygon/chain-indexer-framework.git"
   },
   "bugs": {
-    "url": "https://github.com/maticnetwork/chain-indexer-framework/issues"
+    "url": "https://github.com/0xPolygon/chain-indexer-framework/issues"
   },
-  "homepage": "https://github.com/maticnetwork/chain-indexer-framework#readme",
+  "homepage": "https://github.com/0xPolygon/chain-indexer-framework#readme",
   "dependencies": {
     "axios": "^1.3.6",
     "ethereum-bloom-filters": "^1.0.10",
@@ -70,7 +70,6 @@
     "@semantic-release/npm": "^10.0.5",
     "@types/jest": "^29.0.3",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
-    "@typescript-eslint/parser": "^6.2.1",
     "babel-plugin-transform-import-meta": "^2.2.0",
     "eslint": "^8.24.0",
     "husky": "2.4.1",

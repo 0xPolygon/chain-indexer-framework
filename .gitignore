@@ -8,7 +8,6 @@ logs/
 .DS_Store
 *.rdb
 .idea/
-package-lock.json
 .vscode
 .env.local
 *.key
