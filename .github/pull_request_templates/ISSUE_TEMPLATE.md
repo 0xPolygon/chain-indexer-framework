@@ -24,4 +24,4 @@ Steps before creating an issue:
 
 #### Environment
 
-<!-- e.g. Versions used of: npm, Node, chainflow, OS, device -->
+<!-- e.g. Versions used of: npm, Node, chain-indexer-framework, OS, device -->

@@ -1,0 +1,32 @@
+{
+  "name": "ethereum-producer",
+  "version": "1.0.0",
+  "description": "",
+  "exports": "./dist/",
+  "type": "module",
+  "scripts": {
+    "tests": "echo here will be Unit test run",
+    "tests:integration": "echo 'Hello integration tests'",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint --fix ./src/**/*.ts",
+    "build": "tsc",
+    "start": "node --experimental-import-meta-resolve --trace-warnings dist/index.js",
+    "link:lib": "npm link @maticnetwork/chain-indexer-framework",
+    "link:lib:build": "npm run link:lib && npm run build"
+  },
+  "author": "nitinmittal23",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "@maticnetwork/chain-indexer-framework": "^1.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "eslint": "^8.20.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "tsup": "^6.2.3",
+    "typescript": "^4.8.2"
+  }
+}

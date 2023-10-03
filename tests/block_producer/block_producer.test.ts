@@ -462,11 +462,11 @@ describe("Block Producer", () => {
                     return;
                 });
 
-                mockedQueueObject.front.mockReturnValueOnce({
+                mockedQueueObject.shift.mockReturnValueOnce({
                     number: 15400000,
                     hash: "0x19823dbf42b70e95e552b48e3df646d2f41b510e20b8ee1878acb18eccbefb07"
                 });
-                mockedQueueObject.front.mockReturnValueOnce({
+                mockedQueueObject.shift.mockReturnValueOnce({
                     number: 15400001,
                     hash: "0x19823dbf42b70e95e552b48e3df646d2f41b510e20b8ee1878acb18eccbefb07"
                 });

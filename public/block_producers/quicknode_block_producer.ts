@@ -3,7 +3,7 @@ import { IProducedBlock, ProducedBlocksModel, IProducedBlocksModel } from "@inte
 import { BlockSubscription } from "@internal/block_subscription/block_subscription.js";
 import { IBlockProducerConfig } from "@internal/interfaces/block_producer_config.js";
 import { IProducerConfig } from "@internal/interfaces/producer_config.js";
-import { BlockGetter } from "@internal/block_getters/block_getter.js";
+import { QuickNodeBlockGetter } from "@internal/block_getters/quicknode_block_getter.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
 import { Database } from "@internal/mongo/database.js";
 import Eth from "web3-eth";
@@ -14,7 +14,7 @@ import Eth from "web3-eth";
  *  
  */
 export class QuickNodeBlockProducer extends BlockProducer {
-    
+
     /**
      * @constructor
      * 
@@ -26,10 +26,13 @@ export class QuickNodeBlockProducer extends BlockProducer {
 
         const endpoints = config.rpcWsEndpoints || [];
         const startBlock = config.startBlock || 0;
-        const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-flow";
+        const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-indexer";
         const maxReOrgDepth = config.maxReOrgDepth || 0;
         const maxRetries = config.maxRetries || 0;
         const blockSubscriptionTimeout = config.blockSubscriptionTimeout;
+        const blockDelay = config.blockDelay || 0;
+        const alternateEndpoint = config.alternateEndpoint;
+        const rpcTimeout = config.rpcTimeout;
 
         // Has to be done or Kafka complains later
         delete config.rpcWsEndpoints;
@@ -37,7 +40,12 @@ export class QuickNodeBlockProducer extends BlockProducer {
         delete config.mongoUrl;
         delete config.maxReOrgDepth;
         delete config.maxRetries;
+        delete config.blockDelay;
         delete config.blockSubscriptionTimeout;
+        delete config.blockDelay;
+        delete config.alternateEndpoint;
+        delete config.rpcTimeout;
+
 
         //@ts-ignore
         const eth = new Eth(
@@ -67,9 +75,12 @@ export class QuickNodeBlockProducer extends BlockProducer {
                 endpoints,
                 maxRetries,
                 "quicknode_block_getter",
-                blockSubscriptionTimeout
+                blockSubscriptionTimeout,
+                blockDelay,
+                alternateEndpoint,
+                rpcTimeout
             ),
-            new BlockGetter(eth, maxRetries),
+            new QuickNodeBlockGetter(eth, maxRetries),
             database,
             database.model<IProducedBlock, IProducedBlocksModel<IProducedBlock>>(
                 "ProducedBlocks",
@@ -79,6 +90,6 @@ export class QuickNodeBlockProducer extends BlockProducer {
             startBlock,
             maxReOrgDepth
         );
-        
+
     }
 }

@@ -1,5 +1,4 @@
 name: Tests
-run-name: ${{ github.actor }} just pushed to ChainFlow
 
 on: 
   push:

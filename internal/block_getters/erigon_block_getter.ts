@@ -38,7 +38,7 @@ export class ErigonBlockGetter extends BlockGetter implements IBlockGetter {
             for (const transactionObject of result[0].transactions) {
                 transactions.push(this.formatTransactionObject(
                     transactionObject as IWeb3Transaction,
-                    this.formatRawReceipt(result[1].find(
+                    this.formatRawReceipt(result[1]?.find(
                         (receipt) => receipt.transactionHash === transactionObject.hash
                     )) ??
                     await this.getTransactionReceipt(transactionObject.hash)
