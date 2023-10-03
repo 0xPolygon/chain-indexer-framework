@@ -8065,11 +8065,11 @@ please-upgrade-node@^3.1.1:
     semver-compare "^1.0.0"
 
 plimit-lit@^1.2.6:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/plimit-lit/-/plimit-lit-1.5.0.tgz#f66df8a7041de1e965c4f1c0697ab486968a92a5"
-  integrity sha512-Eb/MqCb1Iv/ok4m1FqIXqvUKPISufcjZ605hl3KM/n8GaX8zfhtgdLwZU3vKjuHGh2O9Rjog/bHTq8ofIShdng==
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/plimit-lit/-/plimit-lit-1.6.0.tgz#254e449fbf22c8adb8a85fde5977efac4e36cad0"
+  integrity sha512-CHWRJui6rwCDZarn9nbEPAreA/09vzKCBRqKDqXclKczXmdtQstyZMRxOa5Jweq8dTAbJ2/Us038OWObu6R1SA==
   dependencies:
-    queue-lit "^1.5.0"
+    queue-lit "^1.5.1"
 
 postcss-selector-parser@^6.0.10:
   version "6.0.13"
@@ -8211,10 +8211,10 @@ query-string@^5.0.1:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
-queue-lit@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/queue-lit/-/queue-lit-1.5.0.tgz#8197fdafda1edd615c8a0fc14c48353626e5160a"
-  integrity sha512-IslToJ4eiCEE9xwMzq3viOO5nH8sUWUCwoElrhNMozzr9IIt2qqvB4I+uHu/zJTQVqc9R5DFwok4ijNK1pU3fA==
+queue-lit@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/queue-lit/-/queue-lit-1.5.1.tgz#755ee3888a3ad874e55a0fe5f399dbffac0c40ca"
+  integrity sha512-StsMlkSvodNW5b2L6jOH9vHH11OeEMWEFQPJ2MBed/lXhw2uP+/+xjxCrfhjQXQUfqkGIAYoIJJiEWeWowc3PQ==
 
 queue-microtask@^1.2.2:
   version "1.2.3"
