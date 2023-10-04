@@ -1,6 +1,6 @@
 # Chain Indexer Framework - Blockchain Data Indexer
 
-[![GitHub version](https://badge.fury.io/gh/0xPolygon%2Fchain-indexer-framework.svg)](https://badge.fury.io/gh/0xPolygon%2Fchain-indexer-framework)
+[![GitHub version](https://badge.fury.io/gh/maticnetwork%2Fchain-indexer-framework.svg)](https://badge.fury.io/gh/maticnetwork%2Fchain-indexer-framework)
 ![Build Status](https://github.com/0xPolygon/chain-indexer-framework/workflows/CI/badge.svg?branch=main)
 [![npm version](https://badge.fury.io/js/%40maticnetwork%2Fchain-indexer-framework.svg)](https://www.npmjs.com/package/@maticnetwork/chain-indexer-framework)
 ![GitHub](https://img.shields.io/github/license/0xPolygon/chain-indexer-framework)
@@ -24,18 +24,12 @@ With Chain Indexer Framework, you can unlock the true potential of EVM blockchai
 
 ## Installation
 
-You can install the package using [NPM](https://www.npmjs.com/package/@maticnetwork/chain-indexer-framework) or using [Yarn](https://yarnpkg.com/package/@maticnetwork/chain-indexer-framework)
+You can install the package using [NPM](https://www.npmjs.com/package/@maticnetwork/chain-indexer-framework)
 
 ### Using NPM
 
 ```bash
 npm install @maticnetwork/chain-indexer-framework
-```
-
-### Yarn
-
-```bash
-yarn add @maticnetwork/chain-indexer-framework
 ```
 
 ## Usage
