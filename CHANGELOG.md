@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/0xPolygon/chain-indexer-framework/compare/1.0.0...1.0.1) (2023-10-04)
+
+
+### Bug Fixes
+
+* readme ([2169fae](https://github.com/0xPolygon/chain-indexer-framework/commit/2169fae273ebc99c5fd30248bd7dd5ee72c59d4a))
+* readme ([580a3da](https://github.com/0xPolygon/chain-indexer-framework/commit/580a3dae676129aacef1ed1d196ccfb9a6b85e71))
+
 # 1.0.0 (2023-10-04)
 
 
