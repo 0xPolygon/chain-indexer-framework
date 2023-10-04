@@ -24,18 +24,12 @@ With Chain Indexer Framework, you can unlock the true potential of EVM blockchai
 
 ## Installation
 
-You can install the package using [NPM](https://www.npmjs.com/package/@maticnetwork/chain-indexer-framework) or using [Yarn](https://yarnpkg.com/package/@maticnetwork/chain-indexer-framework)
+You can install the package using [NPM](https://www.npmjs.com/package/@maticnetwork/chain-indexer-framework)
 
 ### Using NPM
 
 ```bash
 npm install @maticnetwork/chain-indexer-framework
-```
-
-### Yarn
-
-```bash
-yarn add @maticnetwork/chain-indexer-framework
 ```
 
 ## Usage
