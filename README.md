@@ -7,7 +7,7 @@
 [![TEST](https://github.com/0xPolygon/chain-indexer-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/0xPolygon/chain-indexer-framework/actions/workflows/tests.yml)
 
 
-Chain Indexer Framework, is a powerful framework designed to facilitate the development of flexible event-driven data pipelines on EVM blockchains. Built on the reliable foundation of Kafka, Chain Indexer Framework empowers developers to build robust and scalable applications that seamlessly process blockchain events and enable real-time data integration.
+Chain Indexer Framework, is a powerful framework designed for the development of flexible event-driven data pipelines on EVM blockchains. Built on the reliable foundation of Kafka, Chain Indexer Framework empowers developers to build robust and scalable applications that seamlessly process blockchain events and enable real-time data integration.
 
 In today's rapidly evolving blockchain ecosystem, the need for efficient and reliable data processing is paramount. EVM (Ethereum Virtual Machine) blockchains, such as Ethereum itself and its compatible networks, have gained significant traction due to their smart contract capabilities and decentralized nature. However, working with blockchain data at scale and in real time presents unique challenges.
 
