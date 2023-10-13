@@ -14,24 +14,48 @@ The folder consists of 2 examples and each project consists of three distinct pa
 Both the examples serves as a useful reference for understanding how Chain Indexer Framework can be effectively utilized to manage and process blockchain data efficiently.
 
 
-## How to Build
+## How to Build and Run
 
-This project can build on Windows, MacOs and Linux
+This project can be built and run on Windows, MacOS, and Linux. To get started, follow these steps:
 
-Steps to build specifically on Ubuntu are as follows:
+**Step 1: Install Kafka**
 
-- Install docker and check version once installed
-  - ```bash
-    docker --version
-    ```
+You have two options for running Kafka, either inside a Docker container or locally without Docker.
+
+Option 1: **Inside Docker** 
+  - Install Docker and verify the installation:
+    - ```bash
+      docker --version
+      ```
   
-- Run docker compose from dev-env. Make sure that docker daemon is running.
-  - ```bash
-    cd dev-env
-    docker compose up -d
-    ```
+  - Run Docker Compose from the "dev-env" directory. Make sure that the Docker daemon is running:
+    - ```bash
+      cd dev-env
+      docker compose up -d
+      ```
 
-- Make sure MongoDb is installed and the service is running
+Option 2: **Run Locally without Docker**
+  - Download kafka from [here](https://www.apache.org/dyn/closer.cgi?path=/kafka/3.6.0/kafka_2.13-3.6.0.tgz)
+
+  - Move to the Kafka folder you downloaded:
+    - ```bash
+      cd kafka_2.13-3.6.0
+      ```
+  
+  - Run Zookeeper:
+    - ```bash
+      bin/zookeeper-server-start.sh config/zookeeper.properties
+      ```
+  
+  - Run Kafka:
+    - ```bash
+      bin/kafka-server-start.sh config/server.properties
+      ```
+
+**Step 2: Install and Run MongoDB**
+
+Ensure that MongoDB is installed and its service is running. Follow these steps to install MongoDB:
+
   - ```bash
     curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
     apt-key list
@@ -41,7 +65,9 @@ Steps to build specifically on Ubuntu are as follows:
     sudo systemctl start mongod.service
     sudo systemctl status mongod
     ```
-  
+
+**Step 3: Build and Run Services**
+ 
 - Run [MATIC_TRANSFER](./matic_transfer/README.md)
 
 - Run [NFT_BALANCER](./nft_balancer/README.md)

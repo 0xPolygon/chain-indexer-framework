@@ -12,4 +12,5 @@ export interface IDeposit {
     tokenIds?: string[],
     timestamp?: number,
     rootTunnelAddress?: string
+    refuel?: boolean
 }

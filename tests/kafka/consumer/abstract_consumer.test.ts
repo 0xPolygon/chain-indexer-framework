@@ -85,6 +85,7 @@ describe("Kafka - AbstractConsumer", () => {
                     "enable.auto.offset.store": false,
                     "event_cb": false,
                     "message.max.bytes": 26214400,
+                    "isolation.level": "read_uncommitted",
                     "fetch.message.max.bytes": 26214400,
                     "queued.max.messages.kbytes": 25000
                 },
@@ -105,7 +106,8 @@ describe("Kafka - AbstractConsumer", () => {
                     "event_cb": true,
                     "message.max.bytes": 26214400,
                     "fetch.message.max.bytes": 26214400,
-                    "queued.max.messages.kbytes": 25000
+                    "queued.max.messages.kbytes": 25000,
+                    "isolation.level": "read_uncommitted",
                 },
                 {
                     "auto.offset.reset": "earliest" as "earliest" | "smallest" | "beginning" | "largest" | "latest" | "end" | "error" | undefined
