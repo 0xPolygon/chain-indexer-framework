@@ -73,7 +73,8 @@ export abstract class AbstractConsumer extends noderdkafka.KafkaConsumer {
                 "event_cb": true,
                 "message.max.bytes": 26214400,
                 "fetch.message.max.bytes": 26214400,
-                "queued.max.messages.kbytes": 25000
+                "queued.max.messages.kbytes": 25000,
+                "isolation.level": "read_uncommitted",
             }, config),
             Object.assign(
                 {

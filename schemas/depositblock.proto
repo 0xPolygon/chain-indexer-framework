@@ -12,6 +12,7 @@ message DepositBlock {
         repeated string amounts = 7;
         repeated uint64 tokenIds = 8;
         string rootTunnelAddress = 9;
+        bool refuel = 10;
     }
 
     required uint64 blockNumber = 1;
