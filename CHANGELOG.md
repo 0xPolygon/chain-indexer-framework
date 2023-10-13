@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/0xPolygon/chain-indexer-framework/compare/1.0.1...1.1.0) (2023-10-13)
+
+
+### Features
+
+* add refuel in proto and updatae kafka consumer configs ([0148214](https://github.com/0xPolygon/chain-indexer-framework/commit/014821415d01a2b822b8c3a0173126a65a5b2c93))
+
 ## [1.0.1](https://github.com/0xPolygon/chain-indexer-framework/compare/1.0.0...1.0.1) (2023-10-04)
 
 
