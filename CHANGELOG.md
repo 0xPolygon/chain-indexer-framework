@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/0xPolygon/chain-indexer-framework/compare/1.1.0...1.2.0) (2024-03-04)
+
+
+### Features
+
+* use nullish operator instead of or for dbCollection param ([a298349](https://github.com/0xPolygon/chain-indexer-framework/commit/a2983499b766351dd9db1f826e192ef54b9d7e7a))
+
 # [1.1.0](https://github.com/0xPolygon/chain-indexer-framework/compare/1.0.1...1.1.0) (2023-10-13)
 
 
