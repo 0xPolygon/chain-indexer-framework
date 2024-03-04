@@ -86,11 +86,6 @@ export class Coder implements ICoder {
             } 
             return this.protobufType.decode(buffer);
         } catch (error) {
-            Logger.error(error as any);
-            Logger.info({message: "Decodding Error: deserialize", data: {
-                buffer: buffer,
-                string: buffer.toString()
-            }});
             throw new CoderError(
                 "Decoding error",
                 CoderError.codes.DECODING_ERROR,
@@ -125,15 +120,6 @@ export class Coder implements ICoder {
             );
         }
 
-        const _buffer = this.protobufType.encode(messageObject).finish();
-
-        if (this.messageType === "L1StateBlock") {
-            Logger.info({message: "In coder serialize - for L1StateBlock", data: {
-                base64: (_buffer as Buffer).toString("base64"),
-                stringData: _buffer.toString(),
-                _buffer
-            }});
-        }
-        return _buffer;
+        return this.protobufType.encode(messageObject).finish();
     }
 }
