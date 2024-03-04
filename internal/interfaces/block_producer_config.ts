@@ -4,6 +4,7 @@ export interface IBlockProducerConfig extends IProducerConfig {
     startBlock?: number,
     rpcWsEndpoints?: string[],
     mongoUrl?: string, 
+    dbCollection?: string, 
     maxReOrgDepth?: number, 
     maxRetries?: number,
     blockPollingTimeout?: number, 

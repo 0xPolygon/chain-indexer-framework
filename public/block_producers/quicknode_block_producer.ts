@@ -27,6 +27,7 @@ export class QuickNodeBlockProducer extends BlockProducer {
         const endpoints = config.rpcWsEndpoints || [];
         const startBlock = config.startBlock || 0;
         const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-indexer";
+        const dbCollection = config.dbCollection || "producedblocks";
         const maxReOrgDepth = config.maxReOrgDepth || 0;
         const maxRetries = config.maxRetries || 0;
         const blockSubscriptionTimeout = config.blockSubscriptionTimeout;
@@ -38,6 +39,7 @@ export class QuickNodeBlockProducer extends BlockProducer {
         delete config.rpcWsEndpoints;
         delete config.startBlock;
         delete config.mongoUrl;
+        delete config.dbCollection;
         delete config.maxReOrgDepth;
         delete config.maxRetries;
         delete config.blockDelay;
@@ -85,7 +87,7 @@ export class QuickNodeBlockProducer extends BlockProducer {
             database.model<IProducedBlock, IProducedBlocksModel<IProducedBlock>>(
                 "ProducedBlocks",
                 ProducedBlocksModel,
-                "producedblocks"
+                dbCollection
             ),
             startBlock,
             maxReOrgDepth
