@@ -1,7 +1,6 @@
 // block_producer
 export * from "./block_producers/block_polling_producer.js";
 export * from "./block_producers/erigon_block_producer.js";
-export * from "./block_producers/http_block_producer.js";
 export * from "./block_producers/quicknode_block_producer.js";
 export * from "./block_producers/block_producer.js";
 

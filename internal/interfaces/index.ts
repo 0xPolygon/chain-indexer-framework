@@ -15,8 +15,6 @@ export * from "./consumer_queue_object.js";
 export * from "./deposit.js";
 export * from "./deserialised_kafka_message.js";
 export * from "./event_log.js";
-export * from "./http_block.js";
-export * from "./http_transaction.js";
 export * from "./kafka_coder_config.js";
 export * from "./logger_config.js";
 export * from "./mapper.js";
