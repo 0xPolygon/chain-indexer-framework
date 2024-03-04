@@ -6,7 +6,7 @@ message Mappings {
     message Metadata {
         string name = 1;
         string symbol = 2;
-        uint32 decimals = 3;
+        uint32 decimal = 3;
     }
 
     message MappingEvent {
