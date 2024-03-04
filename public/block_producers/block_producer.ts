@@ -25,12 +25,12 @@ export class BlockProducer extends InternalBlockProducer {
      * @returns {BlockProducer}
      */
     constructor(config: IBlockProducerConfig) {
-        const endpoints = config.rpcWsEndpoints || [];
-        const startBlock = config.startBlock || 0;
-        const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-indexer";
+        const endpoints = config.rpcWsEndpoints ?? [];
+        const startBlock = config.startBlock ?? 0;
+        const mongoUrl = config.mongoUrl ?? "mongodb://localhost:27017/chain-indexer";
         const dbCollection = config.dbCollection ?? "producedblocks";
-        const maxReOrgDepth = config.maxReOrgDepth || 0;
-        const maxRetries = config.maxRetries || 0;
+        const maxReOrgDepth = config.maxReOrgDepth ?? 0;
+        const maxRetries = config.maxRetries ?? 0;
         const blockSubscriptionTimeout = config.blockSubscriptionTimeout;
 
         // Has to be done or Kafka complains later

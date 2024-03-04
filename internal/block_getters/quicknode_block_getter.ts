@@ -36,31 +36,42 @@ export class QuickNodeBlockGetter extends BlockGetter implements IBlockGetter {
      */
     public async getBlockWithTransactionReceipts(blockNumber: number | string, retryCount: number = 0): Promise<IBlock> {
         try {
-            const response: IQuickNodeResponse = await new Promise((resolve, reject) => {
-                const timeout = setTimeout(() => {
-                    reject(new Error(`Request timed out for block: ${blockNumber}`));
-                }, this.rpcTimeout || 4000);
+            const response: IQuickNodeResponse = await new Promise(
+                async (resolve, reject) => {
+                    const timeout = setTimeout(() => {
+                        reject(new Error(`Request timed out for block: ${blockNumber}`));
+                    }, this.rpcTimeout ?? 4000);
 
-                let eth: Eth = this.eth;
-                if (retryCount > 0 && this.alternateEth) {
-                    eth = this.alternateEth;
-                }
-
-                (eth.currentProvider as WebsocketProvider).send({
-                    method: "qn_getBlockWithReceipts",
-                    id: Date.now().toString() + blockNumber,
-                    params: [utils.numberToHex(blockNumber)],
-                    jsonrpc: "2.0"
-                }, (error, response) => {
-                    if (error) {
-                        clearTimeout(timeout);
-                        reject(error);
+                    let eth: Eth = this.eth;
+                    if (retryCount > 0 && this.alternateEth) {
+                        await new Promise(r => setTimeout(r, 2000));
+                        eth = this.alternateEth;
                     }
 
-                    clearTimeout(timeout);
-                    resolve(response?.result);
+                    (eth.currentProvider as WebsocketProvider).send({
+                        method: "qn_getBlockWithReceipts",
+                        id: Date.now().toString() + blockNumber,
+                        params: [utils.numberToHex(blockNumber)],
+                        jsonrpc: "2.0"
+                    }, (error, response) => {
+                        if (error) {
+                            clearTimeout(timeout);
+                            reject(error);
+                        }
+
+                        if (!(response?.result)) {
+                            clearTimeout(timeout);
+                            reject(
+                                new Error(
+                                    `null response received for block: ${blockNumber}`
+                                )
+                            );
+                        }
+
+                        clearTimeout(timeout);
+                        resolve(response?.result);
+                    });
                 });
-            });
 
             const transactions: ITransaction[] = [];
 

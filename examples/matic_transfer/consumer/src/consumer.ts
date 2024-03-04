@@ -26,10 +26,10 @@ dotenv.config()
 export default async function startConsuming(transferService: TransferService, transferMapper: TransferMapper): Promise<void> {
     try {
         consume({
-            "metadata.broker.list": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
-            "group.id": process.env.CONSUMER_GROUP_ID || "matic.transfer.consumer",
+            "metadata.broker.list": process.env.KAFKA_CONNECTION_URL ?? "localhost:9092",
+            "group.id": process.env.CONSUMER_GROUP_ID ?? "matic.transfer.consumer",
             "security.protocol": "plaintext",
-            topic: process.env.TRANSFER_TOPIC || "apps.1.matic.transfer",
+            topic: process.env.TRANSFER_TOPIC ?? "apps.1.matic.transfer",
             coders: {
                 fileName: "matic_transfer",
                 packageName: "matictransferpackage",

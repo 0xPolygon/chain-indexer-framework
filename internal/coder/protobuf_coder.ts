@@ -3,6 +3,7 @@ import { CoderError } from "../errors/coder_error.js";
 import protobuf, { Root, Type } from "protobufjs";
 import { ICoder } from "../interfaces/coder.js";
 import { createRequire } from "module";
+import { Logger } from "../logger/logger.js";
 const { load } = protobuf;
 
 /**
@@ -76,8 +77,20 @@ export class Coder implements ICoder {
         }
 
         try {
+            if (this.messageType === "L1StateBlock") {
+                Logger.info({message: "In coder deserialize - for L1StateBlock", data: {
+                    base64: buffer.toString("base64"),
+                    stringData: buffer.toString(),
+                    buffer
+                }});
+            } 
             return this.protobufType.decode(buffer);
         } catch (error) {
+            Logger.error(error as any);
+            Logger.info({message: "Decodding Error: deserialize", data: {
+                buffer: buffer,
+                string: buffer.toString()
+            }});
             throw new CoderError(
                 "Decoding error",
                 CoderError.codes.DECODING_ERROR,
@@ -112,6 +125,15 @@ export class Coder implements ICoder {
             );
         }
 
-        return this.protobufType.encode(messageObject).finish();
+        const _buffer = this.protobufType.encode(messageObject).finish();
+
+        if (this.messageType === "L1StateBlock") {
+            Logger.info({message: "In coder serialize - for L1StateBlock", data: {
+                base64: (_buffer as Buffer).toString("base64"),
+                stringData: _buffer.toString(),
+                _buffer
+            }});
+        }
+        return _buffer;
     }
 }

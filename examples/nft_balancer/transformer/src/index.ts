@@ -25,7 +25,7 @@ Logger.create({
 try {
     startTransforming(
         {
-            "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
+            "bootstrap.servers": process.env.KAFKA_CONNECTION_URL ?? "localhost:9092",
             "group.id": "matic.transfer.transformer",
             "security.protocol": "plaintext",
             "message.max.bytes": 26214400,
@@ -35,11 +35,11 @@ try {
                 packageName: "blockpackage",
                 messageType: "Block"
             },
-            topic: process.env.CONSUMER_TOPIC || "polygon.1.blocks",
+            topic: process.env.CONSUMER_TOPIC ?? "polygon.1.blocks",
         },
         {
-            topic: process.env.PRODUCER_TOPIC || "apps.1.matic.transfer",
-            "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
+            topic: process.env.PRODUCER_TOPIC ?? "apps.1.matic.transfer",
+            "bootstrap.servers": process.env.KAFKA_CONNECTION_URL ?? "localhost:9092",
             "security.protocol": "plaintext",
             "message.max.bytes": 26214400,
             coder: {

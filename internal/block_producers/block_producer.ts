@@ -89,6 +89,12 @@ export class BlockProducer extends AsynchronousProducer {
         await this.database.connect();
         const metadata = await super.start();
 
+        Logger.info({
+            location: "block_producer",
+            function: "start",
+            message: "Producer started",
+        });
+
         this.on("delivered", async (report: DeliveryReport) => {
             if (report.partition === -1) {
                 const error = new BlockProducerError(

@@ -22,12 +22,12 @@ const producer = produce<BlockPollerProducer>({
     startBlock: parseInt(process.env.START_BLOCK as string),
     rpcWsEndpoints: process.env.HTTP_PROVIDER ? [process.env.HTTP_PROVIDER] : undefined,
     blockPollingTimeout: parseInt(process.env.BLOCK_POLLING_TIMEOUT as string),
-    topic: process.env.PRODUCER_TOPIC || "polygon.1442.blocks",
+    topic: process.env.PRODUCER_TOPIC ?? "polygon.1442.blocks",
     maxReOrgDepth: 0,
     maxRetries: 5,
-    mongoUrl: process.env.MONGO_URL || 'mongodb://localhost:27017/chain-indexer',
+    mongoUrl: process.env.MONGO_URL ?? 'mongodb://localhost:27017/chain-indexer',
     // blockSubscriptionTimeout: 120000,
-    "bootstrap.servers": process.env.KAFKA_CONNECTION_URL || "localhost:9092",
+    "bootstrap.servers": process.env.KAFKA_CONNECTION_URL ?? "localhost:9092",
     "security.protocol": "plaintext",
     type: "blocks:polling"
 });

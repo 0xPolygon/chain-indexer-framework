@@ -11,7 +11,7 @@ message BurnBlock {
         repeated string amounts = 6;
         repeated uint64 tokenIds = 7;
         string bridgeType = 8;
-
+        bool isCctp = 9;
     }
 
     required uint64 blockNumber = 1;
