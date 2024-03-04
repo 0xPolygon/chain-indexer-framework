@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/0xPolygon/chain-indexer-framework/compare/1.2.0...1.3.0) (2024-03-04)
+
+
+### Features
+
+* new changes ([cb8c252](https://github.com/0xPolygon/chain-indexer-framework/commit/cb8c252ac46fad6d1abf63e39def0caf48a24d93))
+
 # [1.2.0](https://github.com/0xPolygon/chain-indexer-framework/compare/1.1.0...1.2.0) (2024-03-04)
 
 
