@@ -22,13 +22,13 @@ export class BlockPollerProducer extends BlockProducer {
      * @returns {BlockPollerProducer}
      */
     constructor(config: IBlockProducerConfig) {
-        const endpoint = config.rpcWsEndpoints?.[0] || "";
-        const startBlock = config.startBlock || 0;
-        const mongoUrl = config.mongoUrl || "mongodb://localhost:27017/chain-indexer";
+        const endpoint = config.rpcWsEndpoints?.[0] ?? "";
+        const startBlock = config.startBlock ?? 0;
+        const mongoUrl = config.mongoUrl ?? "mongodb://localhost:27017/chain-indexer";
         const dbCollection = config.dbCollection ?? "producedblocks";
-        const blockPollingTimeout = config.blockPollingTimeout || 2000;
-        const maxRetries = config.maxRetries || 0;
-        const maxReOrgDepth = config.maxReOrgDepth || 0;
+        const blockPollingTimeout = config.blockPollingTimeout ?? 2000;
+        const maxRetries = config.maxRetries ?? 0;
+        const maxReOrgDepth = config.maxReOrgDepth ?? 0;
 
         delete config.rpcWsEndpoints;
         delete config.startBlock;

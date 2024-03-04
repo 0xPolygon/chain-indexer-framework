@@ -71,6 +71,7 @@ export class BlockSubscription extends AbstractBlockSubscription {
                     workerData
                 }
             );
+            worker.setMaxListeners(1000);
 
             worker.on("exit", () => {
                 this.workers[i] = new Worker(
@@ -79,6 +80,7 @@ export class BlockSubscription extends AbstractBlockSubscription {
                         workerData
                     }
                 );
+                this.workers[i].setMaxListeners(1000);
             });
 
             workers.push(worker);

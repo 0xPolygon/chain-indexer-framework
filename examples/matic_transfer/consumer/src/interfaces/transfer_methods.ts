@@ -16,7 +16,7 @@ const statics = {
         //@ts-ignore
         const tx = await this.findOne().sort({ timestamp: -1 }).exec();
 
-        return tx?.blockNumber || 0;
+        return tx?.blockNumber ?? 0;
     },
 
     /**
