@@ -37,6 +37,7 @@ message BridgeAssets {
         string depositor = 9;
         uint32 leafType = 10;
         bool refuel = 11;
+        string leaf = 12;
     }
 
     uint64 blockNumber = 1;
