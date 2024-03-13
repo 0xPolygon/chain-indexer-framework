@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/0xPolygon/chain-indexer-framework/compare/1.3.0...1.3.1) (2024-03-13)
+
+
+### Bug Fixes
+
+* bridge asset leaf ([ddb6721](https://github.com/0xPolygon/chain-indexer-framework/commit/ddb672156ead0b71605251169af115b6cde5c9f1))
+
 # [1.3.0](https://github.com/0xPolygon/chain-indexer-framework/compare/1.2.0...1.3.0) (2024-03-04)
 
 
