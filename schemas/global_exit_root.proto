@@ -7,7 +7,17 @@ message ExitRoots {
 }
 
 message GlobalExitRoot {
+    message GlobalExitRootEvent {
+        uint64 rollupId = 1;
+        uint64 batchNumber = 2;
+        uint64 depositCount = 3;
+        string aggregator = 4;
+        string rollUpExitRoot = 5;
+        string globalExitRoot = 6;
+        ExitRoots exitRoots = 4;
+    }
+
     uint64 blockNumber = 1;
     uint64 timestamp = 2;
-    repeated ExitRoots data = 3;
+    repeated GlobalExitRootEvent data = 3;
 }
