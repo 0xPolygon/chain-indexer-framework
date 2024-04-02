@@ -4,7 +4,7 @@ import public "bridge_assets.proto";
 
 message ClaimAssets {
     message ClaimEvent {
-        RollupMetaData rollupMetaData = 1;
+        RollUpMetaData rollUpMetaData = 1;
         string transactionHash = 2;
         TokenInfo tokenInfo = 3;
         string receiver = 4;
