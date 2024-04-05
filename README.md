@@ -65,9 +65,9 @@ Together, these three layers form the foundation of Chain Indexer Framework, pro
 ## Examples
 To gain a clearer understanding of the entire process, let's consider straightforward [examples](./examples/README.md) 
 - First example involves indexing [MATIC transfer](./examples/matic_transfer/README.md) events from the Ethereum blockchain.
-- Second example involes indexing NFT Transfer and maintaining [NFT Balance](./examples/nft_balancer/README.md)
+- Second example involves indexing NFT Transfer and maintaining [NFT Balance](./examples/nft_balancer/README.md)
 
-Both these examples encompasses all the layers involved, starting from producers, moving through transformers, and concluding with consumers.
+Both these examples encompass all the layers involved, starting from producers, moving through transformers, and concluding with consumers.
 
 ## Producers
 
