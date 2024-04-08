@@ -14,7 +14,7 @@ message GlobalExitRoot {
         string aggregator = 4;
         string rollUpExitRoot = 5;
         string globalExitRoot = 6;
-        ExitRoots exitRoots = 4;
+        ExitRoots exitRoots = 7;
     }
 
     uint64 blockNumber = 1;
