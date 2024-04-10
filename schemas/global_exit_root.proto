@@ -8,7 +8,7 @@ message ExitRoots {
 
 message GlobalExitRoot {
     message GlobalExitRootEvent {
-        uint64 rollupId = 1;
+        uint64 rollUpId = 1;
         uint64 batchNumber = 2;
         uint64 depositCount = 3;
         string aggregator = 4;
