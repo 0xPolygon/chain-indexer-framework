@@ -10,7 +10,7 @@ message DepositBlock {
         required string depositReceiver = 5;
         required string rootToken = 6;
         repeated string amounts = 7;
-        repeated uint64 tokenIds = 8;
+        repeated string tokenIds = 8;
         string rootTunnelAddress = 9;
         bool refuel = 10;
         string nonce = 11;
