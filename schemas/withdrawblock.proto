@@ -11,7 +11,7 @@ message WithdrawBlock {
         uint64 burnTransactionBlockNumber = 6;
         string transactionType = 7;
         repeated string amounts = 8;
-        repeated uint64 tokenIds = 9;
+        repeated string tokenIds = 9;
         required bool isDecoded = 10;
         required string rootToken = 11;
         string rootTunnel = 12;
