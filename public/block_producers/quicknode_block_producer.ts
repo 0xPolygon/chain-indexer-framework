@@ -52,7 +52,7 @@ export class QuickNodeBlockProducer extends BlockProducer {
         //@ts-ignore
         const eth = new Eth(
             //@ts-ignore
-            new Eth.providers.WebsocketProvider(
+            new Eth.providers.HttpProvider(
                 endpoints[0],
                 {
                     reconnect: {

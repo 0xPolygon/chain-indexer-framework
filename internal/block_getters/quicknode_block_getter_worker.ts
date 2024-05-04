@@ -11,7 +11,7 @@ const blockGetter = new QuickNodeBlockGetter(
     //@ts-ignore
     new EthClass(
         //@ts-ignore
-        new EthClass.providers.WebsocketProvider(
+        new EthClass.providers.HttpProvider(
             workerData.endpoint,
             {
                 reconnect: {
@@ -29,7 +29,7 @@ const blockGetter = new QuickNodeBlockGetter(
     //@ts-ignore
     new EthClass(
         //@ts-ignore
-        new EthClass.providers.WebsocketProvider(
+        new EthClass.providers.HttpProvider(
             workerData.alternateEndpoint,
             {
                 reconnect: {

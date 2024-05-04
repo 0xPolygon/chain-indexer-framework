@@ -1,5 +1,5 @@
 import utils from "web3-utils";
-import { WebsocketProvider } from "web3-core";
+import { HttpProvider } from "web3-core";
 import { IQuickNodeResponse } from "../interfaces/quicknode_response.js";
 import { ITransaction } from "../interfaces/transaction.js";
 import { IBlock } from "../interfaces/block.js";
@@ -48,7 +48,7 @@ export class QuickNodeBlockGetter extends BlockGetter implements IBlockGetter {
                         eth = this.alternateEth;
                     }
 
-                    (eth.currentProvider as WebsocketProvider).send({
+                    (eth.currentProvider as HttpProvider).send({
                         method: "qn_getBlockWithReceipts",
                         id: Date.now().toString() + blockNumber,
                         params: [utils.numberToHex(blockNumber)],
