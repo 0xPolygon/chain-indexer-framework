@@ -95,18 +95,18 @@ describe("Block Producer", () => {
     });
 
     test("Web3 eth instance must be created with first endpoint passed in config.", () => {
-        expect(mockedEthClass.providers.WebsocketProvider).toHaveBeenCalledWith(
+        expect(mockedEthClass.providers.HttpProvider).toHaveBeenCalledWith(
             "rpc.com",
             expect.anything()
         );
         expect(mockedEthClass).toBeCalledWith(
             //@ts-ignore
-            mockedEthClass.providers.WebsocketProvider.mock.instances[0]
+            mockedEthClass.providers.HttpProvider.mock.instances[0]
         );
     });
 
     test("Web3 eth instance must be created with right wss connection config passed in config.", () => {
-        expect(mockedEthClass.providers.WebsocketProvider).toHaveBeenCalledWith(
+        expect(mockedEthClass.providers.HttpProvider).toHaveBeenCalledWith(
             expect.anything(),
             {
                 reconnect: {
@@ -121,7 +121,7 @@ describe("Block Producer", () => {
 
         expect(mockedEthClass).toBeCalledWith(
             //@ts-ignore
-            mockedEthClass.providers.WebsocketProvider.mock.instances[0]
+            mockedEthClass.providers.HttpProvider.mock.instances[0]
         );
     });
 
