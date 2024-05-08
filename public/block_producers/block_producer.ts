@@ -6,6 +6,7 @@ import { IProducerConfig } from "@internal/interfaces/producer_config.js";
 import { BlockGetter } from "@internal/block_getters/block_getter.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
 import { Database } from "@internal/mongo/database.js";
+import Eth from "web3-eth";
 
 /**
  * Common lock producer class which contains the common logic to retrieve 
