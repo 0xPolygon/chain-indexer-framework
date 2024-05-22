@@ -9,7 +9,7 @@ message BurnBlock {
         required string withdrawInitiator = 4;
         required string childToken = 5;
         repeated string amounts = 6;
-        repeated uint64 tokenIds = 7;
+        repeated string tokenIds = 7;
         string bridgeType = 8;
     }
 
