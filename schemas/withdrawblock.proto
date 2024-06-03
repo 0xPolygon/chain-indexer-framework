@@ -3,7 +3,7 @@ syntax = "proto3";
 
 message WithdrawBlock {
     message WithdrawEvent {
-        required string tokenType = 1;
+        string tokenType = 1;
         required string bridgeType = 2;
         required string transactionHash = 3;
         required string withdrawReceiver = 4;
