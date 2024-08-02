@@ -54,7 +54,7 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
                 throw new BlockProducerError(
                     "Block producer error",
                     BlockProducerError.codes.RECEIPT_NOT_FOUND,
-                    false,
+                    true,
                     `null receipt found for block ${blockNumber}.`,
                     "remote"
                 );
