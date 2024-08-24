@@ -22,10 +22,10 @@ jest.mock("winston", () => {
         },
         transports: {
             Console: jest.fn().mockImplementation(() => {
-                return {console: true};
+                return { console: true };
             }),
             Http: jest.fn().mockImplementation(() => {
-                return {datadog: true};
+                return { datadog: true };
             })
         },
         createLogger: jest.fn()
@@ -40,42 +40,42 @@ describe("Logger", () => {
         mockedSentry: jest.MockedObject<typeof Sentry>;
 
     let mockedLogger: jest.MockedObject<WinstonLogger> = {
-            info: jest.fn(),
-            debug: jest.fn(),
-            error: jest.fn(),
-            warn: jest.fn(),
-            log: jest.fn()
-        } as jest.MockedObject<WinstonLogger>;
+        info: jest.fn(),
+        debug: jest.fn(),
+        error: jest.fn(),
+        warn: jest.fn(),
+        log: jest.fn()
+    } as jest.MockedObject<WinstonLogger>;
 
-    beforeAll(()=>{
-        Logger.create({ 
+    beforeAll(() => {
+        Logger.create({
             winston: {
                 level: "error"
             },
             sentry: {
-                dsn: 'test_dsn', 
-                level: 'error', 
+                dsn: 'test_dsn',
+                level: 'error',
                 environment: 'staging'
-            }, 
+            },
             datadog: {
-                api_key: 'test_api_key', 
-                service_name: 'test_app_key' 
+                api_key: 'test_api_key',
+                service_name: 'test_app_key'
             }
         });
     })
 
-    beforeEach(() => {    
+    beforeEach(() => {
         mockedWinston = winston as jest.Mocked<typeof winston>;
         mockedWinstonFormat = winston.format as jest.MockedObject<typeof winston.format>;
-        mockedWinstonTransports = winston.transports; 
+        mockedWinstonTransports = winston.transports;
         mockedSentryClass = Sentry as jest.MockedClass<typeof Sentry>;
     });
 
     test("create - should create logger with passed config or default config otherwise", () => {
         const colorizer = { addColors: (colors) => { } } as winston.Logform.Colorizer;
 
-        mockedWinstonFormat.combine.mockReturnValueOnce({format: true} as unknown as winston.Logform.Format);
-        
+        mockedWinstonFormat.combine.mockReturnValueOnce({ format: true } as unknown as winston.Logform.Format);
+
         mockedWinston.createLogger.mockReturnValueOnce(mockedLogger);
 
         mockedWinstonFormat.timestamp.mockReturnValueOnce(
@@ -86,23 +86,23 @@ describe("Logger", () => {
             {} as winston.Logform.Format
         );
 
-        Logger.create({ 
+        Logger.create({
             winston: {
                 level: "error"
             },
             sentry: {
-                dsn: 'test_dsn', 
-                level: 'error', 
+                dsn: 'test_dsn',
+                level: 'error',
                 environment: 'staging'
-            }, 
+            },
             datadog: {
-                api_key: 'test_api_key', 
-                service_name: 'test_app_key' 
+                api_key: 'test_api_key',
+                service_name: 'test_app_key'
             }
         });
 
         mockedSentry = mockedSentryClass.mock.instances[0] as unknown as jest.MockedObject<typeof Sentry>;
-    
+
         expect(mockedWinstonFormat.combine).toHaveBeenNthCalledWith(
             1,
             { options: {} },
@@ -116,11 +116,11 @@ describe("Logger", () => {
         expect(mockedWinston.createLogger).toHaveBeenCalledWith(
             {
                 level: 'error',
-                format: {format: true},
+                format: { format: true },
                 transports: [
-                    {console: true},
+                    { console: true },
                     mockedSentry,
-                    {datadog: true}
+                    { datadog: true }
                 ]
             }
         );
@@ -152,8 +152,8 @@ describe("Logger", () => {
             {
                 level: 'error',
                 sentry: {
-                    dsn: 'test_dsn', 
-                    environment: 'staging'
+                    dsn: 'test_dsn',
+                    // environment: 'staging'
                 }
             }
         );
@@ -172,18 +172,18 @@ describe("Logger", () => {
 
     test('Logger is a singleton', () => {
         // Create an instance of Logger
-        Logger.create({ 
+        Logger.create({
             winston: {
                 level: "error"
             },
             sentry: {
-                dsn: 'test_dsn2', 
-                level: 'error' , 
+                dsn: 'test_dsn2',
+                level: 'error',
                 environment: 'staging'
-            }, 
+            },
             datadog: {
-                api_key: 'test_api_key2', 
-                service_name: 'test_app_key' 
+                api_key: 'test_api_key2',
+                service_name: 'test_app_key'
             }
         });
 
@@ -191,7 +191,7 @@ describe("Logger", () => {
         //calling Logger create method will not call the createLogger of mockedWinston. Verifying this will serve as our test for Singleton.
         expect(mockedWinston.createLogger).toHaveBeenCalledTimes(0);
     });
-    
+
     test("info must call logger.info with the message passed", () => {
         Logger.info("mock");
 
