@@ -78,7 +78,7 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
                 transactions
             );
         } catch (error) {
-            if (errorCount >= this.maxRetries) {
+            if (errorCount > this.maxRetries) {
                 Logger.info({
                     location: "block_getter",
                     function: "getBlockWithTransactionReceipts",
@@ -132,7 +132,7 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
 
             return this.formatTransactionReceipt(transactionReceipt);
         } catch (error) {
-            if (errorCount >= this.maxRetries) {
+            if (errorCount > this.maxRetries) {
                 Logger.info({
                     location: "block_getter",
                     function: "getTransactionReceipt",
