@@ -79,10 +79,16 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
             );
         } catch (error) {
             if (errorCount >= this.maxRetries) {
+                Logger.info({
+                    location: "block_getter",
+                    function: "getBlockWithTransactionReceipts",
+                    errorCount,
+                    error: JSON.stringify(error)
+                });
                 throw error;
             }
 
-            return this.getBlockWithTransactionReceipts(blockNumber, errorCount + 1);
+            return await this.getBlockWithTransactionReceipts(blockNumber, errorCount + 1);
         }
     }
 
@@ -127,10 +133,16 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
             return this.formatTransactionReceipt(transactionReceipt);
         } catch (error) {
             if (errorCount >= this.maxRetries) {
+                Logger.info({
+                    location: "block_getter",
+                    function: "getTransactionReceipt",
+                    errorCount,
+                    error: JSON.stringify(error)
+                });
                 throw error;
             }
 
-            return this.getTransactionReceipt(transactionHash, errorCount + 1);
+            return await this.getTransactionReceipt(transactionHash, errorCount + 1);
         }
     }
 }
