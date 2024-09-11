@@ -1,4 +1,9 @@
-import AbiCoder from "web3-eth-abi";
+import {
+    decodeParameter as decodeSingleParam,
+    decodeParameters as decodeMultipleParams,
+    decodeLog as decodeSingleLog,
+    encodeParameters as encodeMultipleParams
+} from "web3-eth-abi";
 
 /**
  * web3 helper class to access any web3 js related functionalities, use this to define any web3 helper functions
@@ -11,7 +16,7 @@ export class ABICoder {
      * @returns {any} - Can return arrays, numbers, objects, etc. depends on the RLP type
      */
     public static decodeParameter(type: any, hex: string): any {
-        return (AbiCoder as any).decodeParameter(type, hex);
+        return decodeSingleParam(type, hex);
     }
 
     /**
@@ -21,7 +26,7 @@ export class ABICoder {
      * @returns {any} - Can return an object of arrays, numbers, objects, etc. depends on the RLP type
      */
     public static decodeParameters(types: any[], hex: string): { [key: string]: any } {
-        return (AbiCoder as any).decodeParameters(types, hex);
+        return decodeMultipleParams(types, hex);
     }
 
     /**
@@ -31,7 +36,7 @@ export class ABICoder {
      * @returns {any} - return hex string
      */
     public static encodeParameters(types: any[], values: string[]): string {
-        return (AbiCoder as any).encodeParameters(types, values);
+        return encodeMultipleParams(types, values);
     }
 
     /**
@@ -44,7 +49,7 @@ export class ABICoder {
      * @returns 
      */
     public static decodeLog(inputs: any[], hex: string, topics: string[]): { [key: string]: string } {
-        return (AbiCoder as any).decodeLog(inputs, hex, topics);
+        return decodeSingleLog(inputs, hex, topics) as unknown as { [key: string]: string };
     }
 
     /**
@@ -56,6 +61,6 @@ export class ABICoder {
      * @returns {{ [key: string]: any }}
      */
     public static decodeMethod(types: any[], data: string): { [key: string]: any } {
-        return ABICoder.decodeParameters(types, "0x" + data.slice(10));
+        return decodeMultipleParams(types, "0x" + data.slice(10));
     }
 }
