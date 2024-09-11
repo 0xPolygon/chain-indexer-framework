@@ -1,9 +1,9 @@
 import { ABICoder } from "../../dist/internal/coder/abi_coder";
 import {
-    decodeParameter as decodeSingleParam,
-    decodeParameters as decodeMultipleParams,
-    decodeLog as decodeSingleLog,
-    encodeParameters as encodeMultipleParams
+    decodeParameter,
+    decodeParameters,
+    decodeLog,
+    encodeParameters
 } from "web3-eth-abi";
 
 jest.mock("web3-eth-abi");
@@ -13,7 +13,7 @@ describe("abi_coder", () => {
     describe("ABICoder", () => {
         test("decodeParameter", () => {
             //@ts-ignore
-            decodeSingleParam.mockReturnValueOnce("mocked_result")
+            decodeParameter.mockReturnValueOnce("mocked_result")
             expect(
                 ABICoder.decodeParameter(
                     "mocked_type",
@@ -24,7 +24,7 @@ describe("abi_coder", () => {
 
         test("decodeParameters", () => {
             //@ts-ignore
-            decodeMultipleParams.mockReturnValueOnce(["mocked_result"])
+            decodeParameters.mockReturnValueOnce(["mocked_result"])
             expect(
                 ABICoder.decodeParameters(
                     ["mocked_type"],
@@ -35,7 +35,7 @@ describe("abi_coder", () => {
 
         test("encodeParameters", () => {
             //@ts-ignore
-            encodeMultipleParams.mockReturnValueOnce("mocked_result")
+            encodeParameters.mockReturnValueOnce("mocked_result")
             expect(
                 ABICoder.encodeParameters(
                     ["mocked_type"],
@@ -46,7 +46,7 @@ describe("abi_coder", () => {
 
         test("decodeLog", () => {
             //@ts-ignore
-            decodeSingleLog.mockReturnValueOnce(["mocked_result"])
+            decodeLog.mockReturnValueOnce(["mocked_result"])
             expect(
                 ABICoder.decodeLog(
                     ["mocked_input"],
@@ -58,7 +58,7 @@ describe("abi_coder", () => {
 
         test("decodeMethod", () => {
             //@ts-ignore
-            decodeMultipleParams.mockReturnValueOnce(["mocked_result"])
+            decodeParameters.mockReturnValueOnce(["mocked_result"])
             expect(
                 ABICoder.decodeMethod(
                     ['bytes'],

@@ -1,8 +1,8 @@
 import {
-    decodeParameter as decodeSingleParam,
-    decodeParameters as decodeMultipleParams,
-    decodeLog as decodeSingleLog,
-    encodeParameters as encodeMultipleParams
+    decodeParameter,
+    decodeParameters,
+    decodeLog,
+    encodeParameters
 } from "web3-eth-abi";
 
 /**
@@ -16,7 +16,7 @@ export class ABICoder {
      * @returns {any} - Can return arrays, numbers, objects, etc. depends on the RLP type
      */
     public static decodeParameter(type: any, hex: string): any {
-        return decodeSingleParam(type, hex);
+        return decodeParameter(type, hex);
     }
 
     /**
@@ -26,7 +26,7 @@ export class ABICoder {
      * @returns {any} - Can return an object of arrays, numbers, objects, etc. depends on the RLP type
      */
     public static decodeParameters(types: any[], hex: string): { [key: string]: any } {
-        return decodeMultipleParams(types, hex);
+        return decodeParameters(types, hex);
     }
 
     /**
@@ -36,7 +36,7 @@ export class ABICoder {
      * @returns {any} - return hex string
      */
     public static encodeParameters(types: any[], values: string[]): string {
-        return encodeMultipleParams(types, values);
+        return encodeParameters(types, values);
     }
 
     /**
@@ -49,7 +49,7 @@ export class ABICoder {
      * @returns 
      */
     public static decodeLog(inputs: any[], hex: string, topics: string[]): { [key: string]: string } {
-        return decodeSingleLog(inputs, hex, topics) as unknown as { [key: string]: string };
+        return decodeLog(inputs, hex, topics) as unknown as { [key: string]: string };
     }
 
     /**
@@ -61,6 +61,6 @@ export class ABICoder {
      * @returns {{ [key: string]: any }}
      */
     public static decodeMethod(types: any[], data: string): { [key: string]: any } {
-        return decodeMultipleParams(types, "0x" + data.slice(10));
+        return decodeParameters(types, "0x" + data.slice(10));
     }
 }
