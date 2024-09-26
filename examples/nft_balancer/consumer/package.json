@@ -22,7 +22,7 @@
         "@maticnetwork/chain-indexer-framework": "^1.0.0",
         "dotenv": "^16.0.1",
         "long": "^5.2.0",
-        "mongoose": "^6.5.2",
+        "mongoose": "^8.0.0",
         "path": "^0.12.7",
         "web3-utils": "^1.8.1"
     },
