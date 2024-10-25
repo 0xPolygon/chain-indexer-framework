@@ -199,7 +199,12 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
                 if (
                     this.isReOrgedMissed(promiseResult.block)
                 ) {
-                    throw new Error("Chain re org not handled.");
+                    throw new BlockProducerError(
+                        "Chain reorg encountered",
+                        BlockProducerError.codes.REORG_ENCOUNTERED,
+                        true,
+                        "Chain re org not handled",
+                        "block_subscription");
                 }
 
                 this.observer.next(
@@ -211,6 +216,9 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
                     hash: promiseResult.block.hash
                 };
             } catch (error) {
+                if (error instanceof BlockProducerError) {
+                    this.observer.error(error);
+                }
                 this.fatalError = true;
                 this.observer.error(
                     BlockProducerError.createUnknown(error)

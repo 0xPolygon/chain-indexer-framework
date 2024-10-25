@@ -1,4 +1,9 @@
-import { Block, BlockTransactionObject, Eth, TransactionReceipt } from "web3-eth";
+import {
+    Block,
+    BlockTransactionObject,
+    Eth,
+    TransactionReceipt,
+} from "web3-eth";
 import { ITransactionReceipt } from "../interfaces/transaction_receipt.js";
 import { BlockProducerError } from "../errors/block_producer_error.js";
 import { IWeb3Transaction } from "../interfaces/web3_transaction.js";
@@ -10,14 +15,14 @@ import { Logger } from "../logger/logger.js";
 
 /**
  * A wrapper class on web3 block related functions
- * 
+ *
  * @author - Vibhu Rajeev, Nitin Mittal
  */
 export class BlockGetter extends BlockFormatter implements IBlockGetter {
     /**
      * @param {Eth} eth - Eth module from web3.js
      * @param {number} maxRetries - The number of times to retry on errors.
-     * 
+     *
      * @constructor
      */
     constructor(protected eth: Eth, protected maxRetries: number = 0) {
@@ -27,9 +32,9 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
     /**
      * @async
      * Public method to query block data of a single block
-     * 
+     *
      * @param {number | string} blockNumber - Block number to query the block details for.
-     * 
+     *
      * @returns {Promise<Block>} - Block object
      */
     public async getBlock(blockNumber: number | string): Promise<Block> {
@@ -39,16 +44,22 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
     /**
      * @async
      * Public method to query block data including transaction receipts of a single block.
-     * 
-     * @param {number | string} blockNumber - The block number for which block data needs to be retrieved. 
-     * 
+     *
+     * @param {number | string} blockNumber - The block number for which block data needs to be retrieved.
+     *
      * @returns {Promise<IBlock>} - Block object containing all details including transaction receipts.
-     * 
+     *
      * @throws {Error} - Throws error object on failure.
      */
-    public async getBlockWithTransactionReceipts(blockNumber: number | string, errorCount: number = 0): Promise<IBlock> {
+    public async getBlockWithTransactionReceipts(
+        blockNumber: number | string,
+        errorCount: number = 0
+    ): Promise<IBlock> {
         try {
-            const block: BlockTransactionObject = await this.eth.getBlock(blockNumber, true);
+            const block: BlockTransactionObject = await this.eth.getBlock(
+                blockNumber,
+                true
+            );
 
             if (!block) {
                 throw new BlockProducerError(
@@ -60,7 +71,9 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
                 );
             }
 
-            Logger.debug(`Fetching transaction receipts for the following block ${block.number}`);
+            Logger.debug(
+                `Fetching transaction receipts for the following block ${block.number}`
+            );
 
             const transactions: ITransaction[] = [];
 
@@ -73,31 +86,40 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
                 );
             }
 
-            return this.formatBlockWithTransactions(
-                block,
-                transactions
-            );
+            return this.formatBlockWithTransactions(block, transactions);
         } catch (error) {
+            if (!(error instanceof BlockProducerError)) {
+                throw new BlockProducerError(
+                    "Block producer error",
+                    BlockProducerError.codes.RPC_ERR,
+                    true,
+                    JSON.stringify(error),
+                    "remote"
+                );
+            }
             if (errorCount > this.maxRetries) {
                 Logger.info({
                     location: "block_getter",
                     function: "getBlockWithTransactionReceipts",
                     errorCount,
-                    error: JSON.stringify(error)
+                    error: JSON.stringify(error),
                 });
                 throw error;
             }
 
-            return await this.getBlockWithTransactionReceipts(blockNumber, errorCount + 1);
+            return await this.getBlockWithTransactionReceipts(
+                blockNumber,
+                errorCount + 1
+            );
         }
     }
 
     /**
      * @async
      * Public method to query the current block number.
-     * 
+     *
      * @returns {Promise<number>} - the current block.
-     * 
+     *
      * @throws {Error} - Throws error object on failure.
      */
     public getLatestBlockNumber(): Promise<number> {
@@ -106,25 +128,29 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
 
     /**
      * @async
-     * This internal method retrieves the transaction receipt of the given transaction hash and retries upto retryLimit on failure. 
-     * 
-     * @param {string} transactionHash - The transaction hash for which transaction receipt is to be retrieved.  
-     * @param {number} errorCount - Parameter for the function to know the number of times query has been retried. 
-     * This parameter must ideally not be set by an external call. 
-     * 
-     * @returns {Promise<ITransactionReceipt>} - The transaction receipt of the given transaction hash. On failure throws error object. 
-     * 
+     * This internal method retrieves the transaction receipt of the given transaction hash and retries upto retryLimit on failure.
+     *
+     * @param {string} transactionHash - The transaction hash for which transaction receipt is to be retrieved.
+     * @param {number} errorCount - Parameter for the function to know the number of times query has been retried.
+     * This parameter must ideally not be set by an external call.
+     *
+     * @returns {Promise<ITransactionReceipt>} - The transaction receipt of the given transaction hash. On failure throws error object.
+     *
      * @throws {Error} - Throws error object on failure.
      */
-    protected async getTransactionReceipt(transactionHash: string, errorCount: number = 0): Promise<ITransactionReceipt> {
+    protected async getTransactionReceipt(
+        transactionHash: string,
+        errorCount: number = 0
+    ): Promise<ITransactionReceipt> {
         try {
-            const transactionReceipt: TransactionReceipt = await this.eth.getTransactionReceipt(transactionHash);
+            const transactionReceipt: TransactionReceipt =
+                await this.eth.getTransactionReceipt(transactionHash);
 
             if (transactionReceipt === null) {
                 throw new BlockProducerError(
                     "Block producer error",
                     BlockProducerError.codes.RECEIPT_NOT_FOUND,
-                    false,
+                    true,
                     `Transaction receipt not found for ${transactionHash}.`,
                     "remote"
                 );
@@ -132,17 +158,23 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
 
             return this.formatTransactionReceipt(transactionReceipt);
         } catch (error) {
+            if (!(error instanceof BlockProducerError)) {
+                throw error;
+            }
             if (errorCount > this.maxRetries) {
                 Logger.info({
                     location: "block_getter",
                     function: "getTransactionReceipt",
                     errorCount,
-                    error: JSON.stringify(error)
+                    error: JSON.stringify(error),
                 });
                 throw error;
             }
 
-            return await this.getTransactionReceipt(transactionHash, errorCount + 1);
+            return await this.getTransactionReceipt(
+                transactionHash,
+                errorCount + 1
+            );
         }
     }
 }
