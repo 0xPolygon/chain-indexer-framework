@@ -24,7 +24,9 @@ export const codes = {
     blockProducer: {
         UNKNOWN_ERR: 4000,
         RECEIPT_NOT_FOUND: 4001,
-        OBSERVER_NOT_SET: 4002
+        OBSERVER_NOT_SET: 4002,
+        REORG_ENCOUNTERED: 4003,
+        RPC_ERR: 4004
     },
 
     // Event consumer error codes
