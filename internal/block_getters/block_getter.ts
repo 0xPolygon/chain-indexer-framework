@@ -63,7 +63,7 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
 
             if (!block) {
                 throw new BlockProducerError(
-                    "Block producer error",
+                    "Block producer error on getBlockWithTransactions",
                     BlockProducerError.codes.RECEIPT_NOT_FOUND,
                     true,
                     `null receipt found for block ${blockNumber}.`,
@@ -90,7 +90,7 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
         } catch (error) {
             if (!(error instanceof BlockProducerError)) {
                 throw new BlockProducerError(
-                    "Block producer error",
+                    "Block producer error on getBlockWithTransactions",
                     BlockProducerError.codes.RPC_ERR,
                     true,
                     JSON.stringify(error),
@@ -148,7 +148,7 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
 
             if (transactionReceipt === null) {
                 throw new BlockProducerError(
-                    "Block producer error",
+                    "Block producer error on transaction receipt",
                     BlockProducerError.codes.RECEIPT_NOT_FOUND,
                     true,
                     `Transaction receipt not found for ${transactionHash}.`,
@@ -159,7 +159,13 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
             return this.formatTransactionReceipt(transactionReceipt);
         } catch (error) {
             if (!(error instanceof BlockProducerError)) {
-                throw error;
+                throw new BlockProducerError(
+                    "Block producer error on transaction receipt",
+                    BlockProducerError.codes.RPC_ERR,
+                    true,
+                    JSON.stringify(error),
+                    "remote"
+                );
             }
             if (errorCount > this.maxRetries) {
                 Logger.info({
