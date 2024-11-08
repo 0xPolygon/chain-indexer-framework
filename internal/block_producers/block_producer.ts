@@ -331,13 +331,23 @@ export class BlockProducer extends AsynchronousProducer {
                 return this.startBlock;
             }
 
-            const remoteBlock = await this.blockGetter.getBlock(block.number);
-
-            if (remoteBlock.hash === block.hash) {
-                return (remoteBlock.number + 1);
+            try {
+                const remoteBlock = await this.blockGetter.getBlock(block.number);
+    
+                if (remoteBlock.hash === block.hash) {
+                    return (remoteBlock.number + 1);
+                }
+    
+                blockNumber = remoteBlock.number - 1;
+            } catch (error) {
+                this.onError(new BlockProducerError(
+                    "Remote block fetch error",
+                    BlockProducerError.codes.RPC_ERR,
+                    true,
+                    "Error fetching remote block in getStartBlock",
+                    "remote"
+                ));
             }
-
-            blockNumber = remoteBlock.number - 1;
         }
 
         return blockNumber || this.startBlock;
