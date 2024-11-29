@@ -38,6 +38,8 @@ message BridgeAssets {
         uint32 leafType = 10;
         bool refuel = 11;
         string leaf = 12;
+        bool refuelConversionRequired = 13;
+        string refuelAmount = 14;
     }
 
     uint64 blockNumber = 1;
