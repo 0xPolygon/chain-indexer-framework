@@ -39,7 +39,7 @@ message BridgeAssets {
         bool refuel = 11;
         string leaf = 12;
         string refuelAmount = 13;
-        string refuelType = 14
+        string refuelType = 14;
     }
 
     uint64 blockNumber = 1;
