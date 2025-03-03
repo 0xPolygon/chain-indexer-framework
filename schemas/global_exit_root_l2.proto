@@ -1,0 +1,7 @@
+package globalexitrootl2package;
+syntax = "proto3";
+
+message GlobalExitRootL2 {
+    required string globalExitRootL2 = 1;
+    bool removed = 2;
+}
