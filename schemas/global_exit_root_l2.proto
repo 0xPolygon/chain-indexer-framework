@@ -2,6 +2,12 @@ package globalexitrootl2package;
 syntax = "proto3";
 
 message GlobalExitRootL2 {
-    required string globalExitRootL2 = 1;
-    bool removed = 2;
+    message GlobalExitRootL2Event {
+        required string globalExitRootL2 = 1;
+        bool removed = 2;
+    }
+
+    uint64 blockNumber = 1;
+    uint64 timestamp = 2;
+    repeated GlobalExitRootL2Event data = 3;
 }

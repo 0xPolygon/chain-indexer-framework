@@ -141,8 +141,9 @@ export class BlockProducer extends AsynchronousProducer {
                     );
                 },
                 error: this.onError.bind(this),
-                closed: () => {
+                closed: async () => {
                     Logger.info("Closed");
+                    await this.stop();
                 }
             },
             await this.getStartBlock()
@@ -196,7 +197,7 @@ export class BlockProducer extends AsynchronousProducer {
             this.forceStop = true;
 
             try {
-                await this.stop();
+                await this.restartBlockProducer();
             } catch { }
             
             this.emit(

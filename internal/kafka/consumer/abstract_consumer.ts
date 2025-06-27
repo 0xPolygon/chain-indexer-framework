@@ -304,7 +304,6 @@ export abstract class AbstractConsumer extends noderdkafka.KafkaConsumer {
             this.queue.clear();
             this.stop();
         }
-
         this.observer?.error(error);
     }
 
@@ -435,5 +434,9 @@ export abstract class AbstractConsumer extends noderdkafka.KafkaConsumer {
 
             this.onDisconnect();
         });
+    }
+
+    public isConnected(): boolean {
+        return this.consumerConnected;
     }
 }

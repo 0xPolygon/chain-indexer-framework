@@ -134,7 +134,7 @@ export abstract class AbstractProducer extends noderdkafka.Producer {
      */
     private onKafkaError(error: KafkaError): void {
         this.emit(AbstractProducer.ERROR, error);
-
+        this.producerConnected = false;
         return;
     }
 
@@ -235,7 +235,7 @@ export abstract class AbstractProducer extends noderdkafka.Producer {
             }
 
             await this.stopProducerPromise;
-
+            this.onDisconnected();
             this.stopProducerPromise = undefined;
 
             return true;
@@ -264,4 +264,8 @@ export abstract class AbstractProducer extends noderdkafka.Producer {
         timestamp?: number,
         opaque?: object
     ): Promise<any>
+
+    public isConnected(): boolean {
+        return this.producerConnected;
+    }
 }
