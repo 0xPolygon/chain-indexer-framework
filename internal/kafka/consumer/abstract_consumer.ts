@@ -436,7 +436,7 @@ export abstract class AbstractConsumer extends noderdkafka.KafkaConsumer {
         });
     }
 
-    public isConnected(): boolean {
+    public isConsumerConnected(): boolean {
         return this.consumerConnected;
     }
 }

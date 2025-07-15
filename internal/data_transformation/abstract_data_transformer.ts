@@ -116,7 +116,7 @@ export abstract class AbstractDataTransformer<T, G> extends EventEmitter {
         }
     }
 
-    public isConnected(): boolean {
-        return this.producer.isConnected() && this.consumer.isConnected();
+    public isTranformerConnected(): boolean {
+        return this.producer.isProducerConnected() && this.consumer.isConsumerConnected();
     }
 }
