@@ -61,8 +61,8 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
         try {
 
             this.lastFinalizedBlock = this.blockDelay > 0
-                                        ? (await this.eth.getBlock("latest")).number - this.blockDelay 
-                                        : (await this.eth.getBlock("finalized")).number;
+                ? (await this.eth.getBlock("latest")).number - this.blockDelay
+                : (await this.eth.getBlock("finalized")).number;
             // Clear any previously existing queue
             this.clear();
             this.observer = observer;
@@ -70,6 +70,23 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
             this.nextBlock = startBlock;
             this.lastBlockHash = "";
             this.lastReceivedBlockNumber = startBlock - 1;
+
+            /* eslint-disable no-constant-condition */
+            while (true) {
+                const latestBlockNumber = (await this.eth.getBlock("latest")).number;
+                if (this.nextBlock <= latestBlockNumber) {
+                    break;
+                }
+                Logger.debug({
+                    location: "eth_subscribe",
+                    status: "startBlock greater than latest block",
+                    data: {
+                        latestBlockNumber,
+                        startBlock
+                    }
+                });
+                await new Promise(r => setTimeout(r, 5000));
+            }
 
             // Number 50 is added to allow block producer to create log subscription even and catch up after backfilling. 
             if (this.lastFinalizedBlock - 50 > startBlock) {
