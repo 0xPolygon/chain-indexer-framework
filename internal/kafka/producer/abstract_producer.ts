@@ -265,7 +265,7 @@ export abstract class AbstractProducer extends noderdkafka.Producer {
         opaque?: object
     ): Promise<any>
 
-    public isConnected(): boolean {
+    public isProducerConnected(): boolean {
         return this.producerConnected;
     }
 }
