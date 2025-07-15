@@ -30,6 +30,7 @@ export class ErigonBlockProducer extends BlockProducer {
         const maxReOrgDepth = config.maxReOrgDepth ?? 0;
         const maxRetries = config.maxRetries ?? 0;
         const blockSubscriptionTimeout = config.blockSubscriptionTimeout;
+        const blockDelay = config.blockDelay ?? 0;
 
         // Has to be done or Kafka complains later
         delete config.rpcWsEndpoints;
@@ -39,6 +40,7 @@ export class ErigonBlockProducer extends BlockProducer {
         delete config.maxReOrgDepth;
         delete config.maxRetries;
         delete config.blockSubscriptionTimeout;
+        delete config.blockDelay;
 
         const database = new Database(mongoUrl);
 
@@ -68,7 +70,8 @@ export class ErigonBlockProducer extends BlockProducer {
                 endpoints,
                 maxRetries,
                 "erigon_block_getter",
-                blockSubscriptionTimeout
+                blockSubscriptionTimeout,
+                blockDelay
             ),
             new BlockGetter(eth, maxRetries),
             database,
