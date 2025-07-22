@@ -156,8 +156,20 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
         errorCount: number = 0
     ): Promise<ITransactionReceipt> {
         try {
-            const transactionReceipt: TransactionReceipt =
-                await this.eth.getTransactionReceipt(transactionHash);
+            const transactionReceipt: TransactionReceipt = await Promise.race([
+                this.eth.getTransactionReceipt(transactionHash),
+                new Promise<TransactionReceipt>(
+                    (_, reject) =>
+                        setTimeout(() => reject(
+                            new BlockProducerError(
+                                "Block producer error on getTransactionReceipt",
+                                BlockProducerError.codes.RPC_ERR,
+                                true,
+                                "timeout while fetching transaction receipt"
+                            )
+                        ), 30000)
+                )
+            ]);
 
             if (transactionReceipt === null) {
                 throw new BlockProducerError(

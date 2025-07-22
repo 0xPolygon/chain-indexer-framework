@@ -28,17 +28,32 @@ export class ErigonBlockGetter extends BlockGetter implements IBlockGetter {
      */
     public async getBlockWithTransactionReceipts(blockNumber: number | string, retryCount: number = 0): Promise<IBlock> {
         try {
-            const result: [BlockTransactionObject, IRawReceipt[]] = await Promise.all([
+            const block: BlockTransactionObject = await Promise.race([
                 this.eth.getBlock(blockNumber, true),
-                this.getTransactionReceipts(blockNumber)
+                new Promise<BlockTransactionObject>(
+                    (_, reject) =>
+                        setTimeout(() => reject(
+                            new Error(`Timeout while fetching block ${blockNumber} in getBlockWithTransactionReceipts`)
+                        ), 30000)
+                )
+            ]);
+
+            const receipts: IRawReceipt[] = await Promise.race([
+                this.getTransactionReceipts(blockNumber),
+                new Promise<IRawReceipt[]>(
+                    (_, reject) =>
+                        setTimeout(() => reject(
+                            new Error(`Timeout while fetching block receipts for ${blockNumber} in getBlockWithTransactionReceipts`)
+                        ), 30000)
+                )
             ]);
 
             const transactions: ITransaction[] = [];
 
-            for (const transactionObject of result[0].transactions) {
+            for (const transactionObject of block.transactions) {
                 transactions.push(this.formatTransactionObject(
                     transactionObject as IWeb3Transaction,
-                    this.formatRawReceipt(result[1]?.find(
+                    this.formatRawReceipt(receipts?.find(
                         (receipt) => receipt.transactionHash === transactionObject.hash
                     )) ??
                     await this.getTransactionReceipt(transactionObject.hash)
@@ -46,7 +61,7 @@ export class ErigonBlockGetter extends BlockGetter implements IBlockGetter {
             }
 
             return this.formatBlockWithTransactions(
-                result[0],
+                block,
                 transactions
             );
         } catch (error) {
@@ -96,10 +111,10 @@ export class ErigonBlockGetter extends BlockGetter implements IBlockGetter {
      * @returns {void} 
      */
     private sendTransactionReceiptsCall(
-        blockNumber: number | string, 
-        timeout: NodeJS.Timeout, 
-        resolve: (value: IRawReceipt[] | PromiseLike<IRawReceipt[]>) => void, 
-        reject: (reason?: any) => void, 
+        blockNumber: number | string,
+        timeout: NodeJS.Timeout,
+        resolve: (value: IRawReceipt[] | PromiseLike<IRawReceipt[]>) => void,
+        reject: (reason?: any) => void,
         isRetry: boolean = false
     ): void {
         (this.eth.currentProvider as WebsocketProvider).send({
