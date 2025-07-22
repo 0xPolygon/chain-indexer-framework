@@ -111,7 +111,7 @@ export class BlockProducer extends AsynchronousProducer {
             }
 
             Logger.info("Delivery-report:" + JSON.stringify({
-                ...report.opaque, 
+                ...report.opaque,
                 offset: report.offset
             }));
 
@@ -168,7 +168,7 @@ export class BlockProducer extends AsynchronousProducer {
             //Waiting for all pending blocks to be produced.
             await Promise.all(this.producingBlockPromises);
         }
-        
+
         if (this.queueProcessingPromise) {
             await this.queueProcessingPromise;
         }
@@ -192,14 +192,15 @@ export class BlockProducer extends AsynchronousProducer {
 
         if (
             error.message === "Local: Erroneous state" ||
-            error.message === "Erroneous state"
+            error.message === "Erroneous state" ||
+            error.message === "timeout while fetching block"
         ) {
             this.forceStop = true;
 
             try {
                 await this.restartBlockProducer();
             } catch { }
-            
+
             this.emit(
                 "blockProducer.fatalError",
                 error
@@ -341,13 +342,18 @@ export class BlockProducer extends AsynchronousProducer {
     
                 blockNumber = remoteBlock.number - 1;
             } catch (error) {
-                this.onError(new BlockProducerError(
-                    "Remote block fetch error",
-                    BlockProducerError.codes.RPC_ERR,
-                    true,
-                    "Error fetching remote block in getStartBlock",
-                    "remote"
-                ));
+                let err = error;
+                if (!(err instanceof BlockProducerError)) {
+                    err = new BlockProducerError(
+                        "Remote block fetch error",
+                        BlockProducerError.codes.RPC_ERR,
+                        true,
+                        "Error fetching remote block in getStartBlock",
+                        "remote"
+                    );
+                }
+                this.onError(err as BlockProducerError);
+                throw err;
             }
         }
 

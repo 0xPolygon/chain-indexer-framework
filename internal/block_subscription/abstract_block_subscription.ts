@@ -98,6 +98,13 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
             this.checkIfLive(this.lastBlockHash);
 
             this.subscription = this.eth.subscribe("logs", { fromBlock: this.nextBlock })
+                .on("connected", (id) => {
+                    Logger.info({
+                        location: "subscribe",
+                        status: "🛰️ Subscribed to logs", id,
+                        startBlock: this.nextBlock
+                    });
+                })
                 .on("data", (log: Log) => {
                     try {
                         Logger.debug({
@@ -233,12 +240,9 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
                     hash: promiseResult.block.hash
                 };
             } catch (error) {
-                if (error instanceof BlockProducerError) {
-                    this.observer.error(error);
-                }
                 this.fatalError = true;
                 this.observer.error(
-                    BlockProducerError.createUnknown(error)
+                    error instanceof BlockProducerError ? error : BlockProducerError.createUnknown(error)
                 );
 
                 break;

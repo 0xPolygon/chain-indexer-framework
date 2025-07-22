@@ -21,7 +21,7 @@ const blockGetter = new ErigonBlockGetter(
                     maxReceivedFrameSize: 1000000000,
                     maxReceivedMessageSize: 1000000000,
                 },
-                timeout: 45000
+                timeout: 30000
             }
         )
     ),

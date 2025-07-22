@@ -119,7 +119,7 @@ export abstract class AbstractProducer extends noderdkafka.Producer {
      */
     private onDisconnected(): void {
         //Can further implement reconnecting logic failing which, disconnected event will be emitted. 
-         this.producerConnected = false;
+        this.producerConnected = false;
         this.emit(AbstractProducer.DISCONNECTED);
         this.removeAllListeners("event.error");
         this.removeAllListeners("disconnected");

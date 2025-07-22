@@ -38,7 +38,20 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
      * @returns {Promise<Block>} - Block object
      */
     public async getBlock(blockNumber: number | string): Promise<Block> {
-        return await this.eth.getBlock(blockNumber);
+        return await Promise.race([
+            this.eth.getBlock(blockNumber),
+            new Promise<Block>(
+                (_, reject) =>
+                    setTimeout(() => reject(
+                        new BlockProducerError(
+                            "Block producer error on getBlock",
+                            BlockProducerError.codes.RPC_ERR,
+                            true,
+                            "timeout while fetching block"
+                        )
+                    ), 30000)
+            )
+        ]);
     }
 
     /**

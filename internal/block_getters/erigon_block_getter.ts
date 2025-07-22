@@ -51,7 +51,8 @@ export class ErigonBlockGetter extends BlockGetter implements IBlockGetter {
             );
         } catch (error) {
             if (retryCount < this.maxRetries) {
-                return this.getBlockWithTransactionReceipts(
+                await new Promise(resolve => setTimeout(resolve, 5000));
+                return await this.getBlockWithTransactionReceipts(
                     blockNumber,
                     retryCount + 1
                 );
