@@ -89,7 +89,7 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
             }
 
             // Number 50 is added to allow block producer to create log subscription even and catch up after backfilling. 
-            if (this.lastFinalizedBlock - 50 > startBlock) {
+            if (this.lastFinalizedBlock - 20 > startBlock) {
                 this.backFillBlocks();
 
                 return;

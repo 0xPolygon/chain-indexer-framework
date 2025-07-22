@@ -1,6 +1,6 @@
 {
   "name": "@maticnetwork/chain-indexer-framework",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "description": "blockchain data indexer",
   "type": "module",
   "exports": {
