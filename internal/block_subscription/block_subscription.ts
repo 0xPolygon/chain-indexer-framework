@@ -89,6 +89,10 @@ export class BlockSubscription extends AbstractBlockSubscription {
         this.workers = workers;
     }
 
+    public isBackFillingInProgress(): boolean {
+        return this.activeBackFillingId !== null;
+    }
+
     /**
      * Private method to emit blocks upto current finalized block.
      * 

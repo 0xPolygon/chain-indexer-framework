@@ -104,7 +104,7 @@ export class BlockProducer extends AsynchronousProducer {
                     "Kafka topic does not exist or could not be created.",
                     "remote"
                 );
-                
+
                 this.onError(error);
 
                 return;
@@ -335,11 +335,11 @@ export class BlockProducer extends AsynchronousProducer {
 
             try {
                 const remoteBlock = await this.blockGetter.getBlock(block.number);
-    
+
                 if (remoteBlock.hash === block.hash) {
                     return (remoteBlock.number + 1);
                 }
-    
+
                 blockNumber = remoteBlock.number - 1;
             } catch (error) {
                 let err = error;
@@ -387,6 +387,24 @@ export class BlockProducer extends AsynchronousProducer {
             );
         } catch (error) {
             this.onError(error as KafkaError);
+        }
+    }
+
+    public async checkIfBlocksSynced(blockRange = 100): Promise<boolean> {
+        try {
+            if (this.blockSubscription.isBackFillingInProgress?.()) {
+                return true;
+            } else {
+                const blockNumber: number | undefined = (await this.producedBlocksModel.get())?.number;
+                if (!blockNumber) {
+                    return false;
+                } else {
+                    const latestBlockNumber = await this.blockGetter.getLatestBlockNumber();
+                    return (latestBlockNumber - blockNumber <= blockRange);
+                }
+            }
+        } catch (error) {
+            return false;
         }
     }
 }
