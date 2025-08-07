@@ -16,6 +16,7 @@ message WithdrawBlock {
         required string rootToken = 11;
         string rootTunnel = 12;
         string exitId = 13;
+        string nonce = 14;
 
     }
 
