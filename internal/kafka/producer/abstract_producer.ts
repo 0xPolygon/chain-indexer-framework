@@ -150,10 +150,23 @@ export abstract class AbstractProducer extends noderdkafka.Producer {
      */
     public async start(): Promise<Metadata | KafkaError> {
         try {
-            if (! this.producerConnecting && ! this.producerConnected) {
-                 this.producerConnectPromise =  this.connectToBroker();
+            if (!this.producerConnecting && !this.producerConnected) {
+                 this.producerConnectPromise = this.connectToBroker();
             }
-            const brokerMetadata: Metadata = await  this.producerConnectPromise as Metadata;
+            const brokerMetadata: Metadata = await this.producerConnectPromise as Metadata;
+            return brokerMetadata;
+        } catch (error) {
+             this.producerConnecting = false;
+            throw KafkaError.createUnknown(error, true);
+        }
+    }
+
+    public async _start(): Promise<Metadata | KafkaError> {
+        try {
+            if (!this.producerConnecting && !this.producerConnected) {
+                 this.producerConnectPromise = this.connectToBroker();
+            }
+            const brokerMetadata: Metadata = await this.producerConnectPromise as Metadata;
             return brokerMetadata;
         } catch (error) {
              this.producerConnecting = false;
@@ -188,8 +201,8 @@ export abstract class AbstractProducer extends noderdkafka.Producer {
         opaque?: object
     ): Promise<KafkaError | boolean> {
         try {
-            if (! this.producerConnected) {
-                await this.start();
+            if (!this.producerConnected) {
+                await this._start();
             }
             // TODO: Runtime check for all parameters
             const produced = await this.produce(

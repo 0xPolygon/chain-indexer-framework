@@ -221,13 +221,8 @@ export class BlockSubscription extends AbstractBlockSubscription {
 
         // this part limit the queue length to 2500 and keep on waiting 5 seconds if
         // the length is more than 2500
-        if (this.getLength() >= 2500) {
-            for (let i = 0; i < 1;) {
-                await new Promise(r => setTimeout(r, 5000));
-                if (this.getLength() < 2500) {
-                    break;
-                }
-            }
+        while (this.getLength() >= 2500) {
+            await new Promise(r => setTimeout(r, 5000));
         }
 
         try {
