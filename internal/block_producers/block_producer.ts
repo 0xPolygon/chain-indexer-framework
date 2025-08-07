@@ -104,14 +104,14 @@ export class BlockProducer extends AsynchronousProducer {
                     "Kafka topic does not exist or could not be created.",
                     "remote"
                 );
-                
+
                 this.onError(error);
 
                 return;
             }
 
             Logger.info("Delivery-report:" + JSON.stringify({
-                ...report.opaque, 
+                ...report.opaque,
                 offset: report.offset
             }));
 
@@ -168,7 +168,7 @@ export class BlockProducer extends AsynchronousProducer {
             //Waiting for all pending blocks to be produced.
             await Promise.all(this.producingBlockPromises);
         }
-        
+
         if (this.queueProcessingPromise) {
             await this.queueProcessingPromise;
         }
@@ -192,14 +192,15 @@ export class BlockProducer extends AsynchronousProducer {
 
         if (
             error.message === "Local: Erroneous state" ||
-            error.message === "Erroneous state"
+            error.message === "Erroneous state" ||
+            error.message === "timeout while fetching block"
         ) {
             this.forceStop = true;
 
             try {
                 await this.restartBlockProducer();
             } catch { }
-            
+
             this.emit(
                 "blockProducer.fatalError",
                 error
@@ -334,20 +335,25 @@ export class BlockProducer extends AsynchronousProducer {
 
             try {
                 const remoteBlock = await this.blockGetter.getBlock(block.number);
-    
+
                 if (remoteBlock.hash === block.hash) {
                     return (remoteBlock.number + 1);
                 }
-    
+
                 blockNumber = remoteBlock.number - 1;
             } catch (error) {
-                this.onError(new BlockProducerError(
-                    "Remote block fetch error",
-                    BlockProducerError.codes.RPC_ERR,
-                    true,
-                    "Error fetching remote block in getStartBlock",
-                    "remote"
-                ));
+                let err = error;
+                if (!(err instanceof BlockProducerError)) {
+                    err = new BlockProducerError(
+                        "Remote block fetch error",
+                        BlockProducerError.codes.RPC_ERR,
+                        true,
+                        "Error fetching remote block in getStartBlock",
+                        "remote"
+                    );
+                }
+                this.onError(err as BlockProducerError);
+                throw err;
             }
         }
 
@@ -381,6 +387,24 @@ export class BlockProducer extends AsynchronousProducer {
             );
         } catch (error) {
             this.onError(error as KafkaError);
+        }
+    }
+
+    public async checkIfBlocksSynced(blockRange = 100): Promise<boolean> {
+        try {
+            if (this.blockSubscription.isBackFillingInProgress?.()) {
+                return true;
+            } else {
+                const blockNumber: number | undefined = (await this.producedBlocksModel.get())?.number;
+                if (!blockNumber) {
+                    return false;
+                } else {
+                    const latestBlockNumber = await this.blockGetter.getLatestBlockNumber();
+                    return (latestBlockNumber - blockNumber <= blockRange);
+                }
+            }
+        } catch (error) {
+            return false;
         }
     }
 }

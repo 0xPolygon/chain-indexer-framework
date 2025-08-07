@@ -50,6 +50,7 @@ export class ErigonBlockProducer extends BlockProducer {
             new Eth.providers.WebsocketProvider(
                 endpoints[0],
                 {
+                    timeout: 30000,
                     reconnect: {
                         auto: true
                     },
