@@ -191,7 +191,6 @@ export class ErigonBlockPoller extends Queue<IBlockGetterWorkerPromise> implemen
             this.pollingId = Date.now();
             this.observer = observer;
 
-
             //Need to separate the methods, so the subscribe method is not waiting
             //indefinitely for polling to finish.
             this.startBlockPolling(startBlock - 1, this.pollingId);
