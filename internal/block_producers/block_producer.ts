@@ -188,8 +188,6 @@ export class BlockProducer extends AsynchronousProducer {
      * @param {KafkaError|BlockProducerError} error - Error object 
      */
     private async onError(error: KafkaError | BlockProducerError): Promise<void> {
-        Logger.error(error);
-
         if (
             error.message === "Local: Erroneous state" ||
             error.message === "Erroneous state" ||
