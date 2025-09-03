@@ -22,7 +22,7 @@ export class ErigonBlockPoller extends Queue<IBlockGetterWorkerPromise> implemen
     protected fatalError: boolean = false;
     // @ts-ignore 
     protected observer: IObserver<IBlock, BlockProducerError>; // ts-ignore added for this special case (it will always get initialized in the subscribe method).
-
+    private lastSavedBlockHash: string | undefined;
 
     /**
      * @constructor
@@ -162,6 +162,20 @@ export class ErigonBlockPoller extends Queue<IBlockGetterWorkerPromise> implemen
                     throw promiseResult.error;
                 }
 
+                if (this.lastSavedBlockHash && this.lastSavedBlockHash !== promiseResult.block.parentHash.toLowerCase()) {
+                    this.lastSavedBlockHash = undefined;
+                    await this.unsubscribe();
+                    this.clear();
+                    throw new BlockProducerError(
+                        "Reorg Encountered",
+                        BlockProducerError.codes.REORG_ENCOUNTERED,
+                        true,
+                        "reorg encountered",
+                    );
+                }
+
+                this.lastSavedBlockHash = promiseResult.block.hash.toLowerCase();
+
                 this.observer.next(
                     promiseResult.block
                 );
@@ -190,6 +204,7 @@ export class ErigonBlockPoller extends Queue<IBlockGetterWorkerPromise> implemen
         try {
             this.pollingId = Date.now();
             this.observer = observer;
+            this.fatalError = false;
 
             //Need to separate the methods, so the subscribe method is not waiting
             //indefinitely for polling to finish.
@@ -222,10 +237,12 @@ export class ErigonBlockPoller extends Queue<IBlockGetterWorkerPromise> implemen
                 }
 
                 for (let blockNum: number = (lastBlockNumber + 1); blockNum <= latestBlockNumber && this.pollingId === pollingId; blockNum++) {
-                    if (this.getLength() >= this.workers.length * 100) {
+                    while (this.getLength() >= this.workers.length * 100) {
                         await new Promise(r => setTimeout(r, 5000));
                     }
-
+                    if (this.pollingId !== pollingId) {
+                        break;
+                    }
                     this.enqueue(this.getBlockFromWorker(blockNum, blockNum % this.workers.length));
 
                     if (!this.processingQueue) {
