@@ -11,5 +11,6 @@ export interface IBlockProducerConfig extends IProducerConfig {
     blockSubscriptionTimeout?: number,
     blockDelay?: number,
     alternateEndpoint?: string,
-    rpcTimeout?: number
+    rpcTimeout?: number,
+    rpcApiKey?: string
 }

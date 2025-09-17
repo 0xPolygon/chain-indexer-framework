@@ -4,7 +4,7 @@ import { IProducerConfig } from "@internal/interfaces/producer_config.js";
 import { BlockGetter } from "@internal/block_getters/block_getter.js";
 import { Coder } from "@internal/coder/protobuf_coder.js";
 import { Database } from "@internal/mongo/database.js";
-import Eth from "web3-eth";
+import EthClass from "web3-eth";
 import { BlockProducer } from "@internal/block_producers/block_producer.js";
 import { ErigonBlockPoller } from "@internal/block_subscription/erigon_block_polling.js";
 
@@ -23,6 +23,7 @@ export class ErigonPollerProducer extends BlockProducer {
      * @returns {ErigonPollerProducer}
      */
     constructor(config: IBlockProducerConfig) {
+        const rpcApiKey = config.rpcApiKey;
         const endpoints = config.rpcWsEndpoints ?? [];
         const startBlock = config.startBlock ?? 0;
         const mongoUrl = config.mongoUrl ?? "mongodb://localhost:27017/chain-indexer";
@@ -39,13 +40,18 @@ export class ErigonPollerProducer extends BlockProducer {
         delete config.maxReOrgDepth;
         delete config.maxRetries;
         delete config.blockPollingTimeout;
+        delete config.rpcApiKey;
 
         const database = new Database(mongoUrl);
 
         const blockGetter = new BlockGetter(
             //@ts-ignore
-            new Eth(endpoints[0]),
-            maxRetries
+            new EthClass(new EthClass.providers.HttpProvider(endpoints[0], {
+                headers: [{
+                    name: "X-ERPC-Secret-Token",
+                    value: rpcApiKey ?? ""
+                }]
+            })), maxRetries
         );
 
         super(
@@ -57,6 +63,7 @@ export class ErigonPollerProducer extends BlockProducer {
             config as IProducerConfig,
             new ErigonBlockPoller(
                 endpoints,
+                rpcApiKey,
                 blockGetter,
                 blockPollingTimeout,
                 maxRetries

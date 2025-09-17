@@ -1,7 +1,7 @@
 import { IBlockWorkerMessage } from "../interfaces/block_worker_message.js";
 import { parentPort, workerData } from "worker_threads";
 import { ErigonBlockGetter } from "./erigon_block_getter.js";
-import Eth from "web3-eth";
+import EthClass from "web3-eth";
 
 if (!workerData || !parentPort) {
     process.exit(1);
@@ -9,11 +9,16 @@ if (!workerData || !parentPort) {
 
 const blockGetter = new ErigonBlockGetter(
     //@ts-ignore
-    new Eth(workerData.endpoint), workerData.maxRetries
+    new EthClass(new EthClass.providers.HttpProvider(workerData.endpoint, {
+        headers: [{
+            name: "X-ERPC-Secret-Token",
+            value: workerData.rpcApiKey ?? ""
+        }]
+    })), workerData.maxRetries
 );
 
 parentPort.on("message", async (message: {
-    blockNumber: number, 
+    blockNumber: number,
     callBackId: number
 }) => {
     try {
