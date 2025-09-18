@@ -32,6 +32,7 @@ export class ErigonBlockPoller extends Queue<IBlockGetterWorkerPromise> implemen
      */
     constructor(
         protected rpcWsEndpoints: string[] = [],
+        protected rpcApiKey: string = "",
         private blockGetter: BlockGetter,
         private blockPollingTimeout: number,
         protected maxRetries: number = 0,
@@ -58,6 +59,7 @@ export class ErigonBlockPoller extends Queue<IBlockGetterWorkerPromise> implemen
         for (let i = 0; i < this.rpcWsEndpoints.length; i++) {
             const workerData = {
                 endpoint: this.rpcWsEndpoints[i],
+                rpcApiKey: this.rpcApiKey,
                 maxRetries: this.maxRetries,
                 rpcTimeout: this.blockPollingTimeout
             };
