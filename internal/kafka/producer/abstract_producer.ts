@@ -208,7 +208,7 @@ export abstract class AbstractProducer extends noderdkafka.Producer {
             const produced = await this.produce(
                 topic,
                 partition,
-                await this.serialiser.serialize(message) as Buffer,
+                await this.serialiser.serialize(message) as unknown as Buffer,
                 key,
                 timestamp,
                 opaque
