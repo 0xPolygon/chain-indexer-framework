@@ -84,7 +84,7 @@ export class Coder implements ICoder {
                     buffer
                 }});
             } 
-            return this.protobufType.decode(buffer);
+            return this.protobufType.decode(buffer as any);
         } catch (error) {
             throw new CoderError(
                 "Decoding error",

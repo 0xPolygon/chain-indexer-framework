@@ -3,6 +3,7 @@
         "module": "NodeNext",
         "allowSyntheticDefaultImports": true,
         "moduleResolution": "nodenext",
+        "skipLibCheck": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "target": "esnext",
