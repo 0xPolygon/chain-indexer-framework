@@ -34,7 +34,7 @@ export class BlockFormatter {
 
         return this.formatTransactionReceipt({
             ...receipt,
-            blockNumber: utils.hexToNumber(receipt.transactionIndex) as number,
+            blockNumber: utils.hexToNumber(receipt.blockNumber) as number,
             cumulativeGasUsed: utils.hexToNumber(receipt.cumulativeGasUsed) as number,
             transactionIndex: utils.hexToNumber(receipt.transactionIndex) as number,
             gasUsed: utils.hexToNumber(receipt.gasUsed) as number,
