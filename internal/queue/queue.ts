@@ -49,11 +49,13 @@ export class Queue<T> {
 
         this.head = this.head + position - 1;
         const item = this.items[this.head];
-        for (const key in Object.keys(this.items)) {
+        // `for...of` — `for...in Object.keys(...)` iterates array indices, not keys,
+        // and silently leaks entries once `head` exceeds the array length.
+        for (const key of Object.keys(this.items)) {
             const numericKey = parseInt(key);
 
             if (numericKey <= this.head) {
-                delete this.items[key];
+                delete this.items[numericKey];
             }
         }
         this.head++;
