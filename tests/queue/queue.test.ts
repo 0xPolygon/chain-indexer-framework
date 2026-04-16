@@ -99,4 +99,43 @@ describe("Common Queue class", () => {
         });
     });
 
+    describe("shiftByN", () => {
+        test("Should return the Nth item and advance past the skipped entries", () => {
+            ["a", "b", "c", "d", "e"].forEach(v => queue.enqueue(v));
+            expect(queue.shiftByN(3)).toBe("c");
+            expect(queue.getLength()).toBe(2);
+            expect(queue.front()).toBe("d");
+        });
+
+        test("Should return null when position exceeds queue length", () => {
+            queue.enqueue("a");
+            queue.enqueue("b");
+            expect(queue.shiftByN(5)).toBe(null);
+        });
+
+        test("Should not leak skipped entries after `head` has advanced past the array length", () => {
+            // Reproduces the bug where `for...in Object.keys(...)` iterates array
+            // indices (0..N-1) instead of actual item keys. The failure only appears
+            // once `head` exceeds the current size of the items bag — otherwise the
+            // array indices and actual keys coincidentally overlap and nothing leaks.
+            // Drive `head` forward with single shifts first, then call shiftByN.
+            for (let i = 0; i < 1000; i++) queue.enqueue(`item-${i}`);
+            for (let i = 0; i < 500; i++) queue.shift();
+            // items bag now holds keys 500..999 (500 entries); head=500.
+            queue.shiftByN(200);
+            // head becomes 700 — past the 500-length bag. With the bug, the delete
+            // loop iterates indices 0..499 which don't exist as keys, so entries
+            // 500..699 leak. Logical length is 300; bag should also be 300.
+            expect(queue.getLength()).toBe(300);
+            expect(Object.keys((queue as unknown as { items: Record<string, unknown> }).items)).toHaveLength(queue.getLength());
+        });
+
+        test("Should fully drain internal storage when the queue is empty", () => {
+            for (let i = 0; i < 10; i++) queue.enqueue(`item-${i}`);
+            queue.shiftByN(10);
+            expect(queue.getLength()).toBe(0);
+            expect(Object.keys((queue as unknown as { items: Record<string, unknown> }).items)).toHaveLength(0);
+        });
+    });
+
 });
