@@ -20,6 +20,7 @@ import Long from "long";
  * @author - Vibhu Rajeev
  */
 export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorkerPromise> implements IBlockSubscription<IBlock, BlockProducerError> {
+    private static readonly ZERO_BLOCK_HASH = "0x0000000000000000000000000000000000000000000000000000000000000000";
     private subscription: Subscription<Log> | null = null;
     // @ts-ignore 
     protected observer: IObserver<IBlock, BlockProducerError>; // ts-ignore added for this special case (it will always get initialized in the subscribe method).
@@ -113,6 +114,30 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
                             blockNumber: log.blockNumber,
                             logIndex: log.logIndex
                         });
+
+                        // Reject sentinel / malformed log events. A live `logs` subscription
+                        // only emits forward-progressing, confirmed blocks — anything with an
+                        // all-zero blockHash, a non-finite blockNumber, or a blockNumber at or
+                        // below the last received one is a poisoned payload that must not be
+                        // allowed to rewrite `lastReceivedBlockNumber` (see incident
+                        // 2026-04-21 amoy-producer checkpoint regression).
+                        if (
+                            !log.blockHash ||
+                            log.blockHash === AbstractBlockSubscription.ZERO_BLOCK_HASH ||
+                            typeof log.blockNumber !== "number" ||
+                            !Number.isFinite(log.blockNumber) ||
+                            log.blockNumber <= this.lastReceivedBlockNumber
+                        ) {
+                            Logger.warn({
+                                location: "eth_subscribe",
+                                message: "Discarding malformed log event",
+                                blockHash: log.blockHash,
+                                blockNumber: log.blockNumber,
+                                logIndex: log.logIndex,
+                                lastReceivedBlockNumber: this.lastReceivedBlockNumber
+                            });
+                            return;
+                        }
 
                         if (this.lastBlockHash == log.blockHash) {
 

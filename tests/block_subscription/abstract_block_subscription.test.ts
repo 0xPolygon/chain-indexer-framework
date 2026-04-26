@@ -250,6 +250,72 @@ describe("Abstract Block Subscription", () => {
             }, 100);
         });
 
+        test("Malformed log events (sentinel hash, non-finite or non-forward blockNumber) must be discarded without poisoning subscriber state.", (done) => {
+            // Regression test for the 2026-04-21 amoy-producer incident:
+            // a single malformed `eth_subscribe` log payload with
+            // blockHash = 0x000…0 and blockNumber = 0 advanced
+            // `lastReceivedBlockNumber` to 0, which then caused
+            // `hasMissedBlocks` to enqueue ~37M backfill jobs starting from 1.
+            expect.assertions(2);
+
+            mockedEthObject.getBlock.mockResolvedValueOnce({ number: 0 } as BlockTransactionObject);
+            subscriber.getBlockFromWorker.mockResolvedValueOnce(
+                { block: { ...fullEthereumBlock, number: mockNumber } as unknown as IBlock }
+            );
+            subscriber.getBlockFromWorker.mockResolvedValueOnce(
+                { block: { ...fullEthereumBlock, number: mockNumber } as unknown as IBlock }
+            );
+
+            mockNumber.toNumber.mockReturnValueOnce(100);
+            mockNumber.toNumber.mockReturnValueOnce(101);
+
+            subscriber.subscribe(observer, 100).then(() => {
+                // First valid log advances lastReceivedBlockNumber to 100.
+                on.mock.calls[0][1]({
+                    ...mockLog,
+                    blockHash: "0xrealhash100",
+                    blockNumber: 100
+                });
+
+                // Poisoned payloads that must all be discarded.
+                on.mock.calls[0][1]({
+                    ...mockLog,
+                    blockHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
+                    blockNumber: 0,
+                    logIndex: 0
+                });
+                on.mock.calls[0][1]({
+                    ...mockLog,
+                    blockHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
+                    blockNumber: 102,
+                    logIndex: 1
+                });
+                on.mock.calls[0][1]({
+                    ...mockLog,
+                    blockHash: "0xsomehash",
+                    blockNumber: 50,
+                    logIndex: 0
+                });
+
+                // Subsequent valid log must trigger only the small forward gap
+                // backfill (101) — not a poisoned 0..N catch-up.
+                on.mock.calls[0][1]({
+                    ...mockLog,
+                    blockHash: "0xrealhash102",
+                    blockNumber: 102
+                });
+            });
+
+            setTimeout(() => {
+                // Only the two real logs and the single missed block (101)
+                // should have been fetched — three total. None of the
+                // malformed payloads should reach the worker.
+                expect(subscriber.getBlockFromWorker).toBeCalledTimes(3);
+                expect(subscriber.getBlockFromWorker).not.toBeCalledWith(0);
+                done();
+            }, 100);
+        });
+
         test("On a re org being missed, subscription must call observer.error", (done) => {
             expect.assertions(1);
 
