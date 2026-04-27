@@ -117,16 +117,22 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
 
                         // Reject sentinel / malformed log events. A live `logs` subscription
                         // only emits forward-progressing, confirmed blocks — anything with an
-                        // all-zero blockHash, a non-finite blockNumber, or a blockNumber at or
+                        // all-zero blockHash, a non-finite blockNumber, or a blockNumber strictly
                         // below the last received one is a poisoned payload that must not be
                         // allowed to rewrite `lastReceivedBlockNumber` (see incident
                         // 2026-04-21 amoy-producer checkpoint regression).
+                        //
+                        // Note `<` not `<=`: a single block contains many transactions emitting
+                        // many logs, all sharing the same blockNumber but different logIndex
+                        // values. Those duplicates are normal and are filtered out by the
+                        // `lastBlockHash == log.blockHash` dedupe a few lines below — they must
+                        // not be flagged as malformed here.
                         if (
                             !log.blockHash ||
                             log.blockHash === AbstractBlockSubscription.ZERO_BLOCK_HASH ||
                             typeof log.blockNumber !== "number" ||
                             !Number.isFinite(log.blockNumber) ||
-                            log.blockNumber <= this.lastReceivedBlockNumber
+                            log.blockNumber < this.lastReceivedBlockNumber
                         ) {
                             Logger.warn({
                                 location: "eth_subscribe",
