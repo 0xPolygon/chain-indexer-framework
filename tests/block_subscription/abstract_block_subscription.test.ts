@@ -250,12 +250,16 @@ describe("Abstract Block Subscription", () => {
             }, 100);
         });
 
-        test("Malformed log events (sentinel hash, non-finite or non-forward blockNumber) must be discarded without poisoning subscriber state.", (done) => {
+        test("Malformed log events (sentinel hash, non-finite or backwards blockNumber) must be discarded without poisoning subscriber state.", (done) => {
             // Regression test for the 2026-04-21 amoy-producer incident:
             // a single malformed `eth_subscribe` log payload with
             // blockHash = 0x000…0 and blockNumber = 0 advanced
             // `lastReceivedBlockNumber` to 0, which then caused
             // `hasMissedBlocks` to enqueue ~37M backfill jobs starting from 1.
+            //
+            // Also asserts the guard does NOT discard same-block / different-logIndex
+            // duplicates — those are normal Ethereum behaviour (one block has many
+            // logs) and must fall through to the existing lastBlockHash dedupe.
             expect.assertions(2);
 
             mockedEthObject.getBlock.mockResolvedValueOnce({ number: 0 } as BlockTransactionObject);
@@ -274,7 +278,23 @@ describe("Abstract Block Subscription", () => {
                 on.mock.calls[0][1]({
                     ...mockLog,
                     blockHash: "0xrealhash100",
-                    blockNumber: 100
+                    blockNumber: 100,
+                    logIndex: 0
+                });
+
+                // Same block, additional logIndexes — normal duplicates.
+                // Must be silently deduped via lastBlockHash, NOT flagged as malformed.
+                on.mock.calls[0][1]({
+                    ...mockLog,
+                    blockHash: "0xrealhash100",
+                    blockNumber: 100,
+                    logIndex: 1
+                });
+                on.mock.calls[0][1]({
+                    ...mockLog,
+                    blockHash: "0xrealhash100",
+                    blockNumber: 100,
+                    logIndex: 2
                 });
 
                 // Poisoned payloads that must all be discarded.
@@ -302,14 +322,15 @@ describe("Abstract Block Subscription", () => {
                 on.mock.calls[0][1]({
                     ...mockLog,
                     blockHash: "0xrealhash102",
-                    blockNumber: 102
+                    blockNumber: 102,
+                    logIndex: 0
                 });
             });
 
             setTimeout(() => {
-                // Only the two real logs and the single missed block (101)
-                // should have been fetched — three total. None of the
-                // malformed payloads should reach the worker.
+                // Only the two real blocks (100, 102) and the single missed block (101)
+                // should have been fetched — three total. None of the malformed
+                // payloads, and none of the same-block duplicates, should reach the worker.
                 expect(subscriber.getBlockFromWorker).toBeCalledTimes(3);
                 expect(subscriber.getBlockFromWorker).not.toBeCalledWith(0);
                 done();
