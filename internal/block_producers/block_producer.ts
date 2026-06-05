@@ -342,11 +342,12 @@ export class BlockProducer extends AsynchronousProducer {
             } catch (error) {
                 let err = error;
                 if (!(err instanceof BlockProducerError)) {
+                    const cause = error instanceof Error ? error.message : JSON.stringify(error);
                     err = new BlockProducerError(
                         "Remote block fetch error",
                         BlockProducerError.codes.RPC_ERR,
                         true,
-                        "Error fetching remote block in getStartBlock",
+                        `Error fetching block ${blockNumber} in getStartBlock: ${cause}`,
                         "remote"
                     );
                 }
