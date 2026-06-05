@@ -102,11 +102,12 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
             return this.formatBlockWithTransactions(block, transactions);
         } catch (error) {
             if (!(error instanceof BlockProducerError)) {
+                const cause = error instanceof Error ? error.message : JSON.stringify(error);
                 throw new BlockProducerError(
                     "Block producer error on getBlockWithTransactions",
                     BlockProducerError.codes.RPC_ERR,
                     true,
-                    JSON.stringify(error),
+                    `Error fetching block ${blockNumber} with receipts: ${cause}`,
                     "remote"
                 );
             }
@@ -184,11 +185,12 @@ export class BlockGetter extends BlockFormatter implements IBlockGetter {
             return this.formatTransactionReceipt(transactionReceipt);
         } catch (error) {
             if (!(error instanceof BlockProducerError)) {
+                const cause = error instanceof Error ? error.message : JSON.stringify(error);
                 throw new BlockProducerError(
                     "Block producer error on transaction receipt",
                     BlockProducerError.codes.RPC_ERR,
                     true,
-                    JSON.stringify(error),
+                    `Error fetching receipt for ${transactionHash}: ${cause}`,
                     "remote"
                 );
             }
