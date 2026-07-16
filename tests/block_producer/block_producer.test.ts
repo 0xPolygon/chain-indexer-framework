@@ -572,9 +572,9 @@ describe("Block Producer", () => {
                     resolve(true);
                 }, 100));
 
-                expect(mockedProducedBlockModel.add).toBeCalledTimes(5);
-                expect(mockedLogger.error).toBeCalledTimes(1);
-                expect(mockedLogger.error).toBeCalledWith(
+                expect(mockedProducedBlockModel.add).toHaveBeenCalledTimes(5);
+                expect(mockedLogger.error).toHaveBeenCalledTimes(1);
+                expect(mockedLogger.error).toHaveBeenCalledWith(
                     BlockProducerError.createUnknown(new Error("Demo"))
                 );
                 expect(mockedLogger.info).not.toHaveBeenCalledWith(
