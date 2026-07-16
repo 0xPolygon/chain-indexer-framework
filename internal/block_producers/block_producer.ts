@@ -300,6 +300,21 @@ export class BlockProducer extends AsynchronousProducer {
                 details,
                 this.maxReOrgDepth
             );
+
+            // Only success-path signal for this write. "Delivery-report:" (in the
+            // "delivered" handler above) fires on every Kafka ack, well before this
+            // point, and does not confirm persistence — investigating a stalled
+            // checkpoint previously had no way to tell "queue backed up" from
+            // "the DB write itself is failing/retrying" without this line.
+            Logger.info({
+                location: "block_producer",
+                function: "addBlockToMongo",
+                status: "block persisted",
+                data: {
+                    blockNumber: details.number,
+                    retryCount
+                }
+            });
         } catch (error) {
             // Tries upto 5 times to add transaction.
             if (retryCount < 4) {
