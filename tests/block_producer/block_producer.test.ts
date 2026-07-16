@@ -451,7 +451,7 @@ describe("Block Producer", () => {
             });
 
             test("On delivery report, the produced block must be added to mongoDB collection in correct order", (done) => {
-                expect.assertions(3);
+                expect.assertions(5);
                 mockedAsynchronousProducerObject.produceEvent.mockRejectedValueOnce({ isFatal: true });
                 //Mock implementation to change order.
                 mockedProducedBlockModel.add.mockImplementationOnce(async () => {
@@ -512,6 +512,24 @@ describe("Block Producer", () => {
                                 },
                                 0
                             );
+                            expect(mockedLogger.info).toHaveBeenCalledWith({
+                                location: "block_producer",
+                                function: "addBlockToMongo",
+                                status: "block persisted",
+                                data: {
+                                    blockNumber: 15400000,
+                                    retryCount: 0
+                                }
+                            });
+                            expect(mockedLogger.info).toHaveBeenCalledWith({
+                                location: "block_producer",
+                                function: "addBlockToMongo",
+                                status: "block persisted",
+                                data: {
+                                    blockNumber: 15400001,
+                                    retryCount: 0
+                                }
+                            });
                             done();
                         } catch (error) {
                             //Catch to log the test failure.
@@ -558,6 +576,9 @@ describe("Block Producer", () => {
                 expect(mockedLogger.error).toBeCalledTimes(1);
                 expect(mockedLogger.error).toBeCalledWith(
                     BlockProducerError.createUnknown(new Error("Demo"))
+                );
+                expect(mockedLogger.info).not.toHaveBeenCalledWith(
+                    expect.objectContaining({ status: "block persisted" })
                 );
             });
         });
