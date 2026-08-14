@@ -33,7 +33,17 @@ export class Database {
      */
     public async connect(): Promise<boolean> {
         if (!(this.database.connection.readyState === 1 || this.database.connection.readyState === 2)) {
-            await this.database.connect(this.url);
+            await this.database.connect(this.url, {
+                // Without these, an in-flight write whose server never responds hangs
+                // indefinitely (the driver's default socketTimeoutMS is unlimited),
+                // silently freezing the producer's persistence checkpoint until a process
+                // restart. Bounding them turns the hang into a thrown, logged error that
+                // the retry/restart path can recover from. See incidents 2026-07-15
+                // (katana-producer) and 2026-08-14 (ethereum-producer).
+                serverSelectionTimeoutMS: 30000,
+                connectTimeoutMS: 30000,
+                socketTimeoutMS: 60000,
+            });
         }
 
         return true;
