@@ -334,6 +334,19 @@ export abstract class AbstractBlockSubscription extends Queue<IBlockGetterWorker
             //Check if the block hash has changed since the timeout. 
             if (this.lastBlockHash === lastBlockHash) {
                 try {
+                    // Silent re-subscribe: no new block for a full `timeout` window looks,
+                    // from outside the process, identical to the producer simply being idle.
+                    Logger.warn({
+                        location: "abstract_block_subscription",
+                        function: "checkIfLive",
+                        message: "No new block received within timeout, re-subscribing",
+                        data: {
+                            timeout: this.timeout,
+                            resubscribeFromBlock: this.nextBlock,
+                            lastBlockHash
+                        }
+                    });
+
                     await this.unsubscribe();
 
                     await this.subscribe(this.observer, this.nextBlock);
