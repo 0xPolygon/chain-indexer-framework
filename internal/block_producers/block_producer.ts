@@ -29,6 +29,10 @@ export class BlockProducer extends AsynchronousProducer {
     private restartPromise?: Promise<void>;
     private producingBlockPromises: Promise<void>[] = [];
     private forceStop: boolean = false;
+    // Instance-scoped counter surfaced in the "Restarting block producer" warn log below,
+    // so a silent restart loop (vs. a single legitimate restart) is visible from the logs
+    // alone instead of an indistinguishable stream of "Producer started" messages.
+    private restartCount: number = 0;
 
     /**
      * @constructor
@@ -188,6 +192,23 @@ export class BlockProducer extends AsynchronousProducer {
      * @param {KafkaError|BlockProducerError} error - Error object 
      */
     private async onError(error: KafkaError | BlockProducerError): Promise<void> {
+        // Logged in full, before the strict string-match below decides restart-vs-fatal,
+        // so a wrapped/rewrapped error that misses every branch (and therefore silently
+        // triggers a restart instead of emitting "blockProducer.fatalError") is still
+        // visible in the logs for diagnosis.
+        Logger.error({
+            location: "block_producer",
+            function: "onError",
+            message: "Producer received an error",
+            data: {
+                name: error.name,
+                message: error.message,
+                stack: error.stack,
+                isFatal: error.isFatal,
+                cause: error.cause
+            }
+        });
+
         if (
             error.message === "Local: Erroneous state" ||
             error.message === "Erroneous state" ||
@@ -196,7 +217,7 @@ export class BlockProducer extends AsynchronousProducer {
             this.forceStop = true;
 
             try {
-                await this.restartBlockProducer();
+                await this.restartBlockProducer(`Strict error match: "${error.message}"`);
             } catch { }
 
             this.emit(
@@ -208,7 +229,7 @@ export class BlockProducer extends AsynchronousProducer {
         }
 
         if (error.isFatal) {
-            await this.restartBlockProducer();
+            await this.restartBlockProducer(`error.isFatal (${error.name}: ${error.message})`);
         }
     }
 
@@ -217,13 +238,27 @@ export class BlockProducer extends AsynchronousProducer {
      * 
      * Private method to be used when a block producer has to be restarted.
      * 
+     * @param {string} reason - Human readable description of the error/condition that triggered this restart, for diagnostic logging.
+     * 
      * @returns {Promise<void>} 
      */
-    private async restartBlockProducer(): Promise<void> {
+    private async restartBlockProducer(reason: string): Promise<void> {
         try {
             if (this.restartPromise) {
                 return await this.restartPromise;
             }
+
+            this.restartCount += 1;
+
+            Logger.warn({
+                location: "block_producer",
+                function: "restartBlockProducer",
+                message: "Restarting block producer",
+                data: {
+                    restartCount: this.restartCount,
+                    reason
+                }
+            });
 
             this.restartPromise = new Promise(async (resolve, reject) => {
                 try {

@@ -6,6 +6,7 @@ import { IBlock } from "../interfaces/block.js";
 import { Worker } from "worker_threads";
 import { Eth } from "web3-eth";
 import { createRequire } from "module";
+import { Logger } from "../logger/logger.js";
 
 /**
  * Block subscription class which emits full block data whenever added to chain.
@@ -126,6 +127,19 @@ export class BlockSubscription extends AbstractBlockSubscription {
             }
 
             this.activeBackFillingId = null;
+
+            // Backfilling completed - subscribing onward from here is a silent transition
+            // that otherwise looks, from outside the process, identical to no subscribe
+            // having happened at all.
+            Logger.info({
+                location: "block_subscription",
+                function: "backFillBlocks",
+                message: "Backfilling complete, subscribing onward",
+                data: {
+                    subscribeFromBlock: this.nextBlock
+                }
+            });
+
             await this.subscribe(this.observer, this.nextBlock);
         } catch (error) {
             this.activeBackFillingId = null;

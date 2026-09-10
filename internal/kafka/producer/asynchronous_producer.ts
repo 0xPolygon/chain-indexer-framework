@@ -4,6 +4,7 @@ import { AbstractProducer, } from "./abstract_producer.js";
 import { IProducerConfig } from "../../interfaces/producer_config.js";
 import { KafkaProducerEvents, EventListener } from "../../interfaces/common_kafka_events.js";
 import { KafkaError } from "../../errors/kafka_error.js";
+import { Logger } from "../../logger/logger.js";
 
 /**
  * This class is to be used for sending events to kafka producer internal buffer. 
@@ -43,6 +44,21 @@ export class AsynchronousProducer extends AbstractProducer {
 
             return;
         }
+
+        // Previously swallowed silently - a failed delivery report with no logging looks,
+        // from the outside, identical to a producer that has simply gone quiet.
+        Logger.error({
+            location: "asynchronous_producer",
+            function: "onDeliveryReport",
+            message: "Kafka delivery report failure",
+            data: {
+                message: error?.message,
+                code: error?.code,
+                origin: error?.origin,
+                isFatal: error?.isFatal,
+                stack: error?.stack
+            }
+        });
     }
 
     //TODO - to rewrite the overloads and reduce the redundancy 
